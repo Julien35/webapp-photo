@@ -1,187 +1,40 @@
-// NODE plugins
-const path = require('path');
-
-const del = require('del');
-const runSequence = require('run-sequence');
-const browserSync = require('browser-sync');
-const plato = require('plato');
-
-const eslintrc = require('./.eslintrc.json');
-
-// GULP plugins
-// Source ->
 const gulp = require('gulp');
-// Source ->
-const rename = require('gulp-rename');
+const HubRegistry = require('gulp-hub');
+const browserSync = require('browser-sync');
 
+const conf = require('./conf/gulp.conf');
 
-// Common plugins
-// Source ->
-const concat = require('gulp-concat');
-// Source -> https://github.com/floridoo/gulp-sourcemaps
-const sourcemaps = require('gulp-sourcemaps');
+// Load some files into the registry
+const hub = new HubRegistry([conf.path.tasks('*.js')]);
 
+// Tell gulp to use the tasks just loaded
+gulp.registry(hub);
 
-// Assets plugins
+gulp.task('inject', gulp.series(gulp.parallel('styles', 'scripts'), 'inject'));
+gulp.task('build', gulp.series('partials', gulp.parallel('inject', 'other'), 'build'));
+gulp.task('test', gulp.series('scripts', 'karma:single-run'));
+gulp.task('test:auto', gulp.series('watch', 'karma:auto-run'));
+gulp.task('serve', gulp.series('inject', 'watch', 'browsersync'));
+gulp.task('serve:dist', gulp.series('default', 'browsersync:dist'));
+gulp.task('default', gulp.series('clean', 'build'));
+gulp.task('watch', watch);
 
-// Styles plugins
-// Source -> https://github.com/dlmanning/gulp-sass
-const sass = require('gulp-sass');
-// Source ->
-const minify = require('gulp-minify-css');
+function reloadBrowserSync(cb) {
+  browserSync.reload();
+  cb();
+}
 
-// Javascript plugins
-// Source -> https://github.com/babel/gulp-babel
-const babel = require('gulp-babel');
-// Source -> https://github.com/terinjokes/gulp-uglify
-const uglify = require('gulp-uglify');
-// Source -> https://www.npmjs.com/package/gulp-angular-injector
-const ngInject = require('gulp-angular-injector');
-// Source -> https://github.com/Kagami/gulp-ng-annotate
-const ngAnnotate = require('gulp-ng-annotate');
+function watch(done) {
+  gulp.watch([
+    conf.path.src('index.html'),
+    'bower.json'
+  ], gulp.parallel('inject'));
 
-/** TODO
- *  - Should require config file
- */
-
-var dir = {
-	src: './app/',
-	dst: './dist/'
-};
-
-var file = {
-	suffix: {
-		suffix: '.min'
-	},
-	script: {
-		babel: {
-			presets: ['es2015']
-		}
-	},
-	assets: [path.join(dir.src, 'assets/**/*'), path.join(dir.src, '/**/*.html')]
-};
-
-var vendors = {
-	scripts: [
-		'node_modules/angular/angular.js',
-		'node_modules/angular-ui-router/release/angular-ui-router.js'
-	],
-	styles: []
-};
-
-var config = {
-	plato: {
-		src: path.join(dir.src, '**/*.js'),
-		out: './extra/plato',
-		options: {
-			title: 'plato-report.html',
-			date: (new Date()).getTime(),
-			eslint: eslintrc,
-			recurse: true,
-			exclude: ''
-		}
-	}
-};
-
-gulp.task('clean:dist', () => {
-	return del(dir.dst);
-});
-
-gulp.task('clean:extra', () => {
-	return del('./extra');
-});
-
-gulp.task('copy:assets', () => {
-	return gulp.src(file.assets).pipe(gulp.dest(dir.dst));
-});
-
-
-gulp.task('sync:css', () => {
-	return gulp.src(path.join(dir.src, 'styles/app.scss'))
-		.pipe(rename(file.suffix))
-		.pipe(sass())
-		.pipe(gulp.dest(path.join(dir.dst, 'styles')))
-		.pipe(browserSync.stream());
-});
-
-gulp.task('build:css', () => {
-	return gulp.src(path.join(dir.src, 'styles/app.scss'))
-		.pipe(sourcemaps.init())
-		.pipe(sass())
-		.pipe(rename(file.suffix))
-		.pipe(minify())
-		.pipe(sourcemaps.write('./'))
-		.pipe(gulp.dest(path.join(dir.dst, 'styles')));
-});
-
-
-gulp.task('sync:js', () => {
-	return gulp.src([path.join(dir.src, 'scripts/**/*.js'), path.join(dir.src, 'views/**/*.js')])
-		.pipe(babel(file.script.babel))
-		.pipe(concat('app.js'))
-		.pipe(rename(file.suffix))
-		.pipe(gulp.dest(path.join(dir.dst, 'scripts')))
-		.pipe(browserSync.stream());
-});
-
-gulp.task('live:js:vendors', () => {
-	return gulp.src(vendors.scripts)
-		// .pipe(babel(file.script.babel))
-		.pipe(concat('vendors.js'))
-		.pipe(rename(file.suffix))
-		.pipe(gulp.dest(path.join(dir.dst, 'scripts')))
-		.pipe(browserSync.stream());
-});
-
-gulp.task('build:js', () => {
-	return gulp.src([path.join(dir.src, 'scripts/**/*.js'), path.join(dir.src, 'views/**/*.js')])
-		.pipe(ngAnnotate({ add: true, single_quotes: true }))
-		.pipe(babel(file.script.babel))
-		.pipe(concat('app.js'))
-		.pipe(rename(file.suffix))
-		.pipe(sourcemaps.init())
-		.pipe(uglify())
-		.pipe(sourcemaps.write('./'))
-		.pipe(gulp.dest(path.join(dir.dst, 'scripts')));
-});
-
-gulp.task('build:js:vendors', () => {
-	return gulp.src(vendors.scripts)
-		.pipe(concat('vendors.js'))
-		.pipe(rename(file.suffix))
-		.pipe(uglify())
-		.pipe(gulp.dest(path.join(dir.dst, 'scripts')));
-});
-
-gulp.task('plato', ['clean:extra'], () => {
-	var platoInspect = (resolve) => {
-		plato.inspect(config.plato.src, config.plato.out, config.plato.options, () => {
-			resolve();
-		});
-	};
-	return new Promise(platoInspect);
-});
-
-gulp.task('build:dev', () => {
-	return runSequence('clean:dist', ['copy:assets', 'sync:css', 'sync:js', 'live:js:vendors'], watch);
-});
-
-
-gulp.task('build:dist', () => {
-	return runSequence('clean:dist', ['copy:assets', 'build:css', 'build:js', 'build:js:vendors']);
-});
-
-// Watch
-const watch = () => {
-	browserSync.init({
-		server: dir.dst
-	});
-
-	gulp.watch(file.assets, ['copy:assets']).on('change', browserSync.reload);
-	gulp.watch(path.join(dir.src, '**/*.scss'), ['sync:css']);
-	gulp.watch(path.join(dir.src, '**/*.js'), ['sync:js']);
-};
-// Global tasks
-
-gulp.task('default', ['build:dev'], function () {});
-gulp.task('dist', ['build:dist'], function () {});
+  gulp.watch(conf.path.src('app/**/*.html'), gulp.series('partials', reloadBrowserSync));
+  gulp.watch([
+    conf.path.src('**/*.scss'),
+    conf.path.src('**/*.css')
+  ], gulp.series('styles'));
+  gulp.watch(conf.path.src('**/*.js'), gulp.series('inject'));
+  done();
+}

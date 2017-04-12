@@ -1,11 +1,5 @@
-node_modules
-dist
-extra
-.DS_Store
-.tmp
-.sass-cache
-*.sublime-*
-.jekyll-metadata
-.idea
-npm-debug.log
-templates.js
+.tmp/
+coverage/
+dist/
+node_modules/
+bower_components/
