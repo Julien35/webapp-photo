@@ -22,7 +22,7 @@ exports.paths = {
   tmp: '.tmp',
   e2e: 'e2e',
   tasks: 'gulp_tasks',
-  styles: `src/sass/*.scss`
+  styles: `src/app/assets/sass/*.scss`
 };
 
 /**
