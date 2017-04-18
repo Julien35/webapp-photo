@@ -3,9 +3,14 @@
 
         constructor(UploadImagesService) {
             this.UploadImagesService = UploadImagesService;
-
-            this.UploadImagesService.upload();
+            this.toto = this.upLoad();
         }
+
+        upLoad() {
+            console.log(this.UploadImagesService.upLoad());
+            return this.UploadImagesService.upLoad();
+        }
+
     }
 
     angular

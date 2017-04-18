@@ -5,7 +5,7 @@
             return 'UploadImagesService';
         }
 
-        upload() {
+        upLoad() {
             return 'upload file ...';
         }
     }
