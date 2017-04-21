@@ -1,8 +1,7 @@
 <div class="component">
 
-    <form>
-        <input type="file" id="input-file">
-        <input type="submit" ng-click ="$ctrl.toto">Upload Photo</input>
-
+    <form enctype="multipart/form-data" method="post" name="fileinfo">
+        <input type="file" name="file" id="input-file">
+        <input type="submit" ng-click="$ctrl.upLoad()">Upload Photo</input>
     </form>
 </div>

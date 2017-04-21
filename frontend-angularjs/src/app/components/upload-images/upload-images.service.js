@@ -5,7 +5,9 @@
             return 'UploadImagesService';
         }
 
-        upLoad() {
+        upLoad(file, uploadUrl) {
+            console.log(file);
+            console.log(uploadUrl);
             return 'upload file ...';
         }
     }
