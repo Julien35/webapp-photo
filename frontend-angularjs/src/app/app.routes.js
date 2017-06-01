@@ -5,7 +5,7 @@
         $urlRouterProvider.otherwise('/');
 
         $stateProvider
-            .state('app', {
+            .state('public', {
                 url: '/',
                 component: 'app'
             });
