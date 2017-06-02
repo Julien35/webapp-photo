@@ -4,21 +4,63 @@
         constructor(UploadImagesService) {
             this.UploadImagesService = UploadImagesService;
             this.upLoadUrl = 'http://workspace-web.local/webapp-photo/backend-symfony/web/app_dev.php';
-            this.file = 'myFile';
+            this.allowedTypes = ['png', 'jpg', 'jpeg', 'gif'];
+            this.filesInput = document.getElementById('input-file');
+            this.prev = document.getElementById('prev');
+
+            this.filesInput.addEventListener('change', this.imagesOnChange, false);
+        }
+
+
+        createThumbnail(file) {
+            self = this;
+
+            let reader = new FileReader();
+
+            reader.onload = function () {
+
+                let imgElement = document.createElement('img');
+                imgElement.style.maxWidth = '150px';
+                imgElement.style.maxHeight = '150px';
+                imgElement.src = this.result;
+                self.prev.appendChild(imgElement);
+
+            };
+
+            reader.readAsDataURL(file);
+
+        }
+
+        imagesOnChange() {
+            console.log('imagesOnChange');
+            self = this;
+
+            let reader = new FileReader();
+            reader.onloadend = function () {
+
+                console.log(reader);
+
+                let files = self.filesInput.files,
+                    filesLen = files.length,
+                    imgType;
+
+                for (let i = 0; i < filesLen; i++) {
+
+                    imgType = files[i].name.split('.');
+                    imgType = imgType[imgType.length - 1].toLowerCase();
+
+                    if (self.allowedTypes.indexOf(imgType) != -1) {
+                        self.createThumbnail(files[i]);
+
+                    }
+
+                }
+
+            };
         }
 
         upLoad() {
-            let file = document.getElementById('input-file').files[0];
-            let read = new FileReader();
-            read.onloadend = function (evenement) {
-                let data = evenement.target.result;
-                //Traitez ici vos données binaires.
-                // Vous pouvez par exemple les envoyer
-                // à un autre niveau du framework
-                // avec $http ou $ressource
-                // let testService = this.UploadImagesService.upLoad(data, this.upLoadUrl);
-            };
-            read.readAsBinaryString(file);
+            console.log('upLoad()');
         }
 
     }
