@@ -8,7 +8,7 @@
             this.filesInput = document.getElementById('input-file');
             this.prev = document.getElementById('prev');
 
-            this.filesInput.addEventListener('change', this.imagesOnChange, false);
+            this.filesInput.onchange = this.imagesOnChange.bind(this);
         }
 
 
@@ -32,35 +32,34 @@
         }
 
         imagesOnChange() {
-            console.log('imagesOnChange');
-            self = this;
-
             let reader = new FileReader();
+
             reader.onloadend = function () {
 
-                console.log(reader);
-
-                let files = self.filesInput.files,
-                    filesLen = files.length,
-                    imgType;
+                let files = this.filesInput.files;
+                let filesLen = files.length;
+                let imgType;
 
                 for (let i = 0; i < filesLen; i++) {
 
                     imgType = files[i].name.split('.');
                     imgType = imgType[imgType.length - 1].toLowerCase();
 
-                    if (self.allowedTypes.indexOf(imgType) != -1) {
-                        self.createThumbnail(files[i]);
-
+                    if (this.allowedTypes.indexOf(imgType) != -1) {
+                        this.createThumbnail(files[i]);
                     }
 
                 }
 
-            };
+            }.bind(this);
+
+            reader.onloadend();
         }
 
         upLoad() {
-            console.log('upLoad()');
+            console.log('this dans upload(): ', this);
+            let test = this.UploadImagesService.upLoad(this.filesInput.files, this.upLoadUrl);
+            console.log(test);
         }
 
     }

@@ -5,10 +5,10 @@
             return 'UploadImagesService';
         }
 
-        upLoad(file, uploadUrl) {
-            console.log(file);
+        upLoad(files, uploadUrl) {
+            console.log(files);
             console.log(uploadUrl);
-            return 'upload file ...';
+            return 'upload files ...';
         }
     }
 
