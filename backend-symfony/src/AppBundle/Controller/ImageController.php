@@ -24,7 +24,7 @@ class ImageController extends Controller
     {
         $image = new ImageProduct();
 
-        $test = $request->getContent();
+        $test = $request;
         return new JsonResponse(['upload image', $test]);
     }
 

@@ -13,8 +13,7 @@
             return this.$http(
                 {
                     method: 'POST',
-                    url: uploadUrl,
-                    data: files
+                    url: uploadUrl
                 }
             ).then(this.handleSuccess)
                 .catch(this.handleError);
