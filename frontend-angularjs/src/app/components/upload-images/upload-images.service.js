@@ -6,20 +6,23 @@
             this.$http = $http;
         }
 
+        /**
+         * new FormData
+         * @param files
+         * @param uploadUrl
+         */
         upLoad(files, uploadUrl) {
-            console.log(files);
-            console.log(uploadUrl);
+
+            let payload = new FormData();
+            payload.append('files', files);
 
             return this.$http(
                 {
                     method: 'POST',
                     url: uploadUrl,
-                    data: {
-                        files: files
-                    },
-                    "headers": {
-                        'Content-Type': undefined // important
-                    }
+                    data: payload,
+                    transformRequest: angular.identity,
+                    headers: {'Content-Type': undefined}
                 }
             ).then(this.handleSuccess)
                 .catch(this.handleError);

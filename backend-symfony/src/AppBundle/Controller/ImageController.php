@@ -24,8 +24,14 @@ class ImageController extends Controller
     {
         // retrieve the file with the name given in the form.
         // do var_dump($request->files->all()); if you need to know if the file is being uploaded.
-        $file = $request->files->get('upload');
-        $status = array('status' => "success", "fileUploaded" => false);
+        $file = $request->files->get('files');
+        $status = array(
+            'status' => "success",
+            "fileUploaded" => false,
+            "isFile" => is_null($file),
+            '$request->files->all()' => $request->files->all(),
+
+        );
 
         // If a file was uploaded
         if (!is_null($file)) {

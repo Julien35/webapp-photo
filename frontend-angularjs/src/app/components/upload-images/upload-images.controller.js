@@ -3,13 +3,36 @@
 
         constructor(UploadImagesService) {
             this.UploadImagesService = UploadImagesService;
-            // this.upLoadUrl = 'http://workspace-web.local/webapp-photo/backend-symfony/web/app_dev.php';
             this.upLoadUrl = 'http://webapp-server.local/app_dev.php/image/upload';
             this.allowedTypes = ['png', 'jpg', 'jpeg', 'gif'];
             this.filesInput = document.getElementById('input-file');
+            // this.form = document.getElementById('image-form');
             this.prev = document.getElementById('prev');
 
+            this.images;
             this.filesInput.onchange = this.imagesOnChange.bind(this);
+        }
+
+
+        cancel() {
+            // this.$state.go('root.home');
+        }
+
+        upload() {
+
+            if (this.myForm.$valid) {
+
+                this.UploadImagesService
+                    .upLoad(this.images, this.upLoadUrl)
+                    .then(function (data) {
+                        console.log('data :', data);
+                    })
+                    .catch(function (data) {
+                        console.log('error');
+                    });
+
+            }
+
         }
 
 
@@ -55,17 +78,6 @@
             }.bind(this);
 
             reader.onloadend();
-        }
-
-        upLoad() {
-            this.UploadImagesService
-                .upLoad(this.filesInput.files, this.upLoadUrl)
-                .then(function (data) {
-                    console.log('data :', data);
-                })
-                .catch(function (data) {
-                    console.log('error');
-                });
         }
 
     }
