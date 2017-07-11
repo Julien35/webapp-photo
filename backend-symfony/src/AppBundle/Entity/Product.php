@@ -10,7 +10,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Entity
  * @Vich\Uploadable
  */
-class ImageProduct
+class Product
 {
     /**
      * @ORM\Id
@@ -60,7 +60,7 @@ class ImageProduct
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
      *
-     * @return ImageProduct
+     * @return Product
      */
     public function setImageFile(File $image = null)
     {
@@ -86,7 +86,7 @@ class ImageProduct
     /**
      * @param string $imageName
      *
-     * @return ImageProduct
+     * @return Product
      */
     public function setImageName($imageName)
     {
@@ -106,11 +106,11 @@ class ImageProduct
     /**
      * @param integer $imageSize
      *
-     * @return ImageProduct
+     * @return Product
      */
     public function setImageSize($imageSize)
     {
-        $this->imagesize = $imageSize;
+        $this->imageSize = $imageSize;
 
         return $this;
     }

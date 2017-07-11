@@ -13,7 +13,13 @@
             return this.$http(
                 {
                     method: 'POST',
-                    url: uploadUrl
+                    url: uploadUrl,
+                    data: {
+                        files: files
+                    },
+                    "headers": {
+                        'Content-Type': undefined // important
+                    }
                 }
             ).then(this.handleSuccess)
                 .catch(this.handleError);
