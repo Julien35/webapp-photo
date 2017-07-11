@@ -21,7 +21,8 @@
         upload() {
             if (this.myForm.$valid) {
 
-                for (let i = 0; i < 2; ++i) {
+                let length = this.images.length;
+                for (let i = 0; i < length; ++i) {
                     let image = this.images[i];
                     console.log(image);
                     this.UploadImagesService
@@ -36,7 +37,7 @@
 
             }
         }
-        
+
         createThumbnail(file) {
             self = this;
 
