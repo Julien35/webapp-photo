@@ -19,23 +19,24 @@
         }
 
         upload() {
-
             if (this.myForm.$valid) {
 
-                this.UploadImagesService
-                    .upLoad(this.images, this.upLoadUrl)
-                    .then(function (data) {
-                        console.log('data :', data);
-                    })
-                    .catch(function (data) {
-                        console.log('error');
-                    });
+                for (let i = 0; i < 2; ++i) {
+                    let image = this.images[i];
+                    console.log(image);
+                    this.UploadImagesService
+                        .upLoad(image, this.upLoadUrl)
+                        .then(function (data) {
+                            console.log('data :', data);
+                        })
+                        .catch(function (data) {
+                            console.log('error');
+                        });
+                }
 
             }
-
         }
-
-
+        
         createThumbnail(file) {
             self = this;
 

@@ -6,15 +6,15 @@
             this.$http = $http;
         }
 
-        /**
+        /** Send one file to the backend
          * new FormData
-         * @param files
+         * @param file
          * @param uploadUrl
          */
-        upLoad(files, uploadUrl) {
+        upLoad(file, uploadUrl) {
 
             let payload = new FormData();
-            payload.append('files', files);
+            payload.append('file', file);
 
             return this.$http(
                 {
