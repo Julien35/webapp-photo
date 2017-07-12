@@ -25,6 +25,8 @@
                 for (let i = 0; i < length; ++i) {
                     let image = this.images[i];
                     console.log(image);
+
+                    // Todo: gérer une liste de prommesses
                     this.UploadImagesService
                         .upLoad(image, this.upLoadUrl)
                         .then(function (data) {
