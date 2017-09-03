@@ -1,22 +1,20 @@
-<nav class="navbar navbar-inverse" role="navigation">
-
-  <div class="container">
-
-    <div class="navbar-header">
-      <a class="navbar-brand" href="index.html">
-        <img src="app/assets/images/logo.jpg" height="30" width="41" />
-      </a>
+<div class="navbar-component">
+    <div class="navbar area-container">
+        <!-- Logo -->
+        <a ui-sref="public" class="brand">
+            <img src="../app/assets/images/logo-ludo.jpg"/>
+        </a>
+        <!-- List of links -->
+        <nav role="navigation" id="navigation" class="list">
+            <a ui-sref="public" class="item -link">Accueil</a>
+            <a ui-sref="public" class="item -link">Qui sommes-nous ?</a>
+            <a ui-sref="public.contact" class="item -link">Contact</a>
+            <a ui-sref="public" class="item -link">Panier</a>
+        </nav>
+        <!-- Button to toggle the display menu  -->
+        <button data-collapse data-target="#navigation" class="toggle">
+            <!-- Hamburger icon -->
+            <span class="icon"></span>
+        </button>
     </div>
-
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li class="active">
-          <a href="index.html">
-            <i class="fa fa-home" aria-hidden="true"></i>
-            Home</a>
-        </li>
-      </ul>
-
-    </div>
-  </div>
-</nav>
+</div>

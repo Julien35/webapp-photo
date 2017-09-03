@@ -2,7 +2,8 @@
     angular
         .module('app')
         .component('navbar', {
-            templateUrl: 'app/common/navbar/navbar.html',
+            controller: NavbarController,
+            templateUrl: 'app/common/navbar/navbar.html'
         });
 }
 

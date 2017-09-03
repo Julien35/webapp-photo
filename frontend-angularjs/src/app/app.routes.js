@@ -8,6 +8,10 @@
             .state('public', {
                 url: '/',
                 component: 'app'
+            })
+            .state('public.contact', {
+                url: '/',
+                component: 'contact'
             });
     }
 
