@@ -25,7 +25,7 @@ class ImageController extends Controller
      */
     public function uploadAction(Request $request)
     {
-        $file = $request->files->get('file');
+        $file= $request->files->get('file');
         $status = array('status' => "success", "fileUploaded" => false);
 
         if ($file instanceof UploadedFile && !is_null($file)) {
