@@ -11,6 +11,15 @@ body {
   line-height: 20px;
 }
 
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  main {
+    flex-grow: 1;
+  }
+}
+
 a {
   text-decoration: none;
   transition: all 0.3s linear 0s;

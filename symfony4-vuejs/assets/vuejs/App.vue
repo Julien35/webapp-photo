@@ -2,7 +2,7 @@
     <div id="app">
         <main-header/>
 
-        <main class="container">
+        <main>
             <upload-images></upload-images>
         </main>
 

@@ -1,12 +1,7 @@
 <template>
-    <footer class="row-footer">
-        <div class="container">
-            <div class="row">
-
-                <p>Studio Ludo</p>
-
-            </div>
-        </div>
+    <footer class="area-container footer">
+        <p></p>
+        <p>Studio Ludo</p>
     </footer>
 </template>
 

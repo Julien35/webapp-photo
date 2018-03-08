@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div class="">
+        <div class="area-container">
             <div class="">
 
                 <div class="">
