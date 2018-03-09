@@ -11,4 +11,10 @@
     }
 </script>
 
-<style lang="scss" src="./footer.scss"></style>
+<style lang="scss" scoped>
+    .footer {
+        justify-content: space-between;
+        font-weight: 600;
+        color: #333;
+    }
+</style>
