@@ -9,6 +9,8 @@ Encore
 
     .cleanupOutputBeforeBuild()
 
+    .autoProvidejQuery()
+
     // uncomment if you use Sass/SCSS files
     .enableSassLoader()
     // parameters are not mandatory, only if webpack build is slow with bootstrap (http://symfony.com/doc/current/frontend/encore/bootstrap.html)
@@ -34,9 +36,13 @@ Encore
 
     // this creates a 'vendor.js' file with jquery and the bootstrap JS module
     // these modules will *not* be included in page1.js or page2.js anymore
-    // .createSharedEntry('vendors', [
-    //     'bootstrap'
-    // ])
+    .createSharedEntry('vendors', [
+        'jquery',
+        'popper.js',
+        'bootstrap',
+
+        'bootstrap/scss/bootstrap.scss',
+    ])
 ;
 
 module.exports = Encore.getWebpackConfig();
