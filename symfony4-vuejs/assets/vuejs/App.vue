@@ -3,7 +3,7 @@
         <main-header/>
 
         <main>
-            <upload-images></upload-images>
+            <upload-images/>
         </main>
 
         <main-footer/>

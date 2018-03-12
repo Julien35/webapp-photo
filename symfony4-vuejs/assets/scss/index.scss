@@ -1,16 +1,8 @@
-// Scaffolding
-*, *:before, *:after {
-  box-sizing: border-box;
-}
-
 body {
   background-color: #f5f5f5;
-  color: #333;
-  font-size: 14px;
-  font-family: Verdana, Arial, sans-serif;
-  line-height: 20px;
 }
 
+//sticky footer
 #app {
   min-height: 100vh;
   display: flex;

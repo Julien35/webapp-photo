@@ -1,7 +1,7 @@
 <template>
     <header>
 
-        <div class="navbar-component">
+        <section class="navbar-component">
             <nav class="container navbar navbar-expand-lg navbar-light">
                 <!-- Logo -->
                 <a href="#" class="brand">
@@ -25,18 +25,14 @@
                 </div>
 
             </nav>
-        </div>
+        </section>
 
-        <div class="container">
-            <div class="">
-
-                <div class="">
-                    <h2>{{ title }}</h2>
-                    <p>Plein de photos à vendre :)</p>
-                </div>
-
+        <section class="container">
+            <div class="jumbotron-fluid">
+                <h2>{{ title }}</h2>
+                <p>Plein de photos à vendre :) (Mettre un texte de présentation)</p>
             </div>
-        </div>
+        </section>
 
     </header>
 </template>
