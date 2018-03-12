@@ -1,5 +1,5 @@
 <template>
-    <div class="area-container">
+    <div class="container">
 
         <form id="image-form" enctype="multipart/form-data"
               method="post" name="fileinfo">

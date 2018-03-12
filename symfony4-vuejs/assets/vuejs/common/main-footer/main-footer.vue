@@ -1,6 +1,5 @@
 <template>
-    <footer class="area-container footer">
-        <p></p>
+    <footer class="container footer">
         <p>Studio Ludo</p>
     </footer>
 </template>
@@ -13,7 +12,7 @@
 
 <style lang="scss" scoped>
     .footer {
-        justify-content: space-between;
+        text-align: right;
         font-weight: 600;
         color: #333;
     }
