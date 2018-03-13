@@ -1,52 +1,33 @@
 <template>
-    <div class="container">
+    <section class="container">
+        <div class="">
+            <!--UPLOAD-->
+            <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
+                <h2>Images to download</h2>
 
-        <!--<form id="image-form" enctype="multipart/form-data" method="post" name="fileinfo">-->
-        <!--<input name="file" id="input-file" type="file" multiple>-->
-        <!--<div id="prev"></div>-->
+                <div class="dropbox">
+                    <input type="file" multiple :name="uploadFieldName" :disabled="isSaving"
+                           @change="filesChange($event.target.name, $event.target.files);
+                           fileCount = $event.target.files.length"
+                           accept="image/*" class="input-file">
 
-        <!--<button type="button">Cancel</button>-->
-        <!--<input type="submit" value="Upload Photo"/>-->
-        <!--</form>-->
+                    <p v-if="isInitial">
+                        Drag your file(s) here to begin<br> or click to browse
+                    </p>
+                    <p v-if="isSaving">
+                        Uploading {{ fileCount }} files...
+                    </p>
+                </div>
 
-        <!--UPLOAD-->
-        <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
-            <h1>Upload images</h1>
-            <div class="dropbox">
-                <input type="file" multiple :name="uploadFieldName" :disabled="isSaving"
-                       @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"
-                       accept="image/*" class="input-file">
-                <p v-if="isInitial">
-                    Drag your file(s) here to begin<br> or click to browse
-                </p>
-                <p v-if="isSaving">
-                    Uploading {{ fileCount }} files...
-                </p>
-            </div>
-        </form>
+                <div id="preview">
+                    <h2>Preview photo</h2>
+                </div>
+                <!--<button class="btn btn-success btn-block" @click="save($event.target.files)">Upload</button>-->
+            </form>
 
-        <!--SUCCESS-->
-        <div v-if="isSuccess">
-            <h2>Uploaded {{ uploadedFiles.length }} file(s) successfully.</h2>
-            <p>
-                <a href="javascript:void(0)" @click="reset()">Upload again</a>
-            </p>
-            <ul class="list-unstyled">
-                <li v-for="item in uploadedFiles">
-                    <img :src="item.url" class="img-responsive img-thumbnail" :alt="item.originalName">
-                </li>
-            </ul>
-        </div>
-        <!--FAILED-->
-        <div v-if="isFailed">
-            <h2>Uploaded failed.</h2>
-            <p>
-                <a href="javascript:void(0)" @click="reset()">Try again</a>
-            </p>
-            <pre>{{ uploadError }}</pre>
         </div>
 
-    </div>
+    </section>
 
 </template>
 
@@ -62,6 +43,7 @@
         name: 'UploadImages',
         data() {
             return {
+                image: '',
                 uploadedFiles: [],
                 uploadError: null,
                 currentStatus: null,
@@ -89,7 +71,18 @@
                 this.uploadedFiles = [];
                 this.uploadError = null;
             },
-            save(formData) {
+            save(fileList) {
+
+                // handle file changes
+                const formData = new FormData();
+
+                // append the files to FormData
+                Array
+                    .from(Array(fileList.length).keys())
+                    .map(x => {
+                        formData.append(fieldName, fileList[x], fileList[x].name);
+                    });
+
                 // upload data to the server
                 this.currentStatus = STATUS_SAVING;
 
@@ -106,21 +99,39 @@
                     });
             },
             filesChange(fieldName, fileList) {
-                // handle file changes
-                const formData = new FormData();
-
                 if (!fileList.length) return;
 
-                // append the files to FormData
-                Array
-                    .from(Array(fileList.length).keys())
-                    .map(x => {
-                        formData.append(fieldName, fileList[x], fileList[x].name);
-                    });
+                // Preview
+                this.createImages(fileList);
+            },
 
-                // save it
-                this.save(formData);
+            createImages(files) {
+                let preview = document.querySelector('#preview');
+
+                if (files) {
+                    [].forEach.call(files, this.readAndPreview);
+                }
+            },
+
+            readAndPreview(file) {
+
+                // Veillez à ce que `file.name` corresponde à nos critères d’extension
+                if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+                    let reader = new FileReader();
+
+                    reader.addEventListener("load", function () {
+                        let image = new Image();
+                        image.height = 100;
+                        image.title = file.name;
+                        image.src = this.result;
+                        preview.appendChild(image);
+                    }, false);
+
+                    reader.readAsDataURL(file);
+                }
+
             }
+
         },
         mounted() {
             this.reset();
@@ -128,16 +139,14 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .dropbox {
-        outline: 2px dashed grey; /* the dash box */
         outline-offset: -10px;
-        background: lightcyan;
+        background: #ffffff;
         color: dimgray;
         padding: 10px 10px;
         min-height: 200px; /* minimum height */
         position: relative;
-        cursor: pointer;
     }
 
     .input-file {
@@ -145,7 +154,6 @@
         width: 100%;
         height: 200px;
         position: absolute;
-        cursor: pointer;
     }
 
     .dropbox:hover {
