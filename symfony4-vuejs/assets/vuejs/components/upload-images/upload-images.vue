@@ -25,13 +25,36 @@
             </div>
         </form>
 
+        <!--SUCCESS-->
+        <div v-if="isSuccess">
+            <h2>Uploaded {{ uploadedFiles.length }} file(s) successfully.</h2>
+            <p>
+                <a href="javascript:void(0)" @click="reset()">Upload again</a>
+            </p>
+            <ul class="list-unstyled">
+                <li v-for="item in uploadedFiles">
+                    <img :src="item.url" class="img-responsive img-thumbnail" :alt="item.originalName">
+                </li>
+            </ul>
+        </div>
+        <!--FAILED-->
+        <div v-if="isFailed">
+            <h2>Uploaded failed.</h2>
+            <p>
+                <a href="javascript:void(0)" @click="reset()">Try again</a>
+            </p>
+            <pre>{{ uploadError }}</pre>
+        </div>
+
     </div>
 
 </template>
 
 <script>
 
-    import {upload} from './file-upload.service';
+    // swap as you need
+    import {upload} from './file-upload.fake.service'; // fake service
+    // import { upload } from './file-upload.service';   // real service
 
     const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 
@@ -72,10 +95,12 @@
 
                 upload(formData)
                     .then(x => {
+                        console.log(x);
                         this.uploadedFiles = [].concat(x);
                         this.currentStatus = STATUS_SUCCESS;
                     })
                     .catch(err => {
+                        console.log(err);
                         this.uploadError = err.response;
                         this.currentStatus = STATUS_FAILED;
                     });
