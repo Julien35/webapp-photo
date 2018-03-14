@@ -26,7 +26,7 @@
             MainHeader,
             MainFooter,
             Contact,
-            UploadImages
+            UploadImages,
         }
     }
 </script>

@@ -43,7 +43,7 @@
         name: 'UploadImages',
         data() {
             return {
-                image: '',
+                images: [],
                 uploadedFiles: [],
                 uploadError: null,
                 currentStatus: null,
@@ -105,15 +105,19 @@
                 this.createImages(fileList);
             },
 
-            createImages(files) {
-                let preview = document.querySelector('#preview');
 
-                if (files) {
-                    [].forEach.call(files, this.readAndPreview);
+            /**
+             *
+             * @param fileList
+             */
+            createImages(fileList) {
+                if (fileList) {
+                    [].forEach.call(fileList, this.readAndPreview);
                 }
             },
 
             readAndPreview(file) {
+                let preview = document.querySelector('#preview');
 
                 // Veillez à ce que `file.name` corresponde à nos critères d’extension
                 if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
