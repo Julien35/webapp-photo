@@ -4,8 +4,14 @@
         top: -500px;
     }
 
-    div.file-listing img {
-        max-width: 90%;
+    div.file-listing {
+        width: 200px;
+    }
+
+    span.remove-file {
+        color: red;
+        cursor: pointer;
+        float: right;
     }
 </style>
 
@@ -13,19 +19,16 @@
     <div class="row">
         <div class="large-12 medium-12 small-12 cell">
             <label>Files
-                <input type="file" id="files" ref="files" accept="image/*" multiple v-on:change="handleFilesUpload()"/>
+                <input type="file" id="files" ref="files" multiple v-on:change="handleFilesUpload()"/>
             </label>
         </div>
         <div class="large-12 medium-12 small-12 cell">
-            <div class="grid-x">
-                <div v-for="(file, key) in files" class="large-4 medium-4 small-6 cell file-listing">
-                    {{ file.name }}
-                    <img class="preview" v-bind:ref="'image'+parseInt( key )"/>
-                </div>
+            <div v-for="(file, key) in files" class="file-listing">{{ file.name }}
+                <span class="remove-file" v-on:click="removeFile( key )">Remove</span>
             </div>
         </div>
         <br>
-        <div class="large-12 medium-12 small-12 cell clear">
+        <div class="large-12 medium-12 small-12 cell">
             <button v-on:click="addFiles()">Add Files</button>
         </div>
         <br>
@@ -39,7 +42,6 @@
     import * as axios from 'axios';
 
     export default {
-        name: "FileMultiplePreview",
         /*
           Defines the data used by the component
         */
@@ -82,7 +84,7 @@
                 /*
                   Make the request to the POST /select-files URL
                 */
-                axios.post('/file-multiple-preview',
+                axios.post('http://localhost:8000/photos/upload',
                     formData,
                     {
                         headers: {
@@ -101,9 +103,6 @@
               Handles the uploading of files
             */
             handleFilesUpload() {
-                /*
-                  Get the uploaded files from the input.
-                */
                 let uploadedFiles = this.$refs.files.files;
 
                 /*
@@ -112,46 +111,13 @@
                 for (var i = 0; i < uploadedFiles.length; i++) {
                     this.files.push(uploadedFiles[i]);
                 }
-
-                /*
-                  Generate image previews for the uploaded files
-                */
-                this.getImagePreviews();
             },
 
             /*
-              Gets the preview image for the file.
+              Removes a select file the user has uploaded
             */
-            getImagePreviews() {
-                /*
-                  Iterate over all of the files and generate an image preview for each one.
-                */
-                for (let i = 0; i < this.files.length; i++) {
-                    /*
-                      Ensure the file is an image file
-                    */
-                    if (/\.(jpe?g|png|gif)$/i.test(this.files[i].name)) {
-                        /*
-                          Create a new FileReader object
-                        */
-                        let reader = new FileReader();
-
-                        /*
-                          Add an event listener for when the file has been loaded
-                          to update the src on the file preview.
-                        */
-                        reader.addEventListener("load", function () {
-                            this.$refs['image' + parseInt(i)][0].src = reader.result;
-                        }.bind(this), false);
-
-                        /*
-                          Read the data for the file in through the reader. When it has
-                          been loaded, we listen to the event propagated and set the image
-                          src to what was loaded from the reader.
-                        */
-                        reader.readAsDataURL(this.files[i]);
-                    }
-                }
+            removeFile(key) {
+                this.files.splice(key, 1);
             }
         }
     }

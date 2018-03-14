@@ -4,6 +4,9 @@
             <label>File
                 <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
             </label>
+            <br>
+            <progress max="100" :value.prop="uploadPercentage"></progress>
+            <br>
             <button v-on:click="submitFile()">Submit</button>
         </div>
     </div>
@@ -14,26 +17,33 @@
 
     export default {
         /*
-          Defines the data used by the component
+        Defines the data used by the component
         */
         data() {
             return {
-                file: ''
+                file: '',
+                uploadPercentage: 0
             }
         },
-
         methods: {
             /*
-              Submits the file to the server
+            Handles a change on the file upload
+            */
+            handleFileUpload() {
+                this.file = this.$refs.file.files[0];
+            },
+
+            /*
+            Submits the file to the server
             */
             submitFile() {
                 /*
-                        Initialize the form data
-                    */
+                  Initialize the form data
+                */
                 let formData = new FormData();
 
                 /*
-                    Add the form data we need to submit
+                  Add the form data we need to submit
                 */
                 formData.append('file', this.file);
 
@@ -45,7 +55,10 @@
                     {
                         headers: {
                             'Content-Type': 'multipart/form-data'
-                        }
+                        },
+                        onUploadProgress: function (progressEvent) {
+                            this.uploadPercentage = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total));
+                        }.bind(this)
                     }
                 ).then(function () {
                     console.log('SUCCESS!!');
@@ -54,13 +67,7 @@
                         console.log('FAILURE!!');
                     });
             },
-
-            /*
-              Handles a change on the file upload
-            */
-            handleFileUpload() {
-                this.file = this.$refs.file.files[0];
-            }
         }
+
     }
 </script>

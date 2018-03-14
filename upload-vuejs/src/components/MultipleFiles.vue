@@ -1,10 +1,10 @@
 <template>
     <div class="row">
         <div class="large-12 medium-12 small-12 cell">
-            <label>File
-                <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+            <label>Files
+                <input type="file" id="files" ref="files" multiple v-on:change="handleFilesUpload()"/>
             </label>
-            <button v-on:click="submitFile()">Submit</button>
+            <button v-on:click="submitFiles()">Submit</button>
         </div>
     </div>
 </template>
@@ -18,27 +18,32 @@
         */
         data() {
             return {
-                file: ''
+                files: ''
             }
         },
 
         methods: {
             /*
-              Submits the file to the server
+              Submits all of the files to the server
             */
-            submitFile() {
+            submitFiles() {
                 /*
-                        Initialize the form data
-                    */
+                  Initialize the form data
+                */
                 let formData = new FormData();
 
                 /*
-                    Add the form data we need to submit
+                  Iteate over any file sent over appending the files
+                  to the form data.
                 */
-                formData.append('file', this.file);
+                for (var i = 0; i < this.files.length; i++) {
+                    let file = this.files[i];
+
+                    formData.append('files[' + i + ']', file);
+                }
 
                 /*
-                  Make the request to the POST /single-file URL
+                  Make the request to the POST /multiple-files URL
                 */
                 axios.post('http://localhost:8000/photos/upload',
                     formData,
@@ -58,8 +63,8 @@
             /*
               Handles a change on the file upload
             */
-            handleFileUpload() {
-                this.file = this.$refs.file.files[0];
+            handleFilesUpload() {
+                this.files = this.$refs.files.files;
             }
         }
     }
