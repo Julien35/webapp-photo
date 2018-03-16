@@ -1,41 +1,41 @@
 <template>
-    <section class="container">
-        <div class="">
-            <!--UPLOAD-->
-            <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
-                <h2>Images to download</h2>
+    <!--UPLOAD-->
+    <!--<form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">-->
+    <form enctype="multipart/form-data" novalidate>
+        <h2>Images to upload</h2>
 
-                <div class="dropbox">
-                    <input type="file" multiple :name="uploadFieldName" :disabled="isSaving"
-                           @change="filesChange($event.target.name, $event.target.files);
+        <div class="dropbox">
+            <input type="file" multiple :name="uploadFieldName" :disabled="isSaving"
+                   @change="filesChange($event.target.name, $event.target.files);
                            fileCount = $event.target.files.length"
-                           accept="image/*" class="input-file">
+                   accept="image/*" class="input-file">
 
-                    <p v-if="isInitial">
-                        Drag your file(s) here to begin<br> or click to browse
-                    </p>
-                    <p v-if="isSaving">
-                        Uploading {{ fileCount }} files...
-                    </p>
-                </div>
-
-                <div id="preview">
-                    <h2>Preview photo</h2>
-                </div>
-                <!--<button class="btn btn-success btn-block" @click="save($event.target.files)">Upload</button>-->
-            </form>
-
+            <p v-if="isInitial">
+                Drag your file(s) here to begin<br> or click to browse
+            </p>
+            <p v-if="isSaving">
+                Uploading {{ fileCount }} files...
+            </p>
         </div>
 
-    </section>
+        <progress max="100" :value.prop="uploadPercentage"></progress>
+
+        <div v-for="(file, key) in files" class="file-listing">
+            <img class="preview" v-bind:ref="'preview'+parseInt( key )"/>
+            {{ file.name }}
+            <div class="remove-container">
+                <a class="remove" v-on:click="removeFile( key )">Remove</a>
+            </div>
+        </div>
+
+        <a class="btn btn-success btn-block" v-on:click="submitFiles()" v-show="files.length > 0">Next</a>
+    </form>
 
 </template>
 
 <script>
 
-    // swap as you need
-    import {upload} from './file-upload.fake.service'; // fake service
-    // import { upload } from './file-upload.service';   // real service
+    import * as axios from 'axios';
 
     const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 
@@ -43,11 +43,12 @@
         name: 'UploadImages',
         data() {
             return {
-                images: [],
+                files: [],
                 uploadedFiles: [],
                 uploadError: null,
                 currentStatus: null,
-                uploadFieldName: 'photos'
+                uploadFieldName: 'photos',
+                uploadPercentage: 0
             }
         },
         computed: {
@@ -70,73 +71,106 @@
                 this.currentStatus = STATUS_INITIAL;
                 this.uploadedFiles = [];
                 this.uploadError = null;
+                this.files = [];
+                this.images = [];
             },
-            save(fileList) {
 
-                // handle file changes
-                const formData = new FormData();
-
-                // append the files to FormData
-                Array
-                    .from(Array(fileList.length).keys())
-                    .map(x => {
-                        formData.append(fieldName, fileList[x], fileList[x].name);
-                    });
-
-                // upload data to the server
-                this.currentStatus = STATUS_SAVING;
-
-                upload(formData)
-                    .then(x => {
-                        console.log(x);
-                        this.uploadedFiles = [].concat(x);
-                        this.currentStatus = STATUS_SUCCESS;
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        this.uploadError = err.response;
-                        this.currentStatus = STATUS_FAILED;
-                    });
-            },
             filesChange(fieldName, fileList) {
                 if (!fileList.length) return;
 
-                // Preview
-                this.createImages(fileList);
-            },
-
-
-            /**
-             *
-             * @param fileList
-             */
-            createImages(fileList) {
-                if (fileList) {
-                    [].forEach.call(fileList, this.readAndPreview);
+                for (let i = 0; i < fileList.length; i++) {
+                    this.files.push(fileList[i]);
+                    // Preview
+                    this.getImagePreviews();
                 }
             },
 
-            readAndPreview(file) {
-                let preview = document.querySelector('#preview');
+            getImagePreviews() {
+                /*
+                  Iterate over all of the files and generate an image preview for each one.
+                */
+                for (let i = 0; i < this.files.length; i++) {
+                    /*
+                      Ensure the file is an image file
+                    */
+                    if (/\.(jpe?g|png|gif)$/i.test(this.files[i].name)) {
+                        /*
+                          Create a new FileReader object
+                        */
+                        let reader = new FileReader();
 
-                // Veillez à ce que `file.name` corresponde à nos critères d’extension
-                if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
-                    let reader = new FileReader();
+                        /*
+                          Add an event listener for when the file has been loaded
+                          to update the src on the file preview.
+                        */
+                        reader.addEventListener("load", function () {
 
-                    reader.addEventListener("load", function () {
-                        let image = new Image();
-                        image.height = 100;
-                        image.title = file.name;
-                        image.src = this.result;
-                        preview.appendChild(image);
-                    }, false);
+                            this.$refs['preview' + parseInt(i)][0].src = reader.result;
+                        }.bind(this), false);
 
-                    reader.readAsDataURL(file);
+                        /*
+                          Read the data for the file in through the reader. When it has
+                          been loaded, we listen to the event propagated and set the image
+                          src to what was loaded from the reader.
+                        */
+                        reader.readAsDataURL(this.files[i]);
+                    } else {
+                        /*
+                          We do the next tick so the reference is bound and we can access it.
+                        */
+                        this.$nextTick(function () {
+                            this.$refs['preview' + parseInt(i)][0].src = '/images/file.png';
+                        });
+                    }
+                }
+            },
+
+            removeFile(key) {
+                this.files.splice(key, 1);
+            },
+
+            submitFiles() {
+                const vm = this;
+                this.currentStatus = STATUS_SAVING;
+                /*
+                  Initialize the form data
+                */
+                let formData = new FormData();
+
+                /*
+                  Iteate over any file sent over appending the files
+                  to the form data.
+                */
+                for (let i = 0; i < this.files.length; i++) {
+                    let file = this.files[i];
+
+                    formData.append('files[' + i + ']', file);
                 }
 
-            }
+                axios
+                    .post('http://127.0.0.1:8000/photos/upload',
+                        formData,
+                        {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            },
+                            onUploadProgress: function (progressEvent) {
+                                this.uploadPercentage = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total));
+                            }.bind(this)
+                        }
+                    )
+                    .then(function () {
+                        console.log('SUCCESS!!');
+                        vm.currentStatus = STATUS_SUCCESS;
+                    })
+                    .catch(function () {
+                        console.log('FAILURE!!');
+                        vm.currentStatus = STATUS_FAILED;
+                    });
+            },
 
         },
+
         mounted() {
             this.reset();
         },
@@ -168,5 +202,46 @@
         font-size: 1.2em;
         text-align: center;
         padding: 50px 0;
+    }
+
+    div.file-listing {
+        width: 400px;
+        margin: auto;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    div.file-listing img {
+        height: 100px;
+    }
+
+    div.remove-container {
+        text-align: center;
+    }
+
+    div.remove-container a {
+        color: red;
+        cursor: pointer;
+    }
+
+    a.submit-button {
+        display: block;
+        margin: auto;
+        text-align: center;
+        width: 200px;
+        padding: 10px;
+        text-transform: uppercase;
+        background-color: #CCC;
+        color: white;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    progress {
+        width: 400px;
+        margin: auto;
+        display: block;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
 </style>
