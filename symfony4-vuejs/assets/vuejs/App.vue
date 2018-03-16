@@ -3,18 +3,17 @@
         <main-header/>
 
         <main>
-            <upload-images/>
+            <router-view/>
         </main>
 
         <main-footer/>
     </div>
+
 </template>
 
 <script>
     import MainHeader from './common/main-header/main-header'
     import MainFooter from './common/main-footer/main-footer'
-    import Contact from './common/contact/contact'
-    import UploadImages from './components/upload-images/upload-images'
 
     class TestClassSyntax {
 
@@ -24,9 +23,7 @@
         name: 'app',
         components: {
             MainHeader,
-            MainFooter,
-            Contact,
-            UploadImages,
+            MainFooter
         }
     }
 </script>

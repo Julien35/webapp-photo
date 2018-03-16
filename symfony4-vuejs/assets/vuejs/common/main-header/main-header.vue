@@ -1,12 +1,11 @@
 <template>
     <header>
-
         <section class="navbar-component">
             <nav class="container navbar navbar-expand-lg navbar-light">
                 <!-- Logo -->
-                <a href="#" class="brand">
+                <router-link :to="{name: 'home'}" class="brand">
                     <img src="../../assets/images/logo-ludo.jpg">
-                </a>
+                </router-link>
 
                 <!--collapse icon-->
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
@@ -17,21 +16,15 @@
                 <!--items list-->
                 <div class="collapse navbar-collapse" id="navigation">
                     <div class="navbar-nav">
-                        <a class="item -link" href="#">Accueil <span class="sr-only">(current)</span></a>
-                        <a class="item -link" href="#">Qui sommes-nous ?</a>
-                        <a class="item -link" href="#">Contact</a>
-                        <a class="item -link" href="#">Panier</a>
+                        <router-link :to="{name: 'home'}" class="item -link">Accueil <span
+                                class="sr-only">(current)</span></router-link>
+                        <router-link :to="{name: 'about'}" class="item -link" href="#">Qui sommes-nous ?</router-link>
+                        <router-link :to="{name: 'contact'}" class="item -link" href="#">Contact</router-link>
+                        <router-link :to="{name: 'cart'}" class="item -link" href="#">Panier</router-link>
                     </div>
                 </div>
 
             </nav>
-        </section>
-
-        <section class="container">
-            <div class="jumbotron-fluid">
-                <h2>{{ title }}</h2>
-                <p>Plein de photos à vendre :) (Mettre un texte de présentation)</p>
-            </div>
         </section>
 
     </header>
@@ -42,7 +35,7 @@
         name: 'MainHeader',
         data() {
             return {
-                title: 'Web App Photo',
+                title: 'Home Page',
             }
         }
     }
