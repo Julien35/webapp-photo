@@ -185,56 +185,39 @@
         padding: 10px 10px;
         min-height: 200px; /* minimum height */
         position: relative;
+        &:hover {
+            background: lightblue; /* when mouse over to the drop zone, change color */
+        }
+        .input-file {
+            opacity: 0; /* invisible but it's there! */
+            width: 100%;
+            height: 200px;
+            position: absolute;
+        }
+        p {
+            font-size: 1.2em;
+            text-align: center;
+            padding: 50px 0;
+        }
     }
 
-    .input-file {
-        opacity: 0; /* invisible but it's there! */
-        width: 100%;
-        height: 200px;
-        position: absolute;
-    }
-
-    .dropbox:hover {
-        background: lightblue; /* when mouse over to the drop zone, change color */
-    }
-
-    .dropbox p {
-        font-size: 1.2em;
-        text-align: center;
-        padding: 50px 0;
-    }
-
-    div.file-listing {
+    .file-listing {
         width: 400px;
         margin: auto;
         padding: 10px;
         border-bottom: 1px solid #ddd;
-    }
 
-    div.file-listing img {
-        height: 100px;
-    }
+        img {
+            height: 100px;
+        }
 
-    div.remove-container {
-        text-align: center;
-    }
-
-    div.remove-container a {
-        color: red;
-        cursor: pointer;
-    }
-
-    a.submit-button {
-        display: block;
-        margin: auto;
-        text-align: center;
-        width: 200px;
-        padding: 10px;
-        text-transform: uppercase;
-        background-color: #CCC;
-        color: white;
-        font-weight: bold;
-        margin-top: 20px;
+        .remove-container {
+            text-align: center;
+            a {
+                color: red;
+                cursor: pointer;
+            }
+        }
     }
 
     progress {
