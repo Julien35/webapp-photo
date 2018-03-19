@@ -8,7 +8,7 @@
             </div>
         </section>
 
-        <upload-images class="container"/>
+        <section class="container"><upload-images /></section>
 
     </div>
 </template>

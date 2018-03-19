@@ -1,35 +1,50 @@
 <template>
-    <!--UPLOAD-->
-    <!--<form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">-->
-    <form enctype="multipart/form-data" novalidate>
-        <h2>Images to upload</h2>
 
-        <div class="dropbox">
-            <input type="file" multiple :name="uploadFieldName" :disabled="isSaving"
-                   @change="filesChange($event.target.name, $event.target.files);
+    <div class="row">
+        <!--<form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">-->
+        <form class="col-sm-12" enctype="multipart/form-data" novalidate>
+            <h2>Images to upload</h2>
+
+
+            <section class="dropbox">
+                <input type="file" multiple :name="uploadFieldName" :disabled="isSaving"
+                       @change="filesChange($event.target.name, $event.target.files);
                            fileCount = $event.target.files.length"
-                   accept="image/*" class="input-file">
+                       accept="image/*" class="input-file">
 
-            <p v-if="isInitial">
-                Drag your file(s) here to begin<br> or click to browse
-            </p>
-            <p v-if="isSaving">
-                Uploading {{ fileCount }} files...
-            </p>
-        </div>
+                <p v-if="isInitial">
+                    Drag your file(s) here to begin<br> or click to browse
+                </p>
+                <p v-if="isSaving">
+                    Uploading {{ fileCount }} files...
+                </p>
+            </section>
 
-        <progress-bar :percentage="uploadPercentage"/>
+            <progress-bar :percentage="uploadPercentage"/>
 
-        <div v-for="(file, key) in files" class="file-listing">
-            <img class="preview" v-bind:ref="'preview'+parseInt( key )"/>
-            {{ file.name }}
-            <div class="remove-container">
-                <a class="remove" v-on:click="removeFile( key )">Remove</a>
-            </div>
-        </div>
+            <section v-for="(file, key) in files" class="col-md-4">
 
-        <a class="btn btn-success btn-block" v-on:click="submitFiles()" v-show="files.length > 0">Next</a>
-    </form>
+                <div>
+                    <div class="thumbnail">
+                        <img src="" class="preview img-thumbnail" v-bind:ref="'preview'+parseInt( key )"/>
+                        <div class="caption">
+                            <label for="name">
+                                Name :
+                                <input type="text" id="name" :value="file.name"/>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <a class="btn" v-on:click="removeFile( key )">Remove</a>
+
+            </section>
+
+            <section>
+                <a class="btn btn-success" v-on:click="submitFiles()" v-show="files.length > 0">Next</a>
+            </section>
+        </form>
+    </div>
 
 </template>
 
@@ -212,16 +227,8 @@
         padding: 10px;
         border-bottom: 1px solid #ddd;
 
-        img {
-            height: 100px;
-        }
-
-        .remove-container {
-            text-align: center;
-            a {
-                color: red;
-                cursor: pointer;
-            }
-        }
+        /*img {*/
+            /*height: 100px;*/
+        /*}*/
     }
 </style>
