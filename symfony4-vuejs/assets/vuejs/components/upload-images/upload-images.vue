@@ -18,11 +18,7 @@
             </p>
         </div>
 
-        <div class="progress">
-            <div class="progress-bar progress-bar-striped progress-bar-animated"
-                 role="progressbar" :style="'width:' + uploadPercentage + '%'" :aria-valuenow="uploadPercentage" aria-valuemin="0" aria-valuemax="100">
-            </div>
-        </div>
+        <progress-bar :percentage="uploadPercentage"/>
 
         <div v-for="(file, key) in files" class="file-listing">
             <img class="preview" v-bind:ref="'preview'+parseInt( key )"/>
@@ -40,11 +36,16 @@
 <script>
 
     import * as axios from 'axios';
+    import ProgressBar from '../progress-bar'
 
     const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 
     export default {
         name: 'UploadImages',
+        components: {
+            ProgressBar
+        },
+
         data() {
             return {
                 files: [],
