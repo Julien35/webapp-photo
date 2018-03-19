@@ -18,7 +18,11 @@
             </p>
         </div>
 
-        <progress max="100" :value.prop="uploadPercentage"></progress>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated"
+                 role="progressbar" :style="'width:' + uploadPercentage + '%'" :aria-valuenow="uploadPercentage" aria-valuemin="0" aria-valuemax="100">
+            </div>
+        </div>
 
         <div v-for="(file, key) in files" class="file-listing">
             <img class="preview" v-bind:ref="'preview'+parseInt( key )"/>
@@ -218,13 +222,5 @@
                 cursor: pointer;
             }
         }
-    }
-
-    progress {
-        width: 400px;
-        margin: auto;
-        display: block;
-        margin-top: 20px;
-        margin-bottom: 20px;
     }
 </style>
