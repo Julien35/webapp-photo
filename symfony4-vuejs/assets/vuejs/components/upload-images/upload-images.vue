@@ -1,53 +1,104 @@
 <template>
 
-    <div class="row">
-        <!--<form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">-->
-        <form class="col-sm-12" enctype="multipart/form-data" novalidate>
-            <h2>Images to upload</h2>
+    <!--<form class="col-sm-12" enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">-->
+    <form enctype="multipart/form-data" novalidate>
 
-
-            <section class="dropbox">
-                <input type="file" multiple :disabled="isSaving"
-                       @change="filesChange($event.target.files);
+        <div class="row">
+            <section class="col">
+                <h2>Photos à télécharger</h2>
+                <article class="dropbox">
+                    <input type="file" multiple :disabled="isSaving"
+                           @change="filesChange($event.target.files);
                            fileCount = $event.target.files.length"
-                       accept="image/*" class="input-file">
+                           accept="image/*" class="input-file">
 
-                <p v-if="isInitial">
-                    Drag your file(s) here to begin<br> or click to browse
-                </p>
-                <p v-if="isSaving">
-                    Uploading {{ fileCount }} files...
-                </p>
+                    <p v-if="isInitial">
+                        <!--Drag your photo(s) here to begin<br> or click to browse-->
+                        Glisser vos photo(s) ici pour démarrer<br> ou cliquer pour naviguer
+                    </p>
+                    <p v-if="isSaving">
+                        <!--Uploading {{ fileCount }} photo(s)...-->
+                        Envoi de {{ fileCount }} photo(s)...
+                    </p>
+                </article>
             </section>
+        </div> <!-- row 1-->
 
-            <progress-bar :percentage="uploadPercentage"/>
+        <progress-bar v-bind:percentage="uploadPercentage"/>
 
-            <section v-for="(file, key) in files" class="file-listing">
+        <!--<div class="row">-->
 
-                <div class="input-group col-sm-4">
+            <section v-for="(file, key) in files" class="row">
+
+                <article class="input-group col-4">
                     <div class="thumbnail">
                         <img src="" class="preview img-thumbnail" v-bind:ref="'preview'+parseInt( key )"/>
                         <div class="caption">
                             <label for="name">
                                 <input class="input-group-text" type="text" id="name" v-bind:value="file.nameText"/>
                             </label>
-                            <a class="btn btn-danger btn-sm" v-on:click="removeFile( key )">Remove</a>
+                            <a class="btn btn-danger btn-sm" v-on:click="removeFile( key )">Supprimer</a>
                         </div>
                     </div>
-                </div>
+                </article>
 
-                <div class="col-sm-8">
+                <article class="col-6">
 
+                    <fieldset>
+                        <div>
+                            <h3>Format</h3>
+                            <div class="form-check">
+                                <label class="form-check-label" v-bind:for="file.nameText + parseInt(key)">
+                                    <input class="form-check-input" type="radio"
+                                           v-bind:name="file.nameText + parseInt(key)"
+                                           value="format40" v-model="files[key].format" checked>
+                                    40 x 40 cm 15.8 x 15.8 inch
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label" v-bind:for="file.nameText + parseInt(key)">
+                                    <input class="form-check-input" type="radio"
+                                           v-bind:name="file.nameText + parseInt(key)"
+                                           value="format60" v-model="files[key].format">
+                                    60 x 60 cm 23.8 x 23.8 inch
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label" v-bind:for="file.nameText + parseInt(key)">
+                                    <input class="form-check-input" type="radio"
+                                           v-bind:name="file.nameText + parseInt(key)"
+                                           value="format100" v-model="files[key].format">
+                                    100 x 100 cm 39.7 x 39.7 inch
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label" v-bind:for="file.nameText + parseInt(key)">
+                                    <input class="form-check-input" type="radio"
+                                           v-bind:name="file.nameText + parseInt(key)"
+                                           value="surmesure" v-model="files[key].format">
+                                    Sur Mesure
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
 
-                </div>
+                    <fieldset>
+                        <div>
+                            <h3>finition</h3>
+                        </div>
+                    </fieldset>
+
+                </article>
 
             </section>
 
-            <section>
-                <a class="btn btn-success" v-on:click="submitFiles()" v-show="files.length > 0">Next</a>
-            </section>
-        </form>
-    </div>
+        <!--</div> &lt;!&ndash;row 2&ndash;&gt;-->
+
+        <section>
+            <a class="btn btn-success" v-on:click="submitFiles()" v-show="files.length > 0">Etape suivante</a>
+        </section>
+
+    </form>
 
 </template>
 
@@ -70,7 +121,6 @@
                 uploadedFiles: [],
                 uploadError: null,
                 currentStatus: null,
-                uploadFieldName: 'photos',
                 uploadPercentage: 0
             }
         },
@@ -103,6 +153,7 @@
 
                 for (let i = 0; i < fileList.length; i++) {
                     fileList[i].nameText = this.removeExtension(fileList[i].name);
+                    fileList[i].format = 'format40';
                     this.files.push(fileList[i]);
                 }
                 // Preview
@@ -160,6 +211,8 @@
             },
 
             submitFiles() {
+                console.log(this.files);
+
                 const vm = this;
                 this.currentStatus = STATUS_SAVING;
                 /*
@@ -238,9 +291,5 @@
         .input-group-text {
             height: 1.5em;
         }
-
-        /*img {*/
-        /*height: 100px;*/
-        /*}*/
     }
 </style>
