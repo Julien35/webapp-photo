@@ -30,7 +30,7 @@
                         <div class="caption">
                             <label for="name">
                                 Name :
-                                <input type="text" id="name" :value="file.name"/>
+                                <input type="text" id="name" v-bind:value="file.name"/>
                             </label>
                         </div>
                     </div>
@@ -147,6 +147,7 @@
 
             removeFile(key) {
                 this.files.splice(key, 1);
+                this.getImagePreviews();
             },
 
             submitFiles() {
