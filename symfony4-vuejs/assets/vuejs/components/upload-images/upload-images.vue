@@ -7,8 +7,8 @@
 
 
             <section class="dropbox">
-                <input type="file" multiple :name="uploadFieldName" :disabled="isSaving"
-                       @change="filesChange($event.target.name, $event.target.files);
+                <input type="file" multiple :disabled="isSaving"
+                       @change="filesChange($event.target.files);
                            fileCount = $event.target.files.length"
                        accept="image/*" class="input-file">
 
@@ -22,21 +22,24 @@
 
             <progress-bar :percentage="uploadPercentage"/>
 
-            <section v-for="(file, key) in files" class="col-md-4">
+            <section v-for="(file, key) in files" class="file-listing">
 
-                <div>
+                <div class="input-group col-sm-4">
                     <div class="thumbnail">
                         <img src="" class="preview img-thumbnail" v-bind:ref="'preview'+parseInt( key )"/>
                         <div class="caption">
                             <label for="name">
-                                Name :
-                                <input type="text" id="name" v-bind:value="file.name"/>
+                                <input class="input-group-text" type="text" id="name" v-bind:value="file.nameText"/>
                             </label>
+                            <a class="btn btn-danger btn-sm" v-on:click="removeFile( key )">Remove</a>
                         </div>
                     </div>
                 </div>
 
-                <a class="btn" v-on:click="removeFile( key )">Remove</a>
+                <div class="col-sm-8">
+
+
+                </div>
 
             </section>
 
@@ -95,17 +98,23 @@
                 this.images = [];
             },
 
-            filesChange(fieldName, fileList) {
+            filesChange(fileList) {
                 if (!fileList.length) return;
 
                 for (let i = 0; i < fileList.length; i++) {
+                    fileList[i].nameText = this.removeExtension(fileList[i].name);
                     this.files.push(fileList[i]);
-                    // Preview
-                    this.getImagePreviews();
                 }
+                // Preview
+                this.getImagePreviews();
+            },
+
+            removeExtension(filenameFull) {
+                return filenameFull.replace(/\.[^/.]+$/, "");
             },
 
             getImagePreviews() {
+                console.log(this.files);
                 /*
                   Iterate over all of the files and generate an image preview for each one.
                 */
@@ -223,13 +232,15 @@
     }
 
     .file-listing {
-        width: 400px;
         margin: auto;
-        padding: 10px;
+        padding: 1em;
         border-bottom: 1px solid #ddd;
+        .input-group-text {
+            height: 1.5em;
+        }
 
         /*img {*/
-            /*height: 100px;*/
+        /*height: 100px;*/
         /*}*/
     }
 </style>
