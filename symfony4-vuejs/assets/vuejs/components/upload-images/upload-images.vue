@@ -31,7 +31,7 @@
             <article class="col-lg-4 col-sm-5 col-12 input-group">
                 <div class="thumbnail">
                     <img src="" class="preview img-thumbnail" v-bind:ref="'preview'+parseInt( key )"/>
-                    <div class="caption d-flex justify-content-between">
+                    <div class="caption d-md-flex justify-content-md-between">
                         <div>
                             <label for="name">
                                 <input class="input-group-text" type="text" id="name" v-bind:value="file.nameText"/>
@@ -135,7 +135,7 @@
 
         </section>
 
-        <section>
+        <section class="text-center text-sm-right pt-5 pb-2">
             <a class="btn btn-success" v-on:click="submitFiles()" v-show="files.length > 0">Etape suivante</a>
         </section>
 
