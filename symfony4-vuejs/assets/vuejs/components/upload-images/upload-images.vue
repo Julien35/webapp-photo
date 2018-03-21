@@ -31,11 +31,15 @@
             <article class="col-lg-4 col-sm-5 col-12 input-group">
                 <div class="thumbnail">
                     <img src="" class="preview img-thumbnail" v-bind:ref="'preview'+parseInt( key )"/>
-                    <div class="caption d-flex justify-content-around">
-                        <label for="name">
-                            <input class="input-group-text" type="text" id="name" v-bind:value="file.nameText"/>
-                        </label>
-                        <a class="btn btn-danger btn-sm" v-on:click="removeFile( key )">Supprimer</a>
+                    <div class="caption d-flex justify-content-between">
+                        <div>
+                            <label for="name">
+                                <input class="input-group-text" type="text" id="name" v-bind:value="file.nameText"/>
+                            </label>
+                        </div>
+                        <div>
+                            <a class="btn btn-danger" v-on:click="removeFile( key )">Supprimer</a>
+                        </div>
                     </div>
                 </div>
             </article>
