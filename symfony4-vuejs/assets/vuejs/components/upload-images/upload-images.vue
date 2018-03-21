@@ -26,73 +26,110 @@
 
         <progress-bar v-bind:percentage="uploadPercentage"/>
 
-        <!--<div class="row">-->
+        <section class="row" v-for="(file, key) in files">
 
-            <section v-for="(file, key) in files" class="row">
-
-                <article class="input-group col-4">
-                    <div class="thumbnail">
-                        <img src="" class="preview img-thumbnail" v-bind:ref="'preview'+parseInt( key )"/>
-                        <div class="caption">
-                            <label for="name">
-                                <input class="input-group-text" type="text" id="name" v-bind:value="file.nameText"/>
-                            </label>
-                            <a class="btn btn-danger btn-sm" v-on:click="removeFile( key )">Supprimer</a>
-                        </div>
+            <article class="col-lg-4 col-sm-5 col-12 input-group">
+                <div class="thumbnail">
+                    <img src="" class="preview img-thumbnail" v-bind:ref="'preview'+parseInt( key )"/>
+                    <div class="caption d-flex justify-content-around">
+                        <label for="name">
+                            <input class="input-group-text" type="text" id="name" v-bind:value="file.nameText"/>
+                        </label>
+                        <a class="btn btn-danger btn-sm" v-on:click="removeFile( key )">Supprimer</a>
                     </div>
-                </article>
+                </div>
+            </article>
 
-                <article class="col-6">
+            <article class="col-lg-8 col-sm-7 col-12">
 
-                    <fieldset>
-                        <div>
-                            <h3>Format</h3>
-                            <div class="form-check">
-                                <label class="form-check-label" v-bind:for="file.nameText + parseInt(key)">
-                                    <input class="form-check-input" type="radio"
-                                           v-bind:name="file.nameText + parseInt(key)"
-                                           value="format40" v-model="files[key].format" checked>
-                                    40 x 40 cm 15.8 x 15.8 inch
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label" v-bind:for="file.nameText + parseInt(key)">
-                                    <input class="form-check-input" type="radio"
-                                           v-bind:name="file.nameText + parseInt(key)"
-                                           value="format60" v-model="files[key].format">
-                                    60 x 60 cm 23.8 x 23.8 inch
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label" v-bind:for="file.nameText + parseInt(key)">
-                                    <input class="form-check-input" type="radio"
-                                           v-bind:name="file.nameText + parseInt(key)"
-                                           value="format100" v-model="files[key].format">
-                                    100 x 100 cm 39.7 x 39.7 inch
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label" v-bind:for="file.nameText + parseInt(key)">
-                                    <input class="form-check-input" type="radio"
-                                           v-bind:name="file.nameText + parseInt(key)"
-                                           value="surmesure" v-model="files[key].format">
-                                    Sur Mesure
-                                </label>
-                            </div>
+                <div class="row">
+                    <!--format field-->
+                    <fieldset class="col-lg-8 col-md-8 col-sm-7 col-6">
+                        <h4>Format</h4>
+                        <div class="form-check">
+                            <label class="form-check-label" v-bind:for="file.format + parseInt(key)">
+                                <input class="form-check-input" type="radio"
+                                       v-bind:name="file.format + parseInt(key)"
+                                       value="format40" v-model="files[key].format" checked>
+                                40 x 40 cm 15.8 x 15.8 inch
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label" v-bind:for="file.format + parseInt(key)">
+                                <input class="form-check-input" type="radio"
+                                       v-bind:name="file.format + parseInt(key)"
+                                       value="format60" v-model="files[key].format">
+                                60 x 60 cm 23.8 x 23.8 inch
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label" v-bind:for="file.format + parseInt(key)">
+                                <input class="form-check-input" type="radio"
+                                       v-bind:name="file.format + parseInt(key)"
+                                       value="format100" v-model="files[key].format">
+                                100 x 100 cm 39.7 x 39.7 inch
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label" v-bind:for="file.format + parseInt(key)">
+                                <input class="form-check-input" type="radio"
+                                       v-bind:name="file.format + parseInt(key)"
+                                       value="surmesure" v-model="files[key].format">
+                                Sur Mesure
+                            </label>
                         </div>
                     </fieldset>
 
-                    <fieldset>
-                        <div>
-                            <h3>finition</h3>
+                    <!--finition field-->
+                    <fieldset class="col-lg-4 col-md-4 col-sm-5 col-6">
+                        <h4>Finition</h4>
+                        <div class="form-check">
+                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
+                                <input class="form-check-input" type="radio"
+                                       v-bind:name="file.finition + parseInt(key)"
+                                       value="finition1" v-model="files[key].finition" checked>
+                                Finition 1
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
+                                <input class="form-check-input" type="radio"
+                                       v-bind:name="file.finition + parseInt(key)"
+                                       value="finition2" v-model="files[key].finition">
+                                Finition 2
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
+                                <input class="form-check-input" type="radio"
+                                       v-bind:name="file.finition + parseInt(key)"
+                                       value="finition4" v-model="files[key].finition">
+                                Finition 3
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
+                                <input class="form-check-input" type="radio"
+                                       v-bind:name="file.finition + parseInt(key)"
+                                       value="finition4" v-model="files[key].finition">
+                                Finition 4
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
+                                <input class="form-check-input" type="radio"
+                                       v-bind:name="file.finition + parseInt(key)"
+                                       value="finition5" v-model="files[key].finition">
+                                Finition 5
+                            </label>
                         </div>
                     </fieldset>
 
-                </article>
+                </div>
 
-            </section>
+            </article>
 
-        <!--</div> &lt;!&ndash;row 2&ndash;&gt;-->
+        </section>
 
         <section>
             <a class="btn btn-success" v-on:click="submitFiles()" v-show="files.length > 0">Etape suivante</a>
@@ -154,6 +191,7 @@
                 for (let i = 0; i < fileList.length; i++) {
                     fileList[i].nameText = this.removeExtension(fileList[i].name);
                     fileList[i].format = 'format40';
+                    fileList[i].finition = 'finition1';
                     this.files.push(fileList[i]);
                 }
                 // Preview
@@ -281,15 +319,6 @@
             font-size: 1.2em;
             text-align: center;
             padding: 50px 0;
-        }
-    }
-
-    .file-listing {
-        margin: auto;
-        padding: 1em;
-        border-bottom: 1px solid #ddd;
-        .input-group-text {
-            height: 1.5em;
         }
     }
 </style>
