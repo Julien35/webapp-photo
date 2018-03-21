@@ -1,7 +1,7 @@
 <template>
 
-    <!--<form class="col-sm-12" enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">-->
-    <form enctype="multipart/form-data" novalidate>
+    <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
+        <!--<form enctype="multipart/form-data" novalidate>-->
 
         <div class="row">
             <section class="col">
@@ -24,7 +24,7 @@
             </section>
         </div> <!-- row 1-->
 
-        <progress-bar v-bind:percentage="uploadPercentage"/>
+        <progress-bar v-bind:percentage="uploadPercentage" class="mt-3 mb-3"/>
 
         <section class="row" v-for="(file, key) in files">
 
@@ -252,10 +252,9 @@
                 this.getImagePreviews();
             },
 
-            submitFiles() {
+            submitFiles: function () {
                 console.log(this.files);
 
-                const vm = this;
                 this.currentStatus = STATUS_SAVING;
                 /*
                   Initialize the form data
@@ -268,7 +267,6 @@
                 */
                 for (let i = 0; i < this.files.length; i++) {
                     let file = this.files[i];
-
                     formData.append('files[' + i + ']', file);
                 }
 
@@ -284,13 +282,15 @@
                             }.bind(this)
                         }
                     )
-                    .then(function () {
+                    .then(() => {
                         console.log('SUCCESS!!');
-                        vm.currentStatus = STATUS_SUCCESS;
+                        setTimeout(() => {
+                            this.currentStatus = STATUS_SUCCESS;
+                        }, 5000);
                     })
-                    .catch(function () {
+                    .catch(() => {
                         console.log('FAILURE!!');
-                        vm.currentStatus = STATUS_FAILED;
+                        this.currentStatus = STATUS_FAILED;
                     });
             },
 
