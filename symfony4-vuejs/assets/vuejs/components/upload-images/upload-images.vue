@@ -148,6 +148,9 @@
     import * as axios from 'axios';
     import ProgressBar from '../progress-bar'
 
+    axios.defaults.baseURL = 'http://127.0.0.1:8001';
+    // axio.defaults.headers
+
     const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 
     export default {
@@ -271,7 +274,7 @@
                 }
 
                 axios
-                    .post('http://127.0.0.1:8000/photos/upload',
+                    .post('/photo/upload',
                         formData,
                         {
                             headers: {
@@ -282,14 +285,14 @@
                             }.bind(this)
                         }
                     )
-                    .then(() => {
-                        console.log('SUCCESS!!');
+                    .then((response) => {
+                        console.log('SUCCESS!!', response);
                         setTimeout(() => {
                             this.currentStatus = STATUS_SUCCESS;
                         }, 2000);
                     })
-                    .catch(() => {
-                        console.log('FAILURE!!');
+                    .catch((response) => {
+                        console.log('FAILURE!!', response);
                         this.currentStatus = STATUS_FAILED;
                     });
             },
