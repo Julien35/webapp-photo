@@ -17,7 +17,7 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/photos/upload")
+     * @Route("/api/photo/upload")
      * @return JsonResponse
      */
     public function upload()

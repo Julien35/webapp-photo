@@ -148,8 +148,7 @@
     import * as axios from 'axios';
     import ProgressBar from '../progress-bar'
 
-    axios.defaults.baseURL = 'http://127.0.0.1:8001';
-    // axio.defaults.headers
+    axios.defaults.baseURL = 'http://127.0.0.1:8000/api';
 
     const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 
