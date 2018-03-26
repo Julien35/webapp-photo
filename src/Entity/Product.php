@@ -52,6 +52,23 @@ class Product
     private $updatedAt;
 
     /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     *
+     * @var string
+     */
+    private $format;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     *
+     * @var string
+     */
+    private $finition;
+
+
+
+
+    /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the  update. If this
      * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
@@ -94,5 +111,37 @@ class Product
     public function getImageSize(): ?int
     {
         return $this->imageSize;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormat(): ?string
+    {
+        return $this->format;
+    }
+
+    /**
+     * @param string $format
+     */
+    public function setFormat(?string $format): void
+    {
+        $this->format = $format;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFinition(): ?string
+    {
+        return $this->finition;
+    }
+
+    /**
+     * @param string $finition
+     */
+    public function setFinition(?string $finition): void
+    {
+        $this->finition = $finition;
     }
 }

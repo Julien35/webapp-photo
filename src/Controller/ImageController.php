@@ -6,12 +6,14 @@ use App\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Form\Forms;
-use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 
 class ImageController extends Controller
 {
@@ -26,8 +28,8 @@ class ImageController extends Controller
 
 
     /**
-     * @Route("api/image/upload", name="image-by-slug")
-     * @Method({"POST"})
+     * @Route("api/image/upload", name="image-upload")
+     * @Method({"GET", "POST"})
      *
      * @param Request $request
      *
@@ -35,39 +37,49 @@ class ImageController extends Controller
      */
     public function upload(Request $request)
     {
-        $file= $request->files->get('file');
+
+        $data = json_decode($request->getContent(), true);
+
+        $files = $request->files->get('files');
         $status = array('status' => "success", "fileUploaded" => false);
 
-        if ($file instanceof UploadedFile && !is_null($file)) {
-            // generate a random name for the file but keep the extension
-//            $filename = uniqid() . "." . $file->getClientOriginalExtension();
-//            $path = "images/products";
-//            $file->move($path, $filename); // move the file to a path
-//            $status = array('status' => "success", "fileUploaded" => true);
+        $file = $files[0];
 
-            // use of vich bundle
-            $product = new Product();
+//        if ($file instanceof UploadedFile && !is_null($file)) {
 
-            $formFactory = Forms::createFormFactoryBuilder()
-                ->addExtension(new HttpFoundationExtension())
-                ->getFormFactory();
+        // create Form
+        $product = new Product();
+//        $product->setImageFile($file);
+//        $product->setImageName($file->getClientOriginalName());
+//        $product->setForm($file->getClientOriginalName());
 
-            $form = $formFactory->createBuilder()
-                ->add('title', 'text')
-                ->add('imageFile', 'file')
-                ->add('save', 'submit')
-                ->getForm();
+        $form = $this->createFormBuilder($product)
+//            ->add('imageFile', FileType::class)
+//            ->add('imageName', TextType::class)
+//            ->add('format', TextType::class)
+//            ->add('finition', TextType::class)
+//            ->add('submit', SubmitType::class)
+            ->getForm();
 
-            $form->handleRequest($request);
+//        $form->
 
-            if ($form->isValid()) {
-                // On l'enregistre notre objet $advert dans la base de données, par exemple
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($product);
-                $em->flush();
-            }
+//        $form->handleRequest($request);
+        $form->submit($data);
 
+//            if submit & valid => store information to bdd, image is copied by vichuploader
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
+
+//                return new Response('<html><body>Upload ok</body></html>');
+            $status = array('status' => "success", "fileUploaded" => true);
         }
+
+//        }
+
+//        return $this->render('test-form.html.twig',
+//            ['form' => $form->createView()]);
 
         return new JsonResponse($status);
     }

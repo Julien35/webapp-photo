@@ -7,7 +7,7 @@
             <section class="col">
                 <h2>Photos à télécharger</h2>
                 <article class="dropbox">
-                    <input type="file" multiple :disabled="isSaving"
+                    <input name="files" type="file" multiple :disabled="isSaving"
                            @change="filesChange($event.target.files);
                            fileCount = $event.target.files.length"
                            accept="image/*" class="input-file">
@@ -261,24 +261,41 @@
                 /*
                   Initialize the form data
                 */
-                let formData = new FormData();
+                // let formData = new FormData();
+                //
+                // /*
+                //   Iteate over any file sent over appending the files
+                //   to the form data.
+                // */
+                // for (let i = 0; i < this.files.length; i++) {
+                //     let file = this.files[i];
+                //     formData.append('files[' + i + ']', file);
+                //     formData.append('imageName', file.name);
+                // }
 
-                /*
-                  Iteate over any file sent over appending the files
-                  to the form data.
-                */
-                for (let i = 0; i < this.files.length; i++) {
-                    let file = this.files[i];
-                    formData.append('files[' + i + ']', file);
-                }
+
+                // debugger;
+
+                var formElement = document.querySelector("form");
+                var formData = new FormData(formElement);
+                var request = new XMLHttpRequest();
+
+                // debugger;
+
+                // request.open("POST", "http://localhost:8000/api/image/upload");
+                // formData.append("imageName", 'imageName test');
+                // formData.append('files', this.files);
+                // request.send(formData);
+
+                // debugger;
 
                 axios
-                    .post('/photo/upload',
+                    .post('/image/upload',
                         formData,
                         {
-                            headers: {
-                                'Content-Type': 'multipart/form-data'
-                            },
+                            // headers: {
+                            //     'Content-Type': 'multipart/form-data'
+                            // },
                             onUploadProgress: function (progressEvent) {
                                 this.uploadPercentage = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total));
                             }.bind(this)
