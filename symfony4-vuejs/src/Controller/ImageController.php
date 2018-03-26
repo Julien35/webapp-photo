@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\Entity\Product;
+use App\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,14 +16,24 @@ use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 class ImageController extends Controller
 {
     /**
-     * @Route("/image/upload", name="image-by-slug")
+     * @Route("/api/photo/upload")
+     * @return JsonResponse
+     */
+    public function uploadTest()
+    {
+        return $this->json('Hello photo');
+    }
+
+
+    /**
+     * @Route("api/image/upload", name="image-by-slug")
      * @Method({"POST"})
      *
      * @param Request $request
      *
      * @return Response
      */
-    public function uploadAction(Request $request)
+    public function upload(Request $request)
     {
         $file= $request->files->get('file');
         $status = array('status' => "success", "fileUploaded" => false);

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -19,7 +19,7 @@ class Product
      */
     private $id;
 
-    // ..... other fields
+    // ... other fields
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
@@ -59,66 +59,39 @@ class Product
      * during Doctrine hydration.
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
-     *
-     * @return Product
      */
-    public function setImageFile(File $image = null)
+    public function setImageFile(?File $image = null): void
     {
         $this->imageFile = $image;
 
-        if ($image) {
+        if (null !== $image) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();
         }
-
-        return $this;
     }
 
-    /**
-     * @return File|null
-     */
-    public function getImageFile()
+    public function getImageFile(): ?File
     {
         return $this->imageFile;
     }
 
-    /**
-     * @param string $imageName
-     *
-     * @return Product
-     */
-    public function setImageName($imageName)
+    public function setImageName(?string $imageName): void
     {
         $this->imageName = $imageName;
-
-        return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getImageName()
+    public function getImageName(): ?string
     {
         return $this->imageName;
     }
 
-    /**
-     * @param integer $imageSize
-     *
-     * @return Product
-     */
-    public function setImageSize($imageSize)
+    public function setImageSize(?int $imageSize): void
     {
         $this->imageSize = $imageSize;
-
-        return $this;
     }
 
-    /**
-     * @return integer|null
-     */
-    public function getImageSize()
+    public function getImageSize(): ?int
     {
         return $this->imageSize;
     }

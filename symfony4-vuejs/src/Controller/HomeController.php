@@ -15,13 +15,4 @@ class HomeController extends Controller
     {
         return $this->render('index.html.twig');
     }
-
-    /**
-     * @Route("/api/photo/upload")
-     * @return JsonResponse
-     */
-    public function upload()
-    {
-        return $this->json('Hello photo');
-    }
 }
