@@ -37,51 +37,42 @@ class ImageController extends Controller
      */
     public function upload(Request $request)
     {
-
-        $data = json_decode($request->getContent(), true);
-
-        $files = $request->files->get('files');
         $status = array('status' => "success", "fileUploaded" => false);
 
-        $file = $files[0];
+        /** @var array<UploadedFile> $photosFiles */
+        $photosFiles = $request->files->get('photosFiles');
+        $photosData = $request->request->get('photosData');
 
-//        if ($file instanceof UploadedFile && !is_null($file)) {
+        foreach ($photosFiles as $key => $file) {
+            $data = json_decode($photosData[$key]);
 
-        // create Form
-        $product = new Product();
-//        $product->setImageFile($file);
-//        $product->setImageName($file->getClientOriginalName());
-//        $product->setForm($file->getClientOriginalName());
+            if ($file instanceof UploadedFile && !is_null($file) && !is_null($data)) {
+                $this->uploadFile($file, $data);
 
-        $form = $this->createFormBuilder($product)
-//            ->add('imageFile', FileType::class)
-//            ->add('imageName', TextType::class)
-//            ->add('format', TextType::class)
-//            ->add('finition', TextType::class)
-//            ->add('submit', SubmitType::class)
-            ->getForm();
-
-//        $form->
-
-//        $form->handleRequest($request);
-        $form->submit($data);
-
-//            if submit & valid => store information to bdd, image is copied by vichuploader
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($product);
-            $em->flush();
-
-//                return new Response('<html><body>Upload ok</body></html>');
-            $status = array('status' => "success", "fileUploaded" => true);
+                $status = array('status' => "success", "fileUploaded" => true);
+            }
         }
 
-//        }
-
-//        return $this->render('test-form.html.twig',
-//            ['form' => $form->createView()]);
-
         return new JsonResponse($status);
+    }
+
+    /**
+     * @param UploadedFile $file
+     * @param $data
+     */
+    private function uploadFile($file, $data)
+    {
+        $product = new Product();
+        $product->setImageFile($file);
+        $product->setImageName($data->nameText);
+        $product->setImageSize($file->getSize());
+        $product->setFormat($data->format);
+        $product->setFinition($data->finition);
+
+//            store information to bdd, image is copied by vichuploader
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($product);
+        $em->flush();
     }
 
 }

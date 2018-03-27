@@ -7,7 +7,7 @@
             <section class="col">
                 <h2>Photos à télécharger</h2>
                 <article class="dropbox">
-                    <input name="files" type="file" multiple :disabled="isSaving"
+                    <input name="photosDropZone[]" type="file" multiple :disabled="isSaving"
                            @change="filesChange($event.target.files);
                            fileCount = $event.target.files.length"
                            accept="image/*" class="input-file">
@@ -34,7 +34,8 @@
                     <div class="caption d-md-flex justify-content-md-between">
                         <div>
                             <label for="name">
-                                <input class="input-group-text" type="text" id="name" v-bind:value="file.nameText"/>
+                                <input class="input-group-text" type="text" id="name"
+                                       v-bind:name="file.nameText + '_' + parseInt(key)" v-bind:value="file.nameText"/>
                             </label>
                         </div>
                         <div>
@@ -53,7 +54,7 @@
                         <div class="form-check">
                             <label class="form-check-label" v-bind:for="file.format + parseInt(key)">
                                 <input class="form-check-input" type="radio"
-                                       v-bind:name="file.format + parseInt(key)"
+                                       v-bind:name="file.format + '_' + parseInt(key)"
                                        value="format40" v-model="files[key].format" checked>
                                 40 x 40 cm 15.8 x 15.8 inch
                             </label>
@@ -61,7 +62,7 @@
                         <div class="form-check">
                             <label class="form-check-label" v-bind:for="file.format + parseInt(key)">
                                 <input class="form-check-input" type="radio"
-                                       v-bind:name="file.format + parseInt(key)"
+                                       v-bind:name="file.format + '_' + parseInt(key)"
                                        value="format60" v-model="files[key].format">
                                 60 x 60 cm 23.8 x 23.8 inch
                             </label>
@@ -69,7 +70,7 @@
                         <div class="form-check">
                             <label class="form-check-label" v-bind:for="file.format + parseInt(key)">
                                 <input class="form-check-input" type="radio"
-                                       v-bind:name="file.format + parseInt(key)"
+                                       v-bind:name="file.format + '_' + parseInt(key)"
                                        value="format100" v-model="files[key].format">
                                 100 x 100 cm 39.7 x 39.7 inch
                             </label>
@@ -77,7 +78,7 @@
                         <div class="form-check">
                             <label class="form-check-label" v-bind:for="file.format + parseInt(key)">
                                 <input class="form-check-input" type="radio"
-                                       v-bind:name="file.format + parseInt(key)"
+                                       v-bind:name="file.format + '_' + parseInt(key)"
                                        value="surmesure" v-model="files[key].format">
                                 Sur Mesure
                             </label>
@@ -90,7 +91,7 @@
                         <div class="form-check">
                             <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
                                 <input class="form-check-input" type="radio"
-                                       v-bind:name="file.finition + parseInt(key)"
+                                       v-bind:name="file.finition + '_' + parseInt(key)"
                                        value="finition1" v-model="files[key].finition" checked>
                                 Finition 1
                             </label>
@@ -98,7 +99,7 @@
                         <div class="form-check">
                             <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
                                 <input class="form-check-input" type="radio"
-                                       v-bind:name="file.finition + parseInt(key)"
+                                       v-bind:name="file.finition + '_' + parseInt(key)"
                                        value="finition2" v-model="files[key].finition">
                                 Finition 2
                             </label>
@@ -106,7 +107,7 @@
                         <div class="form-check">
                             <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
                                 <input class="form-check-input" type="radio"
-                                       v-bind:name="file.finition + parseInt(key)"
+                                       v-bind:name="file.finition + '_' + parseInt(key)"
                                        value="finition4" v-model="files[key].finition">
                                 Finition 3
                             </label>
@@ -114,7 +115,7 @@
                         <div class="form-check">
                             <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
                                 <input class="form-check-input" type="radio"
-                                       v-bind:name="file.finition + parseInt(key)"
+                                       v-bind:name="file.finition + '_' + parseInt(key)"
                                        value="finition4" v-model="files[key].finition">
                                 Finition 4
                             </label>
@@ -122,7 +123,7 @@
                         <div class="form-check">
                             <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
                                 <input class="form-check-input" type="radio"
-                                       v-bind:name="file.finition + parseInt(key)"
+                                       v-bind:name="file.finition + '_' + parseInt(key)"
                                        value="finition5" v-model="files[key].finition">
                                 Finition 5
                             </label>
@@ -261,41 +262,27 @@
                 /*
                   Initialize the form data
                 */
-                // let formData = new FormData();
-                //
-                // /*
-                //   Iteate over any file sent over appending the files
-                //   to the form data.
-                // */
-                // for (let i = 0; i < this.files.length; i++) {
-                //     let file = this.files[i];
-                //     formData.append('files[' + i + ']', file);
-                //     formData.append('imageName', file.name);
-                // }
+                let formData = new FormData();
 
+                /*
+                  Iteate over any file sent over appending the files
+                  to the form data.
+                */
+                for (let i = 0; i < this.files.length; i++) {
+                    let file = this.files[i];
+                    let fileData = JSON.stringify(file);
+                    formData.append('photosFiles[' + i + ']', file);
+                    formData.append('photosData[' + i + ']', fileData);
 
-                // debugger;
-
-                var formElement = document.querySelector("form");
-                var formData = new FormData(formElement);
-                var request = new XMLHttpRequest();
-
-                // debugger;
-
-                // request.open("POST", "http://localhost:8000/api/image/upload");
-                // formData.append("imageName", 'imageName test');
-                // formData.append('files', this.files);
-                // request.send(formData);
-
-                // debugger;
+                }
 
                 axios
                     .post('/image/upload',
                         formData,
                         {
-                            // headers: {
-                            //     'Content-Type': 'multipart/form-data'
-                            // },
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            },
                             onUploadProgress: function (progressEvent) {
                                 this.uploadPercentage = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total));
                             }.bind(this)
