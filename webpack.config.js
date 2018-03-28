@@ -42,6 +42,7 @@ Encore
         'bootstrap',
 
         'bootstrap/scss/bootstrap.scss',
+        'font-awesome/scss/font-awesome.scss'
     ])
 ;
 

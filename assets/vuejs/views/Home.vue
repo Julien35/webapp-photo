@@ -8,14 +8,13 @@
             </div>
         </section>
 
-        <section class="container"><upload-images /></section>
+        <wizard-form class="container"/>
 
     </div>
 </template>
 
 <script>
-
-    import UploadImages from '../components/upload-images/upload-images'
+    import WizardForm from '../components/WizardForm'
 
     export default {
         name: 'home',
@@ -27,7 +26,7 @@
         },
 
         components: {
-            UploadImages
+            WizardForm
         }
     }
 </script>
