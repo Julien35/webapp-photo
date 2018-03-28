@@ -35,7 +35,8 @@
                         <div>
                             <label for="name">
                                 <input class="input-group-text" type="text" id="name"
-                                       v-bind:name="file.nameText + '_' + parseInt(key)" v-bind:value="file.nameText"/>
+                                       v-bind:name="file.nameText + '_' + parseInt(key)"
+                                        v-model="files[key].nameText"/>
                             </label>
                         </div>
                         <div>
@@ -256,8 +257,6 @@
             },
 
             submitFiles: function () {
-                console.log(this.files);
-
                 this.currentStatus = STATUS_SAVING;
                 /*
                   Initialize the form data
