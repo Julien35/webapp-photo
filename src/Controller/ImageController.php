@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\PhotoUploadService;
+use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -54,8 +55,11 @@ class ImageController extends Controller
             $data = json_decode($photosData[$key]);
 
             if ($file instanceof UploadedFile && !is_null($file) && !is_null($data)) {
-                $this->photoUploadService->uploadFile($file, $data);
-
+                try {
+                    $this->photoUploadService->uploadFile($file, $data);
+                } catch (ORMException $e) {
+                    return new JsonResponse($status);
+                }
                 $status = array('status' => "success", "fileUploaded" => true);
             }
         }
