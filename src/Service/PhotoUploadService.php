@@ -25,7 +25,7 @@ class PhotoUploadService
     {
         $product = new Product();
         $product->setImageFile($file);
-        $product->setImageName($data->nameText);
+        $product->setImageNameText($data->nameText);
         $product->setImageSize($file->getSize());
         $product->setFormat($data->format);
         $product->setFinition($data->finition);

@@ -21,8 +21,6 @@ class Product
      */
     private $id;
 
-    // ... other fields
-
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      *
@@ -38,6 +36,13 @@ class Product
      * @var string
      */
     private $imageName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @var string
+     */
+    private $imageNameText;
 
     /**
      * @ORM\Column(type="integer")
@@ -108,6 +113,22 @@ class Product
     public function setImageSize(?int $imageSize): void
     {
         $this->imageSize = $imageSize;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageNameText(): ?string
+    {
+        return $this->imageNameText;
+    }
+
+    /**
+     * @param string $imageNameText
+     */
+    public function setImageNameText(?string $imageNameText): void
+    {
+        $this->imageNameText = $imageNameText;
     }
 
     public function getImageSize(): ?int
