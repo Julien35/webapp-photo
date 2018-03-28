@@ -5,7 +5,7 @@ import About from './views/About'
 import Contact from './views/Contact'
 import Cart from './views/Cart'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
     routes: [

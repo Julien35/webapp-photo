@@ -147,10 +147,8 @@
 
 <script>
 
-    import * as axios from 'axios';
+    import {HTTP} from '../../http-common';
     import ProgressBar from '../progress-bar'
-
-    axios.defaults.baseURL = 'http://localhost:8000/api';
 
     const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 
@@ -275,7 +273,7 @@
 
                 }
 
-                axios
+                HTTP
                     .post('/image/upload',
                         formData,
                         {
