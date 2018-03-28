@@ -1,6 +1,6 @@
-# symfony4-vuejs-webpack
+# WebAppPhoto
 
-#### Vuejs integration in Symfony 4
+#### Vuejs / Symfony 4
 
 ### Prerequisites
 * composer
@@ -15,6 +15,3 @@
 Launch javascript server, symfony server
 * ```$ yarn dev or dev-server-hot for HMR```
 * ```$ bin/console server:run```
-
-##### sources
-* https://github.com/symfony/webpack-encore/tree/master/fixtures/vuejs
