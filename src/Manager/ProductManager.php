@@ -19,10 +19,10 @@ class ProductManager
 
     /**
      * @param Product $product
+     * @throws \Doctrine\ORM\ORMException
      */
     public function save(Product $product)
     {
         $this->productRepository->save($product);
-
     }
 }

@@ -29,11 +29,10 @@ services:
 
     App\Service\PhotoUploadService:
         autowire: true
-        # not required, will help in our example
         public: true
 
     App\Manager\ProductManager:
         autowire: true
 
-#    App\Repository\ProductRepository:
-#        autowire: true
+    App\Repository\ProductRepository:
+        autowire: true

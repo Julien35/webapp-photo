@@ -19,6 +19,7 @@ class PhotoUploadService
     /**
      * @param UploadedFile $file
      * @param $data
+     * @throws \Doctrine\ORM\ORMException
      */
     public function uploadFile($file, $data)
     {
