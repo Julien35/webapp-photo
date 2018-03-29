@@ -1,6 +1,6 @@
 <template>
 
-    <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
+    <div v-if="isInitial || isSaving">
         <!--<form enctype="multipart/form-data" novalidate>-->
 
         <div class="row">
@@ -36,7 +36,7 @@
                             <label for="name">
                                 <input class="input-group-text" type="text" id="name"
                                        v-bind:name="file.nameText + '_' + parseInt(key)"
-                                        v-model="files[key].nameText"/>
+                                       v-model="files[key].nameText"/>
                             </label>
                         </div>
                         <div>
@@ -141,7 +141,7 @@
             <a class="btn btn-success" v-on:click="submitFiles()" v-show="files.length > 0">Etape suivante</a>
         </section>
 
-    </form>
+    </div>
 
 </template>
 
@@ -157,7 +157,6 @@
         components: {
             ProgressBar
         },
-
         data() {
             return {
                 files: [],

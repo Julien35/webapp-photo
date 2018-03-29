@@ -1,20 +1,15 @@
 <template>
     <div class="home">
 
-        <section class="container">
-            <div class="jumbotron-fluid">
-                <h2>{{ title }}</h2>
-                <p>Plein de photos à vendre :) (Mettre un texte de présentation)</p>
-            </div>
-        </section>
-
-        <wizard-form class="container"/>
+        <jumbotron v-bind:jumbotron-tile="title" class="container"/>
+        <upload-wizard-form class="container"/>
 
     </div>
 </template>
 
 <script>
-    import WizardForm from '../components/WizardForm'
+    import UploadWizardForm from '../components/UploadWizardForm'
+    import Jumbotron from '../components/Jumbotron'
 
     export default {
         name: 'home',
@@ -26,7 +21,8 @@
         },
 
         components: {
-            WizardForm
+            UploadWizardForm,
+            Jumbotron
         }
     }
 </script>
