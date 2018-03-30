@@ -40,9 +40,17 @@ Encore
         'jquery',
         'popper.js',
         'bootstrap',
+        // '@fortawesome/fontawesome',
+        // '@fortawesome/vue-fontawesome',
+        // '@fortawesome/fontawesome-free-brands',
+        // '@fortawesome/fontawesome-free-solid',
+        // '@fortawesome/fontawesome-free-webfonts',
 
         'bootstrap/scss/bootstrap.scss',
-        'font-awesome/scss/font-awesome.scss'
+        '@fortawesome/fontawesome-free-webfonts/css/fa-solid.css',
+        '@fortawesome/fontawesome-free-webfonts/css/fa-regular.css',
+        '@fortawesome/fontawesome-free-webfonts/css/fa-brands.css',
+        '@fortawesome/fontawesome-free-webfonts/css/fontawesome.css',
     ])
 ;
 

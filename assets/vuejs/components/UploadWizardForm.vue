@@ -5,8 +5,7 @@
                  next-button-text="Etape suivante" back-button-text="Précédent"
                  finish-button-text="Paiement">
 
-
-        <tab-content title="Photos à télécharger" icon="fa fa-user-o" :before-change="isPhotos">
+        <tab-content title="Photos à télécharger" icon="far fa-images" :before-change="isPhotos">
 
             <div v-if="isInitial || isSaving">
 
@@ -149,7 +148,7 @@
         </tab-content>
 
 
-        <tab-content title="Adresse" icon="fa fa-cogs">
+        <tab-content title="Adresse" icon="far fa-address-card">
 
             <div class="form-group row">
                 <label for="name" class="col-md-4 d-sm-none d-md-block d-none col-form-label">Nom : </label>
@@ -233,12 +232,22 @@
 
         </tab-content>
 
+        <tab-content title="Commande" icon="fas fa-shopping-cart">
+
+            Récapitulatif de commande
+
+            <!--todo: make table-->
+            <p v-for="file in files">
+                {{file.name}}</p>
+
+            <p>{{registration}}</p>
+
+        </tab-content>
+
 
         <tab-content title="Paiement" icon="fa fa-check">
 
             formulaire de paiement
-
-            {{registration}}
 
         </tab-content>
 
@@ -248,8 +257,10 @@
 
 <script>
 
-    import {FormWizard, TabContent, WizardStep} from 'vue-form-wizard'
+    import {FormWizard, TabContent} from 'vue-form-wizard'
     import 'vue-form-wizard/src/assets/wizard.scss'
+
+
 
     import {HTTP} from '../http-common';
     import ProgressBar from './progress-bar'
@@ -261,7 +272,6 @@
         components: {
             FormWizard,
             TabContent,
-            WizardStep,
             ProgressBar
         },
 
