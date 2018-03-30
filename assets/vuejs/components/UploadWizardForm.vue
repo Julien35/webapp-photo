@@ -6,7 +6,7 @@
                  finish-button-text="Paiement">
 
 
-        <tab-content title="Photos à télécharger" icon="fa fa-user-o">
+        <tab-content title="Photos à télécharger" icon="fa fa-user-o" :before-change="isPhotos">
 
             <div v-if="isInitial || isSaving">
 
@@ -15,7 +15,7 @@
                         <h2>Photos à télécharger</h2>
                         <article class="dropbox">
                             <input name="photosDropZone[]" type="file" multiple :disabled="isSaving"
-                                   @change="filesChange($event.target.files);
+                                   @change="filesChange($event.target.files)
                            fileCount = $event.target.files.length"
                                    accept="image/*" class="input-file">
 
@@ -41,7 +41,7 @@
                             <div class="caption d-md-flex justify-content-md-between">
                                 <div>
                                     <label for="name">
-                                        <input class="input-group-text" type="text" id="name"
+                                        <input class="input-group-text" type="text" id="nameText"
                                                v-bind:name="file.nameText + '_' + parseInt(key)"
                                                v-model="files[key].nameText"/>
                                     </label>
@@ -151,11 +151,84 @@
 
         <tab-content title="Adresse" icon="fa fa-cogs">
 
-            <div>
-                <label>
-                    Adresse :
-                    <input type="text" name="address" v-model="formValues.address"/>
-                </label>
+            <div class="form-group row">
+                <label for="name" class="col-md-4 d-sm-none d-md-block d-none col-form-label">Nom : </label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="name" placeholder="Nom"
+                           v-model="registration.name">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="firstname" class="col-md-4 d-sm-none d-md-block d-none col-form-label">Prénom : </label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="firstname" placeholder="Prénom"
+                           v-model="registration.firstname">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="address1" class="col-md-4 d-sm-none d-md-block d-none col-form-label">Adresse 1 : </label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="address1" placeholder="Adresse 1"
+                           v-model="registration.address1">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="address2" class="col-md-4 d-sm-none d-md-block d-none col-form-label">Adresse 2 : </label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="address2" placeholder="Adresse 2"
+                           v-model="registration.address2">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="postal" class="col-md-4 d-sm-none d-md-block d-none col-form-label">Code Postal : </label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control" id="postal" placeholder="Code Postal"
+                           v-model="registration.postal">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="city" class="col-md-4 d-sm-none d-md-block d-none col-form-label">Ville : </label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="city" placeholder="Ville"
+                           v-model="registration.city">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="state" class="col-md-4 d-sm-none d-md-block d-none col-form-label">Etat / Département : </label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="state" placeholder="Etat / Département"
+                           v-model="registration.state">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="country" class="col-md-4 d-sm-none d-md-block d-none col-form-label">Pays : </label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="country" placeholder="Pays"
+                           v-model="registration.country">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="phone" class="col-md-4 d-sm-none d-md-block d-none col-form-label">Téléphone : </label>
+                <div class="col-md-8">
+                    <input type="tel" class="form-control" id="phone" placeholder="Téléphone : "
+                           v-model="registration.phone">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="email" class="col-md-4 d-sm-none d-md-block d-none col-form-label">E-mail : </label>
+                <div class="col-md-8">
+                    <input type="email" class="form-control" id="email" placeholder="E-mail"
+                           v-model="registration.email">
+                </div>
             </div>
 
         </tab-content>
@@ -164,6 +237,8 @@
         <tab-content title="Paiement" icon="fa fa-check">
 
             formulaire de paiement
+
+            {{registration}}
 
         </tab-content>
 
@@ -194,26 +269,23 @@
             return {
                 step: 1,
                 files: [],
+                registration: {
+                    name: null,
+                    firstname: null,
+                    address1: null,
+                    address2: null,
+                    postal: null,
+                    city: null,
+                    state: null,
+                    country: null,
+                    phone: null,
+                    email: null
+                },
                 uploadedFiles: [],
                 uploadError: null,
                 currentStatus: null,
                 uploadPercentage: 0,
                 loadingWizard: false,
-
-
-                formValues: {
-                    files: [],
-                    name: '',
-                    address: ''
-                },
-
-                registration: {
-                    name: null,
-                    email: null,
-                    street: null,
-                    city: null,
-                    state: null
-                }
             }
         },
         computed: {
@@ -231,6 +303,12 @@
             }
         },
         methods: {
+            isPhotos: function () {
+                // for test
+                return true;
+                return this.files.length > 0;
+            },
+
             onComplete: function () {
                 console.log('oncomplete');
                 // Envoyer les photos et l'adresse dans le backend
@@ -268,7 +346,6 @@
             },
 
             getImagePreviews() {
-                console.log(this.files);
                 /*
                   Iterate over all of the files and generate an image preview for each one.
                 */
