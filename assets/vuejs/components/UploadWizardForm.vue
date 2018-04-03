@@ -236,7 +236,7 @@
 
             Récapitulatif de commande
 
-            <!--todo: make table-->
+            <!--todo: make html table-->
             <p v-for="file in files">
                 {{file.name}}</p>
 
