@@ -1,14 +1,12 @@
 <template>
-
     <div v-if="isInitial || isSaving">
-        <!--<form enctype="multipart/form-data" novalidate>-->
 
         <div class="row">
             <section class="col">
                 <h2>Photos à télécharger</h2>
                 <article class="dropbox">
                     <input name="photosDropZone[]" type="file" multiple :disabled="isSaving"
-                           @change="filesChange($event.target.files);
+                           @change="filesChange($event.target.files)
                            fileCount = $event.target.files.length"
                            accept="image/*" class="input-file">
 
@@ -33,8 +31,8 @@
                     <img src="" class="preview img-thumbnail" v-bind:ref="'preview'+parseInt( key )"/>
                     <div class="caption d-md-flex justify-content-md-between">
                         <div>
-                            <label for="name">
-                                <input class="input-group-text" type="text" id="name"
+                            <label v-bind:for="file.nameText + '_' + parseInt(key)">
+                                <input class="input-group-text" type="text" id="nameText"
                                        v-bind:name="file.nameText + '_' + parseInt(key)"
                                        v-model="files[key].nameText"/>
                             </label>
@@ -137,35 +135,47 @@
 
         </section>
 
-        <section class="text-center text-sm-right pt-5 pb-2">
-            <a class="btn btn-success" v-on:click="submitFiles()" v-show="files.length > 0">Etape suivante</a>
-        </section>
-
     </div>
 
 </template>
 
 <script>
-
-    import {HTTP} from '../http-common';
     import ProgressBar from './progress-bar'
 
     const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 
     export default {
-        name: 'UploadImages',
-        components: {
+        name: 'UploadImage',
+        components: {ProgressBar},
+        component: {
             ProgressBar
+        },
+        props: {
+            currentStatus: {
+                type: Number,
+                required: true
+            }
         },
         data() {
             return {
+                step: 1,
                 files: [],
                 uploadedFiles: [],
                 uploadError: null,
-                currentStatus: null,
-                uploadPercentage: 0
+                uploadPercentage: 0,
+                loadingWizard: false,
             }
         },
+
+        created() {
+            // this.$eventBus.$on('change-name', this.changeName);
+            // this.$eventBus.$on('change-files', this.changefile);
+        },
+
+        beforeDestroy() {
+            // this.$eventBus.$off('change-name');
+        },
+
         computed: {
             isInitial() {
                 return this.currentStatus === STATUS_INITIAL;
@@ -183,7 +193,7 @@
         methods: {
             reset() {
                 // reset form to initial state
-                this.currentStatus = STATUS_INITIAL;
+                // this.currentStatus = STATUS_INITIAL;
                 this.uploadedFiles = [];
                 this.uploadError = null;
                 this.files = [];
@@ -199,6 +209,10 @@
                     fileList[i].finition = 'finition1';
                     this.files.push(fileList[i]);
                 }
+
+                // emit data files to EventBus
+                this.$eventBus.$emit('change-files', this.files);
+
                 // Preview
                 this.getImagePreviews();
             },
@@ -208,7 +222,6 @@
             },
 
             getImagePreviews() {
-                console.log(this.files);
                 /*
                   Iterate over all of the files and generate an image preview for each one.
                 */
@@ -250,57 +263,16 @@
 
             removeFile(key) {
                 this.files.splice(key, 1);
+                this.$eventBus.$emit('change-files', this.files);
                 this.getImagePreviews();
-            },
-
-            submitFiles: function () {
-                this.currentStatus = STATUS_SAVING;
-                /*
-                  Initialize the form data
-                */
-                let formData = new FormData();
-
-                /*
-                  Iteate over any file sent over appending the files
-                  to the form data.
-                */
-                for (let i = 0; i < this.files.length; i++) {
-                    let file = this.files[i];
-                    let fileData = JSON.stringify(file);
-                    formData.append('photosFiles[' + i + ']', file);
-                    formData.append('photosData[' + i + ']', fileData);
-
-                }
-
-                HTTP
-                    .post('/image/upload',
-                        formData,
-                        {
-                            headers: {
-                                'Content-Type': 'multipart/form-data'
-                            },
-                            onUploadProgress: function (progressEvent) {
-                                this.uploadPercentage = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total));
-                            }.bind(this)
-                        }
-                    )
-                    .then((response) => {
-                        console.log('SUCCESS!!', response);
-                        setTimeout(() => {
-                            this.currentStatus = STATUS_SUCCESS;
-                        }, 2000);
-                    })
-                    .catch((response) => {
-                        console.log('FAILURE!!', response);
-                        this.currentStatus = STATUS_FAILED;
-                    });
-            },
+            }
 
         },
 
         mounted() {
             this.reset();
         },
+
     }
 </script>
 
