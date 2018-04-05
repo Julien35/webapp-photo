@@ -22,13 +22,7 @@
 
         <tab-content title="Commande" icon="fas fa-shopping-cart">
 
-            Récapitulatif de commande
-
-            <!--todo: make html table-->
-            <p v-for="file in files">
-                {{file.name}}</p>
-
-            <p>{{registration}}</p>
+            <shopping-cart v-bind:files="files" v-bind:registration="registration"/>
 
         </tab-content>
 
@@ -53,6 +47,7 @@
     import ProgressBar from './progress-bar'
     import UploadImage from './UploadImage'
     import AddressForm from './AddressForm'
+    import ShoppingCart from './ShoppingCart'
 
     const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 
@@ -63,7 +58,8 @@
             TabContent,
             ProgressBar,
             UploadImage,
-            AddressForm
+            AddressForm,
+            ShoppingCart
         },
 
         data: function () {
@@ -107,12 +103,16 @@
 
         created() {
             this.$eventBus.$on('change-files', this.changefile);
-            this.$eventBus.$on('change-register-validation', this.updateIsValidForm)
+            this.$eventBus.$on('change-register-validation', this.updateIsValidForm);
+            this.$eventBus.$on('change-register', function (registration) {
+                this.registration = registration;
+            })
         },
 
         beforeDestroy() {
             this.$eventBus.$off('change-files');
             this.$eventBus.$off('change-register-validation');
+            this.$eventBus.$off('change-register');
         },
 
         methods: {
@@ -120,9 +120,8 @@
                 this.files = files;
             },
 
-            updateIsValidForm(isValid){
+            updateIsValidForm(isValid) {
                 this.isFormValid = isValid;
-                return this.isFormValid;
             },
 
             isValidRegister() {

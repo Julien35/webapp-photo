@@ -183,6 +183,7 @@
             updateIsFormValid() {
                 // emit to EventBus
                 this.$eventBus.$emit('change-register-validation', !this.$v.$invalid);
+                this.$eventBus.$emit('change-register', this.registration);
             }
         }
 
