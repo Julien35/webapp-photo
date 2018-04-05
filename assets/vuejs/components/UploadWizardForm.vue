@@ -71,6 +71,7 @@
                 step: 1,
                 files: [],
                 registration: {},
+                isFormValid: false,
                 uploadedFiles: [],
                 uploadError: null,
                 currentStatus: STATUS_INITIAL,
@@ -95,10 +96,12 @@
 
         created() {
             this.$eventBus.$on('change-files', this.changefile);
+            this.$eventBus.$on('change-register-validation', this.updateIsValidForm)
         },
 
         beforeDestroy() {
             this.$eventBus.$off('change-files');
+            this.$eventBus.$off('change-register-validation');
         },
 
         methods: {
@@ -106,13 +109,16 @@
                 this.files = files;
             },
 
+            updateIsValidForm(isValid){
+                this.isFormValid = isValid;
+                return this.isFormValid;
+            },
+
             isValidRegister() {
-                return false;
+                return this.isFormValid;
             },
 
             hasPhotos() {
-                // for test
-                return true;
                 return this.files.length > 0;
             },
 
