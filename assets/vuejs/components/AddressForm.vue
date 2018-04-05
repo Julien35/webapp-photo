@@ -173,6 +173,12 @@
             }
         },
 
+        mounted() {
+            if (!this.$v.$invalid) {
+                this.updateIsFormValid();
+            }
+        },
+
         methods: {
             updateIsFormValid() {
                 // emit to EventBus

@@ -70,7 +70,18 @@
             return {
                 step: 1,
                 files: [],
-                registration: {},
+                registration: {
+                    name: 'Vincent',
+                    firstname: 'Robert',
+                    address1: 'rue de Paris',
+                    address2: null,
+                    postal: 75000,
+                    city: 'Paris',
+                    state: null,
+                    country: 'France',
+                    phone: null,
+                    email: 'robert@yopmail.com'
+                },
                 isFormValid: false,
                 uploadedFiles: [],
                 uploadError: null,
