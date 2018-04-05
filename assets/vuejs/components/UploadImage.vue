@@ -203,6 +203,8 @@
             filesChange(fileList) {
                 if (!fileList.length) return;
 
+
+                // FIX BUG HERE
                 for (let i = 0; i < fileList.length; i++) {
                     fileList[i].nameText = this.removeExtension(fileList[i].name);
                     fileList[i].format = 'format40';
