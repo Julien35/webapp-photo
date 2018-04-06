@@ -15,3 +15,4 @@
 Launch javascript server, symfony server
 * ```$ yarn dev or dev-server-hot for HMR```
 * ```$ bin/console server:run```
+* ``` Add to .env : DATABASE_URL=sqlite:///%kernel.project_dir%/var/webphoto.db``` 
