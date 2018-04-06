@@ -14,7 +14,7 @@
             </thead>
 
             <tbody v-if="files.length > 0">
-            <tr v-for="(file, key) in files" @change="getImagePreviews(files)">
+            <tr v-for="(file, key) in files" @change="getImagePreviews()">
                 <td>
                     <div class="row">
                         <div class="col-4 thumbnail">
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+
     export default {
         name: 'ShoppingCart',
 
@@ -69,10 +70,6 @@
         },
 
         props: {
-            // files: {
-            //     type: Array,
-            //     required: true
-            // },
             registration: {
                 type: Object,
                 required: true
@@ -80,9 +77,9 @@
         },
 
         created() {
-            // this.getImagePreviews();
             this.$eventBus.$on('change-files', files => {
                 this.files = files;
+                this.$forceUpdate();
                 this.getImagePreviews();
             });
             // this.$eventBus.$on('change-register-validation', this.updateIsValidForm)

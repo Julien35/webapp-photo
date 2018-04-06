@@ -24,7 +24,7 @@
 
         <progress-bar v-bind:percentage="uploadPercentage" class="mt-3 mb-3"/>
 
-        <section class="row" v-for="(file, key) in files">
+        <section class="row" v-for="(file, key) in files" @change="updateChange">
 
             <article class="col-lg-4 col-sm-5 col-12 input-group">
                 <div class="thumbnail">
@@ -54,7 +54,7 @@
                             <label class="form-check-label" v-bind:for="file.format + parseInt(key)">
                                 <input class="form-check-input" type="radio"
                                        v-bind:name="file.format + '_' + parseInt(key)"
-                                       value="format40" v-model="files[key].format" checked>
+                                       value="format40" v-model="files[key].format">
                                 40 x 40 cm 15.8 x 15.8 inch
                             </label>
                         </div>
@@ -91,7 +91,7 @@
                             <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
                                 <input class="form-check-input" type="radio"
                                        v-bind:name="file.finition + '_' + parseInt(key)"
-                                       value="finition1" v-model="files[key].finition" checked>
+                                       value="finition1" v-model="files[key].finition">
                                 Finition 1
                             </label>
                         </div>
@@ -200,23 +200,28 @@
                 this.images = [];
             },
 
-            filesChange(fileList) {
-                if (!fileList.length) return;
-
-
-                // FIX BUG HERE
-                for (let i = 0; i < fileList.length; i++) {
-                    fileList[i].nameText = this.removeExtension(fileList[i].name);
-                    fileList[i].format = 'format40';
-                    fileList[i].finition = 'finition1';
-                    this.files.push(fileList[i]);
-                }
-
+            updateChange() {
                 // emit data files to EventBus
                 this.$eventBus.$emit('change-files', this.files);
+            },
 
-                // Preview
+            addImage(imageFile) {
+                imageFile.nameText = this.removeExtension(imageFile.name);
+                imageFile.format = 'format40';
+                imageFile.finition = 'finition1';
+                this.files.push(imageFile);
+            },
+
+            filesChange(fileList) {
+                // if empty > return
+                if (!fileList.length) return;
+
+                for (let i = 0; i < fileList.length; i++) {
+                    this.addImage(fileList[i]);
+                }
+
                 this.getImagePreviews();
+                this.updateChange();
             },
 
             removeExtension(filenameFull) {
