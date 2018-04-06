@@ -63,14 +63,16 @@
         name: 'ShoppingCart',
 
         data() {
-            return {}
+            return {
+                files: []
+            }
         },
 
         props: {
-            files: {
-                type: Array,
-                required: true
-            },
+            // files: {
+            //     type: Array,
+            //     required: true
+            // },
             registration: {
                 type: Object,
                 required: true
@@ -79,7 +81,10 @@
 
         created() {
             // this.getImagePreviews();
-            this.$eventBus.$on('change-files', this.getImagePreviews);
+            this.$eventBus.$on('change-files', files => {
+                this.files = files;
+                this.getImagePreviews();
+            });
             // this.$eventBus.$on('change-register-validation', this.updateIsValidForm)
         },
 
@@ -96,15 +101,15 @@
                 this.$eventBus.$emit('change-register', this.registration);
             },
 
-            getImagePreviews(files) {
+            getImagePreviews() {
                 /*
                   Iterate over all of the files and generate an image preview for each one.
                 */
-                for (let i = 0; i < files.length; i++) {
+                for (let i = 0; i < this.files.length; i++) {
                     /*
                       Ensure the file is an image file
                     */
-                    if (/\.(jpe?g|png|gif)$/i.test(files[i].name)) {
+                    if (/\.(jpe?g|png|gif)$/i.test(this.files[i].name)) {
                         /*
                           Create a new FileReader object
                         */
@@ -124,7 +129,7 @@
                           been loaded, we listen to the event propagated and set the image
                           src to what was loaded from the reader.
                         */
-                        reader.readAsDataURL(files[i]);
+                        reader.readAsDataURL(this.files[i]);
                     } else {
                         /*
                           We do the next tick so the reference is bound and we can access it.

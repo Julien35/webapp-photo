@@ -22,7 +22,8 @@
 
         <tab-content title="Commande" icon="fas fa-shopping-cart">
 
-            <shopping-cart v-bind:files="files" v-bind:registration="registration"/>
+            <!--<shopping-cart v-bind:files="files" v-bind:registration="registration"/>-->
+            <shopping-cart v-bind:registration="registration"/>
 
         </tab-content>
 
