@@ -29,6 +29,7 @@ class PhotoUploadService
         $product->setImageSize($file->getSize());
         $product->setFormat($data->format);
         $product->setFinition($data->finition);
+        $product->setQuantity($data->quantity);
 
 //            store information to bdd, image is copied by vichuploader
         $this->productManager->save($product);

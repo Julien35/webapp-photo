@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\HttpFoundation\File\File;
@@ -72,6 +73,13 @@ class Product
      */
     private $finition;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     *
+     * @var integer
+     */
+    private $quantity;
+
 
 
 
@@ -91,7 +99,7 @@ class Product
         if (null !== $image) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
+            $this->updatedAt = new DateTimeImmutable();
         }
     }
 
@@ -167,4 +175,22 @@ class Product
     {
         $this->finition = $finition;
     }
+
+    /**
+     * @return int
+     */
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @param int $quantity
+     */
+    public function setQuantity(?int $quantity): void
+    {
+        $this->quantity = $quantity;
+    }
+
+
 }

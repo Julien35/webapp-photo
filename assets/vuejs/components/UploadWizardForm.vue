@@ -178,8 +178,9 @@
                     let fileData = JSON.stringify(file);
                     formData.append('photosFiles[' + i + ']', file);
                     formData.append('photosData[' + i + ']', fileData);
-
                 }
+
+                console.log(this.files);
 
                 return HTTP
                     .post('/image/upload',
