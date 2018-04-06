@@ -32,11 +32,12 @@
 
                 <td>
                     <label>
-                        <input type="number" class="form-control text-center" value="1">
+                        <input type="number" min="1" class="form-control text-center" v-on:click="updateCart"
+                               v-model:value="file.quantity">
                     </label>
                 </td>
 
-                <td class="text-center">1.99</td>
+                <td class="text-center">{{ file.quantity * 1.99}}</td>
 
                 <td>
                     <a class="btn btn-danger" v-on:click="removeFile( key )">Supprimer</a>
@@ -45,11 +46,11 @@
             </tbody>
 
             <tfoot>
-            <tr class="">
+            <tr>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td class="text-center"><strong>Total 1.99</strong></td>
+                <td class="text-center"><strong>Total {{Number.parseFloat(total).toFixed(2)}}</strong></td>
                 <td></td>
             </tr>
             </tfoot>
@@ -65,7 +66,9 @@
 
         data() {
             return {
-                files: []
+                files: [],
+                total: 0,
+                price: 1.99
             }
         },
 
@@ -79,23 +82,35 @@
         created() {
             this.$eventBus.$on('change-files', files => {
                 this.files = files;
+                this.subTotal();
+                this.totalCart();
                 this.$forceUpdate();
                 this.getImagePreviews();
             });
-            // this.$eventBus.$on('change-register-validation', this.updateIsValidForm)
         },
 
         beforeDestroy() {
             this.$eventBus.$off('change-files');
-            // this.$eventBus.$off('change-register-validation');
         },
 
         methods: {
             updateCart() {
-
                 // emit to EventBus
                 this.$eventBus.$emit('change-files', this.files);
-                this.$eventBus.$emit('change-register', this.registration);
+            },
+
+
+            subTotal(file) {
+                this.files.forEach((file) => {
+                    file.subtotal = (file.quantity * this.price);
+                });
+            },
+
+            totalCart() {
+                this.total = 0;
+                this.files.forEach((file) => {
+                    this.total = (this.total + file.subtotal);
+                });
             },
 
             getImagePreviews() {
@@ -141,7 +156,7 @@
             removeFile(key) {
                 this.files.splice(key, 1);
                 this.$eventBus.$emit('change-files', this.files);
-                this.getImagePreviews(this.files);
+                this.getImagePreviews();
             }
         }
     }

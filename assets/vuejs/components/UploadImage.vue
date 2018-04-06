@@ -55,7 +55,7 @@
                                 <input class="form-check-input" type="radio"
                                        v-bind:name="file.format + '_' + parseInt(key)"
                                        value="format40" v-model="files[key].format">
-                                40 x 40 cm 15.8 x 15.8 inch
+                                40 x 40 cm / 15.8 x 15.8 inch
                             </label>
                         </div>
                         <div class="form-check">
@@ -63,7 +63,7 @@
                                 <input class="form-check-input" type="radio"
                                        v-bind:name="file.format + '_' + parseInt(key)"
                                        value="format60" v-model="files[key].format">
-                                60 x 60 cm 23.8 x 23.8 inch
+                                60 x 60 cm / 23.8 x 23.8 inch
                             </label>
                         </div>
                         <div class="form-check">
@@ -71,7 +71,7 @@
                                 <input class="form-check-input" type="radio"
                                        v-bind:name="file.format + '_' + parseInt(key)"
                                        value="format100" v-model="files[key].format">
-                                100 x 100 cm 39.7 x 39.7 inch
+                                100 x 100 cm / 39.7 x 39.7 inch
                             </label>
                         </div>
                         <div class="form-check">
@@ -209,6 +209,8 @@
                 imageFile.nameText = this.removeExtension(imageFile.name);
                 imageFile.format = 'format40';
                 imageFile.finition = 'finition1';
+                imageFile.quantity = 1;
+                imageFile.subtotal = 0;
                 this.files.push(imageFile);
             },
 

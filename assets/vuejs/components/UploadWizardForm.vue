@@ -20,7 +20,8 @@
 
         </tab-content>
 
-        <tab-content title="Commande" icon="fas fa-shopping-cart">
+        <tab-content title="Commande" icon="fas fa-shopping-cart"
+                    :before-change="submitFiles">
 
             <!--<shopping-cart v-bind:files="files" v-bind:registration="registration"/>-->
             <shopping-cart v-bind:registration="registration"/>
