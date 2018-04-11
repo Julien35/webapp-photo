@@ -80,6 +80,11 @@ class Product
      */
     private $quantity;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Cart", inversedBy="products")
+     */
+    private $cart;
+
 
 
 
@@ -190,6 +195,18 @@ class Product
     public function setQuantity(?int $quantity): void
     {
         $this->quantity = $quantity;
+    }
+
+    public function getCart(): ?Cart
+    {
+        return $this->cart;
+    }
+
+    public function setCart(?Cart $cart): self
+    {
+        $this->cart = $cart;
+
+        return $this;
     }
 
 
