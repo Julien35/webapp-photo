@@ -22,9 +22,9 @@ class TestBddController extends Controller
     /**
      * @Route("/test")
      */
-    public function getAll()
+    public function test()
     {
-        $cart = $this->cartManager->all();
+        $cart = $this->cartManager->test();
         return $this->render('test.html.twig', ['cart' => $cart]);
     }
 

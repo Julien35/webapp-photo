@@ -44,6 +44,17 @@ class Cart
      */
     private $prixTotalTtc;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $checkout;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $paid;
+
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -90,7 +101,7 @@ class Cart
     {
         if (!$this->products->contains($product)) {
             $this->products[] = $product;
-            $product->setCartId($this);
+            $product->setCart($this);
         }
 
         return $this;
@@ -101,8 +112,8 @@ class Cart
         if ($this->products->contains($product)) {
             $this->products->removeElement($product);
             // set the owning side to null (unless already changed)
-            if ($product->getCartId() === $this) {
-                $product->setCartId(null);
+            if ($product->getCart() === $this) {
+                $product->setCart(null);
             }
         }
 
@@ -129,6 +140,30 @@ class Cart
     public function setPrixTotalTtc(?float $prixTotalTtc): self
     {
         $this->prixTotalTtc = $prixTotalTtc;
+
+        return $this;
+    }
+
+    public function getCheckout(): ?bool
+    {
+        return $this->checkout;
+    }
+
+    public function setCheckout(bool $checkout): self
+    {
+        $this->checkout = $checkout;
+
+        return $this;
+    }
+
+    public function getPaid(): ?bool
+    {
+        return $this->paid;
+    }
+
+    public function setPaid(bool $paid): self
+    {
+        $this->paid = $paid;
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Cart;
 use App\Entity\Product;
 use App\Manager\ProductManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -16,12 +17,36 @@ class PhotoUploadService
         $this->productManager = $productManager;
     }
 
+
+    /**
+     * @param array $photosData
+     * @param Cart $cart
+     * @param array $photosFiles
+     * @return Product[]|array
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function uploadPhotos(array $photosData, array $photosFiles)
+    {
+        /** @var Product ...$products */
+        $products = [];
+
+        foreach ($photosFiles as $key => $file) {
+            if ($file instanceof UploadedFile) {
+                $data = json_decode($photosData[$key]);
+                $products[] = $this->uploadPhoto($file, $data);
+            }
+        }
+        return $products;
+    }
+
     /**
      * @param UploadedFile $file
      * @param $data
+     * @return Product
      * @throws \Doctrine\ORM\ORMException
      */
-    public function uploadFile($file, $data)
+    public
+    function uploadPhoto(UploadedFile $file, $data)
     {
         $product = new Product();
         $product->setImageFile($file);
@@ -33,6 +58,7 @@ class PhotoUploadService
 
 //            store information to bdd, image is copied by vichuploader
         $this->productManager->save($product);
+        return $product;
 
     }
 }

@@ -2,7 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Cart;
+use App\Entity\Product;
+use App\Manager\CartManager;
 use App\Service\PhotoUploadService;
+use DateTime;
 use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -19,9 +23,15 @@ class ImageController extends Controller
      */
     private $photoUploadService;
 
-    public function __construct(PhotoUploadService $photoUploadService)
+    /**
+     * @var CartManager $cartManager
+     */
+    private $cartManager;
+
+    public function __construct(PhotoUploadService $photoUploadService, CartManager $cartManager)
     {
         $this->photoUploadService = $photoUploadService;
+        $this->cartManager = $cartManager;
     }
 
 
@@ -45,26 +55,27 @@ class ImageController extends Controller
      */
     public function upload(Request $request)
     {
-        $status = array('status' => "success", "fileUploaded" => false);
-
-        /** @var array<UploadedFile> $photosFiles */
+        $status = ['status' => "success", "fileUploaded" => false];
+        // Array of Uploadedfile
         $photosFiles = $request->files->get('photosFiles');
         $photosData = $request->request->get('photosData');
+        $registration = $request->request->get('registration');
 
-        foreach ($photosFiles as $key => $file) {
-            $data = json_decode($photosData[$key]);
+        if (!is_null($photosFiles) && !is_null($photosData) && !is_null($registration)) {
+            /** Cart $cart */
+            $cart = $this->cartManager->initCart();
+            // Create Product with cart_id
+            $products = $this->photoUploadService->uploadPhotos($photosData, $photosFiles);
 
-            if ($file instanceof UploadedFile && !is_null($file) && !is_null($data)) {
-                try {
-                    $this->photoUploadService->uploadFile($file, $data);
-                } catch (ORMException $e) {
-                    return new JsonResponse($status);
-                }
-                $status = array('status' => "success", "fileUploaded" => true);
-            }
+            $updateCart = $this->cartManager->update($cart, $products);
+            $status = ['status' => "success", "fileUploaded" => true];
         }
 
-        return new JsonResponse($status);
+
+//        create Register return id
+//        update Cart with register_id
+
+        return $this->json($status);
     }
 
 }

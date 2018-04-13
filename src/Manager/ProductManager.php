@@ -23,6 +23,6 @@ class ProductManager
      */
     public function save(Product $product)
     {
-        $this->productRepository->save($product);
+        return $this->productRepository->save($product);
     }
 }

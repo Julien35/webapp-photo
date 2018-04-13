@@ -21,7 +21,7 @@
         </tab-content>
 
         <tab-content title="Commande" icon="fas fa-shopping-cart"
-                    :before-change="submitFiles">
+                     :before-change="submitFiles">
 
             <!--<shopping-cart v-bind:files="files" v-bind:registration="registration"/>-->
             <shopping-cart v-bind:registration="registration"/>
@@ -178,6 +178,7 @@
                     let fileData = JSON.stringify(file);
                     formData.append('photosFiles[' + i + ']', file);
                     formData.append('photosData[' + i + ']', fileData);
+                    formData.append('registration[' + i + ']', JSON.stringify(this.registration));
                 }
 
                 console.log(this.files);

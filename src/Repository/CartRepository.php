@@ -19,6 +19,17 @@ class CartRepository extends ServiceEntityRepository
         parent::__construct($registry, Cart::class);
     }
 
+    /**
+     * @param Cart $cart
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function save(Cart $cart)
+    {
+        $em = $this->getEntityManager();
+        $em->persist($cart);
+        $em->flush();
+    }
+
 //    /**
 //     * @return Cart[] Returns an array of Cart objects
 //     */
