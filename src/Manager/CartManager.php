@@ -4,6 +4,7 @@ namespace App\Manager;
 
 use App\Entity\Cart;
 use App\Entity\Product;
+use App\Entity\Registration;
 use App\Repository\CartRepository;
 use App\Repository\ProductRepository;
 use App\Repository\RegistrationRepository;
@@ -41,12 +42,14 @@ class CartManager
 
     /**
      * @param Cart $cart
-     * @param array $products
+     * @param array|null $products
+     * @param Registration|null $registration
      * @return Cart
      * @throws \Doctrine\ORM\ORMException
      */
-    public function update(Cart $cart, array $products) : Cart
+    public function update(Cart $cart, array $products = null, Registration $registration = null) : Cart
     {
+        $cart->setRegistration($registration);
         foreach ($products as $product) {
             $cart->addProduct($product);
         }

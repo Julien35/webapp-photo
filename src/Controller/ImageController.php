@@ -62,13 +62,18 @@ class ImageController extends Controller
         $registration = $request->request->get('registration');
 
         if (!is_null($photosFiles) && !is_null($photosData) && !is_null($registration)) {
-            /** Cart $cart */
-            $cart = $this->cartManager->initCart();
-            // Create Product with cart_id
-            $products = $this->photoUploadService->uploadPhotos($photosData, $photosFiles);
 
-            $updateCart = $this->cartManager->update($cart, $products);
-            $status = ['status' => "success", "fileUploaded" => true];
+            try {
+                /** Cart $cart */
+                $cart = $this->cartManager->initCart();// Create Product with cart_id
+                $products = $this->photoUploadService->uploadPhotos($photosData, $photosFiles);
+                $updateCart = $this->cartManager->update($cart, $products, $registration);
+
+                $status = ['status' => "success", "fileUploaded" => true];
+            } catch (ORMException $e) {
+
+            }
+
         }
 
 
