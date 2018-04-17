@@ -49,10 +49,19 @@ class CartManager
      */
     public function update(Cart $cart, array $products = null, Registration $registration = null) : Cart
     {
+        $totalPrice = 0;
+        $priceItem = 1.99;
+
         $cart->setRegistration($registration);
+
+        /** @var  Product $product */
         foreach ($products as $product) {
             $cart->addProduct($product);
+            $totalPrice += $product->getQuantity() * $priceItem;
         }
+
+        $cart->setPrixTotalTtc($totalPrice);
+        $cart->setprixTotalHt($totalPrice - $totalPrice * 0.20);
         $this->cartRepository->save($cart);
         return $cart;
     }

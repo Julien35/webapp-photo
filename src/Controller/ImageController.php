@@ -43,17 +43,6 @@ class ImageController extends Controller
         $this->registrationManager = $registrationManager;
     }
 
-
-    /**
-     * @Route("/api/photo/upload")
-     * @return JsonResponse
-     */
-    public function uploadTest()
-    {
-        return $this->json('Hello photo');
-    }
-
-
     /**
      * @Route("api/image/upload", name="image-upload")
      * @Method({"GET", "POST"})
