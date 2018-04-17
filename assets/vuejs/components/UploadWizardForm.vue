@@ -196,14 +196,18 @@
                         }
                     )
                     .then((response) => {
-                        console.log('SUCCESS!!', response);
-                        setTimeout(() => {
-                            this.currentStatus = STATUS_SUCCESS;
-                        }, 2000);
-                        return true;
+                        if (response.data.fileUploaded) {
+                            setTimeout(() => {
+                                this.currentStatus = STATUS_SUCCESS;
+                            }, 2000);
+                            return true;
+                        } else {
+                            this.currentStatus = STATUS_FAILED;
+                            return false;
+                        }
+
                     })
                     .catch((response) => {
-                        console.log('FAILURE!!', response);
                         this.currentStatus = STATUS_FAILED;
                         return false;
                     });
