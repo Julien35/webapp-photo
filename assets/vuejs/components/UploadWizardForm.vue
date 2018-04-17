@@ -162,6 +162,9 @@
                 if (!(this.files.length > 0)) {
                     return false;
                 }
+                if (this.currentStatus === STATUS_SUCCESS) {
+                    return true;
+                }
 
                 this.currentStatus = STATUS_SAVING;
                 /*
