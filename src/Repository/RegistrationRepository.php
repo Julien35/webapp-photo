@@ -19,6 +19,18 @@ class RegistrationRepository extends ServiceEntityRepository
         parent::__construct($registry, Registration::class);
     }
 
+
+    /**
+     * @param Registration $registration
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function save(Registration $registration)
+    {
+        $em = $this->getEntityManager();
+        $em->persist($registration);
+        $em->flush();
+    }
+
 //    /**
 //     * @return Registration[] Returns an array of Registration objects
 //     */

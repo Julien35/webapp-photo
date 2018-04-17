@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Cart;
 use App\Entity\Product;
+use App\Entity\Registration;
 use App\Manager\CartManager;
+use App\Manager\RegistrationManager;
 use App\Service\PhotoUploadService;
 use DateTime;
 use Doctrine\ORM\ORMException;
@@ -28,10 +30,17 @@ class ImageController extends Controller
      */
     private $cartManager;
 
-    public function __construct(PhotoUploadService $photoUploadService, CartManager $cartManager)
+    /**
+     * @var RegistrationManager $registrationManager
+     */
+    private $registrationManager;
+
+
+    public function __construct(PhotoUploadService $photoUploadService, CartManager $cartManager, RegistrationManager $registrationManager)
     {
         $this->photoUploadService = $photoUploadService;
         $this->cartManager = $cartManager;
+        $this->registrationManager = $registrationManager;
     }
 
 
@@ -59,26 +68,31 @@ class ImageController extends Controller
         // Array of Uploadedfile
         $photosFiles = $request->files->get('photosFiles');
         $photosData = $request->request->get('photosData');
-        $registration = $request->request->get('registration');
+        $registrationData = $request->request->get('registration');
 
-        if (!is_null($photosFiles) && !is_null($photosData) && !is_null($registration)) {
+        if (!is_null($photosFiles) && !is_null($photosData) && !is_null($registrationData)) {
+
+            $conn = $this->getDoctrine()->getConnection();
+            $conn->beginTransaction();
 
             try {
                 /** Cart $cart */
-                $cart = $this->cartManager->initCart();// Create Product with cart_id
+                $cart = $this->cartManager->initCart();
+                // Create Product with cart_id
                 $products = $this->photoUploadService->uploadPhotos($photosData, $photosFiles);
+                // update Cart with register_id
+                $registration = $this->registrationManager->initRegistration(json_decode($registrationData[0]));
+
+                // Update Cart with all value
                 $updateCart = $this->cartManager->update($cart, $products, $registration);
 
+                $conn->commit();
                 $status = ['status' => "success", "fileUploaded" => true];
             } catch (ORMException $e) {
-
+                $conn->rollback();
             }
 
         }
-
-
-//        create Register return id
-//        update Cart with register_id
 
         return $this->json($status);
     }
