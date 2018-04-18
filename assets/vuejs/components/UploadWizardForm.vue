@@ -30,7 +30,7 @@
 
         <tab-content title="Paiement" icon="fa fa-check">
 
-            formulaire de paiement
+            <checkout/>
 
         </tab-content>
 
@@ -49,6 +49,7 @@
     import UploadImage from './UploadImage'
     import AddressForm from './AddressForm'
     import ShoppingCart from './ShoppingCart'
+    import Checkout from './Checkout'
 
     const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 
@@ -60,7 +61,9 @@
             ProgressBar,
             UploadImage,
             AddressForm,
-            ShoppingCart
+            ShoppingCart,
+            Checkout
+
         },
 
         data: function () {
@@ -119,7 +122,7 @@
         methods: {
             changefile(files) {
                 this.files = files;
-                if(this.currentStatus === STATUS_SUCCESS) {
+                if (this.currentStatus === STATUS_SUCCESS) {
                     this.currentStatus = STATUS_SAVING;
                 }
             },
@@ -138,9 +141,20 @@
 
             onComplete: function () {
                 console.log('oncomplete');
-                // Envoyer les photos et l'adresse dans le backend
-
                 // Déclencher le paiement
+
+                HTTP
+                    .post('/checkout',
+                        {
+                            test: 'hello'
+                        }
+                    )
+                    .then((response) => {
+                        console.log(response);
+                    })
+                    .catch((response) => {
+                        console.log(response);
+                    });
             },
 
             setLoading: function (value) {

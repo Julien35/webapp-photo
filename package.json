@@ -8,6 +8,8 @@
     "@symfony/webpack-encore": "^0.17.1",
     "axios": "^0.18.0",
     "bootstrap": "^4.0.0",
+    "braintree-web": "^3.32.0",
+    "braintree-web-drop-in": "^1.10.0",
     "jquery": "^3.3.1",
     "node-sass": "^4.7.2",
     "popper.js": "^1.12.9",
