@@ -3,6 +3,12 @@
 parameters:
     locale: 'en'
 
+    'braintree_parameters':
+        environment: '%env(environment)%'
+        merchantId: '%env(merchantId)%'
+        publicKey: '%env(publicKey)%'
+        privateKey: '%env(privateKey)%'
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -36,3 +42,8 @@ services:
 
     App\Repository\ProductRepository:
         autowire: true
+
+    App\Service\BrainTreeCheckout:
+        arguments: ['%braintree_parameters%']
+        autowire: false
+        public: true

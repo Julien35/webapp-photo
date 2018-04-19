@@ -14,9 +14,9 @@ Encore
     // uncomment if you use Sass/SCSS files
     .enableSassLoader()
     // parameters are not mandatory, only if webpack build is slow with bootstrap (http://symfony.com/doc/current/frontend/encore/bootstrap.html)
-    // .enableSassLoader(function(sassOptions) {}, {
-    //     resolveUrlLoader: false,
-    // })
+    .enableSassLoader(function(sassOptions) {}, {
+        resolveUrlLoader: false,
+    })
 
     .enableSourceMaps(!Encore.isProduction())
 
@@ -32,14 +32,14 @@ Encore
             './assets/scss/index.scss'
         ])
 
-    // .addEntry('logo', './assets/images/logo-ludo.jpg')
-
     // this creates a 'vendor.js' file with jquery and the bootstrap JS module
-    // these modules will *not* be included in page1.js or page2.js anymore
     .createSharedEntry('vendors', [
         'jquery',
         'popper.js',
         'bootstrap',
+
+        'braintree-web',
+        'braintree-web-drop-in',
         // '@fortawesome/fontawesome',
         // '@fortawesome/vue-fontawesome',
         // '@fortawesome/fontawesome-free-brands',

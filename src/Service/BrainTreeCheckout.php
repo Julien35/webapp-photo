@@ -9,29 +9,30 @@ use Braintree_Gateway;
 class BrainTreeCheckout
 {
     /**
-     * @var Braintree_Configuration
+     * @var Braintree_Configuration $config
      */
     private $config;
 
     /**
-     * @var Braintree_Gateway
+     * @var Braintree_Gateway $gateway
      */
     private $gateway;
+
+    /**
+     * @var array $braintree_parameters
+     */
+    private $braintree_parameters;
 
 
     /**
      * BrainTreeCheckout constructor.
+     * @param array $braintree_parameters
      * @throws \Braintree\Exception\Configuration
      */
-    public function __construct()
+    public function __construct(array $braintree_parameters)
     {
-        $this->config = new Braintree_Configuration([
-            'environment' => 'sandbox',
-            'merchantId' => 'rwrmmxc7khxd9hgp',
-            'publicKey' => '2xcnb8gxxsyvwxv2',
-            'privateKey' => '94d2f1c70959f81036ecb439b2357983'
-        ]);
-
+        $this->braintree_parameters = $braintree_parameters;
+        $this->config = new Braintree_Configuration($this->braintree_parameters);
         $this->gateway = new Braintree_Gateway($this->config);
     }
 

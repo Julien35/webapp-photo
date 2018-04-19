@@ -1,33 +1,45 @@
 <template>
     <section>
-        formulaire de paiement
 
-        <div id="dropin-container"></div>
-        <button id="submit-button">Request payment method</button>
-
+        <DropIn
+                :authToken="authToken"
+                :collectCardHolderName="true"
+                :enableDataCollector="true"
+                :enablePayPal="false"
+       />
 
     </section>
 
 </template>
 
 <script>
-    // import braintree from 'braintree-web-drop-in/dropin'
-
-    let button = document.querySelector('#submit-button');
-
-    braintree.dropin.create({
-        authorization: 'CLIENT_AUTHORIZATION',
-        container: '#dropin-container'
-    }, function (createErr, instance) {
-        button.addEventListener('click', function () {
-            instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
-                // Submit payload.nonce to your server
-            });
-        });
-    });
+    import DropIn from './DropIn';
 
     export default {
-        name: "Checkout"
+        name: 'Checkout',
+        components: {
+            DropIn,
+        },
+        data() {
+            return {
+                authToken: 'sandbox_53q9zvq5_rwrmmxc7khxd9hgp',
+
+            }
+        },
+        methods: {
+            btHFError(message) {
+                console.error(message);
+                // do something with the error message
+            },
+            btHFPayload(payload) {
+                console.log(payload);
+                // do something with the token payload
+            },
+            submitTransaction() {
+                console.log('submitTransaction');
+                this.$emit('tokenize');
+            }
+        }
     }
 </script>
 
