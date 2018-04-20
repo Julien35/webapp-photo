@@ -1,12 +1,12 @@
 <template>
     <section>
 
-        <DropIn
+        <DropIn v-if="authToken !== null"
                 :authToken="authToken"
                 :collectCardHolderName="true"
                 :enableDataCollector="true"
                 :enablePayPal="false"
-       />
+        />
 
     </section>
 
@@ -14,6 +14,7 @@
 
 <script>
     import DropIn from './DropIn';
+    import {HTTP} from '../http-common';
 
     export default {
         name: 'Checkout',
@@ -22,11 +23,27 @@
         },
         data() {
             return {
-                authToken: 'sandbox_53q9zvq5_rwrmmxc7khxd9hgp',
-
+                authToken: null,
             }
         },
+
+        created() {
+            this.getToken();
+        },
+
         methods: {
+            getToken() {
+                HTTP
+                    .get('/checkout/client-token')
+                    .then((response) => {
+                        this.authToken = response.data;
+                    })
+                    .catch((response) => {
+                        console.log(response);
+                    });
+            },
+
+
             btHFError(message) {
                 console.error(message);
                 // do something with the error message

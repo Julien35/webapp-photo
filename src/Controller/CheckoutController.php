@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\BrainTreeCheckout;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,16 +20,39 @@ class CheckoutController extends Controller
     }
 
     /**
-     * @Route("api/checkout", name="transaction")
+     * @Route("api/checkout/client-token", name="client_token")
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function getToken()
+    {
+        $token = '';
+        try {
+            $token = $this->brainTreeCheckout->getClientToken();
+        } catch (Exception $e) {
+            $token = $e;
+        }
+
+        return $this->json($token);
+    }
+
+    /**
+     * @Route("api/checkout/transaction", name="transaction")
      * @Method({"POST"})
      *
      * @param Request $request
      *
      * @return JsonResponse
      */
-    public function transaction()
+    public function transaction(Request $request)
     {
-        $result = $this->brainTreeCheckout->createTransaction(10);
+        $amount = 12;
+        $nonce = 'fake-valid-nonce';
+
+        $result = $this->brainTreeCheckout->createTransaction($amount, $nonce);
         return $this->json($result);
     }
 }

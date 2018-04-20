@@ -7,31 +7,22 @@
 
         <tab-content title="Photos à télécharger" icon="far fa-images"
                      :before-change="hasPhotos">
-
             <upload-image v-bind:current-status="currentStatus"/>
-
         </tab-content>
-
 
         <tab-content title="Adresse" icon="far fa-address-card"
                      :before-change="isValidRegister">
-
             <address-form v-bind:registration="registration"/>
-
         </tab-content>
 
         <tab-content title="Commande" icon="fas fa-shopping-cart"
                      :before-change="submitFiles">
-
             <shopping-cart v-bind:registration="registration"/>
-
         </tab-content>
 
 
         <tab-content title="Paiement" icon="fa fa-check">
-
             <checkout/>
-
         </tab-content>
 
     </form-wizard>

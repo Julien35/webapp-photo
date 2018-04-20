@@ -2,13 +2,16 @@
     <div>
         <div id="dropin-container"></div>
 
-        <button type="submit" style="padding-top: 1rem;" id="submitTransaction"
+        <input id="nonce" name="payment_method_nonce" type="hidden"/>
+        <button class="btn btn-default" type="submit" id="submitTransaction"
                 @click="dropinRequestPaymentMethod">Drop-in Test
         </button>
     </div>
 </template>
 
 <script>
+    import {HTTP} from '../http-common';
+
     export default {
         name: 'DropIn',
         props: {
@@ -76,6 +79,7 @@
                     this.dropinInstance = dropinInstance;
                 });
             },
+
             dropinRequestPaymentMethod() {
                 console.log("dropinRequestPaymentMethod");
                 this.dropinInstance.requestPaymentMethod((requestErr, payload) => {
@@ -86,12 +90,31 @@
                         return;
                     }
 
+                    document.querySelector('#nonce').value = payload.nonce;
+                    console.log('dropinRequestPaymentMethod payload : ', payload);
                     this.paymentPayload = payload;
-                    console.log(payload);
                     // do something with the payload/nonce
                     // Send payload.nonce to your server
+                    this.transaction(12, this.paymentPayload.nonce);
                 });
             },
+
+            transaction(amount, nonce) {
+
+
+                HTTP
+                    .post('/checkout/transaction', {
+                        amount: amount,
+                        nonce: nonce
+                    })
+                    .then((response) => {
+                        console.log(response);
+                    })
+                    .catch((response) => {
+                        console.log(response);
+                    });
+            }
+
         },
     };
 </script>

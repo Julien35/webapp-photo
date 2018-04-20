@@ -23,6 +23,11 @@ class BrainTreeCheckout
      */
     private $braintree_parameters;
 
+    /**
+     * @var string $clientToken
+     */
+    private $clientToken;
+
 
     /**
      * BrainTreeCheckout constructor.
@@ -34,19 +39,28 @@ class BrainTreeCheckout
         $this->braintree_parameters = $braintree_parameters;
         $this->config = new Braintree_Configuration($this->braintree_parameters);
         $this->gateway = new Braintree_Gateway($this->config);
+        $this->clientToken = $this->gateway->clientToken()->generate();
+//        $this->clientToken = $this->config->getEnvironment() .'_' . $this->gateway->clientToken()->generate();
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientToken(): string
+    {
+        return $this->clientToken;
     }
 
     /**
      * @param float $amount
+     * @param string $nonce
      * @return array
      */
-    public function createTransaction(float $amount)
+    public function createTransaction(float $amount, string $nonce)
     {
-        $clientToken = $this->gateway->clientToken()->generate();
-
         $result = $this->gateway->transaction()->sale([
             'amount' => $amount,
-            'paymentMethodNonce' => 'fake-valid-nonce',
+            'paymentMethodNonce' => $nonce,
             'options' => ['submitForSettlement' => true]
         ]);
 
