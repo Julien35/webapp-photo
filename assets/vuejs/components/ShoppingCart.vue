@@ -132,6 +132,7 @@
                 this.files.forEach((file) => {
                     this.total = (this.total + file.subtotal);
                 });
+                this.$eventBus.$emit('change-total-cart', this.total);
             },
 
             getImagePreviews() {

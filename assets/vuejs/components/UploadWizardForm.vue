@@ -81,6 +81,7 @@
                 loadingWizard: false,
             }
         },
+
         computed: {
             isInitial() {
                 return this.currentStatus === STATUS_INITIAL;
@@ -131,21 +132,9 @@
             },
 
             onComplete: function () {
-                console.log('oncomplete');
                 // Déclencher le paiement
-
-                HTTP
-                    .post('/checkout',
-                        {
-                            test: 'hello'
-                        }
-                    )
-                    .then((response) => {
-                        console.log(response);
-                    })
-                    .catch((response) => {
-                        console.log(response);
-                    });
+                console.log('oncomplete submitTransaction ');
+                this.$eventBus.$emit('tokenize');
             },
 
             setLoading: function (value) {

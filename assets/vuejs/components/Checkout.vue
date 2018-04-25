@@ -6,6 +6,8 @@
                 :collectCardHolderName="true"
                 :enableDataCollector="true"
                 :enablePayPal="false"
+                :totalCart="totalCart"
+                :enable-drop-in-test-button="false"
         />
 
     </section>
@@ -24,11 +26,20 @@
         data() {
             return {
                 authToken: null,
+                totalCart: 0,
             }
         },
 
         created() {
             this.getToken();
+
+            this.$eventBus.$on('tokenize', () => {
+                this.submitTransaction();
+            });
+
+            this.$eventBus.$on('change-total-cart', totalCart => {
+                this.totalCart = totalCart;
+            });
         },
 
         methods: {
@@ -43,18 +54,9 @@
                     });
             },
 
-
-            btHFError(message) {
-                console.error(message);
-                // do something with the error message
-            },
-            btHFPayload(payload) {
-                console.log(payload);
-                // do something with the token payload
-            },
             submitTransaction() {
-                console.log('submitTransaction');
-                this.$emit('tokenize');
+                console.log('chekout submitTransaction');
+                this.$emit('tokenizeChild', this.totalCart);
             }
         }
     }

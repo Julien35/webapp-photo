@@ -3,8 +3,8 @@
         <div id="dropin-container"></div>
 
         <input id="nonce" name="payment_method_nonce" type="hidden"/>
-        <button class="btn btn-default" type="submit" id="submitTransaction"
-                @click="dropinRequestPaymentMethod">Drop-in Test
+        <button v-if="enableDropInTestButton" class="btn btn-default" type="submit"
+                id="submitTransaction" @click="dropinRequestPaymentMethod">Drop-in Test
         </button>
     </div>
 </template>
@@ -36,11 +36,17 @@
             enablePayPal: {
                 value: Boolean,
             },
+            enableDropInTestButton: {
+                value: Boolean,
+            },
+            totalCart: {
+                value: Number,
+            },
         },
         created() {
             this.dropinCreate();
 
-            this.$parent.$on('tokenize', () => {
+            this.$parent.$on('tokenizeChild', () => {
                 this.dropinRequestPaymentMethod();
             });
         },
@@ -95,17 +101,17 @@
                     this.paymentPayload = payload;
                     // do something with the payload/nonce
                     // Send payload.nonce to your server
-                    this.transaction(12, this.paymentPayload.nonce);
+                    this.transaction(this.totalCart, this.paymentPayload.nonce);
                 });
             },
 
             transaction(amount, nonce) {
-
+                console.log(amount, nonce);
 
                 HTTP
                     .post('/checkout/transaction', {
-                        amount: amount,
-                        nonce: nonce
+                        amount: 'amount',
+                        nonce: 'nonce'
                     })
                     .then((response) => {
                         console.log(response);
