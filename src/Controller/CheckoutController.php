@@ -51,8 +51,8 @@ class CheckoutController extends Controller
     {
         $data = json_decode($request->getContent(), true);
 
-        return $this->json([
-            'status' => $this->brainTreeCheckout->createTransaction($data['amount'], $data['nonce'])
-        ]);
+        return $this->json(
+            $this->brainTreeCheckout->createTransaction($data['amount'], $data['nonce'])
+        );
     }
 }

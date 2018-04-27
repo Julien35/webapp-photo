@@ -76,6 +76,8 @@
                 }
 
                 dropin.create(dropinOptions, (dropinError, dropinInstance) => {
+
+                    // todo: BUG HERE
                     if (dropinError) {
                         this.errorMessage = 'There was an error setting up the client instance. Message: ' + dropinError.message;
                         this.$emit('bt.error', this.errorMessage);
@@ -89,6 +91,7 @@
             dropinRequestPaymentMethod() {
                 this.dropinInstance.requestPaymentMethod((requestErr, payload) => {
 
+                    // todo: BUG HERE
                     if (requestErr) {
                         this.errorMessage = 'There was an error setting up the client instance. Message: ' + requestErr.message;
                         this.$emit('bt.error', this.errorMessage);
@@ -96,7 +99,6 @@
                     }
 
                     document.querySelector('#nonce').value = payload.nonce;
-                    console.log('dropinRequestPaymentMethod payload : ', payload);
                     this.paymentPayload = payload;
                     // do something with the payload/nonce
                     // Send payload.nonce to your server
@@ -105,18 +107,23 @@
             },
 
             transaction(amount, nonce) {
-                console.log(amount, nonce);
-
                 HTTP
                     .post('/checkout/transaction', {
                         amount: amount,
                         nonce: nonce
                     })
                     .then((response) => {
-                        console.log(response);
+                        console.log(response, 'ok');
+
+                        if (response.data.success) {
+                            this.$eventBus.$emit('transaction-status', true);
+                        } else {
+                            this.$eventBus.$emit('transaction-status', false);
+                        }
+
                     })
                     .catch((response) => {
-                        console.log(response);
+                        console.log(response, 'ko');
                     });
             }
 

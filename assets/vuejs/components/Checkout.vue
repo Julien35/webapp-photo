@@ -1,6 +1,8 @@
 <template>
     <section>
 
+        <article>Total : {{totalCart}} €</article>
+
         <DropIn v-if="authToken !== null"
                 :authToken="authToken"
                 :collectCardHolderName="true"
@@ -9,6 +11,12 @@
                 :totalCart="totalCart"
                 :enable-drop-in-test-button="false"
         />
+
+        <article>
+
+
+
+        </article>
 
     </section>
 
@@ -55,7 +63,6 @@
             },
 
             submitTransaction() {
-                console.log('chekout submitTransaction');
                 this.$emit('tokenizeChild', this.totalCart);
             }
         }

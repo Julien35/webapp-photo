@@ -20,7 +20,7 @@
                                 class="sr-only">(current)</span></router-link>
                         <router-link :to="{name: 'about'}" class="item -link" href="#">Qui sommes-nous ?</router-link>
                         <router-link :to="{name: 'contact'}" class="item -link" href="#">Contact</router-link>
-                        <router-link :to="{name: 'cart'}" class="item -link" href="#">Panier</router-link>
+                        <!--<router-link :to="{name: 'cart'}" class="item -link" href="#">Panier</router-link>-->
                     </div>
                 </div>
 

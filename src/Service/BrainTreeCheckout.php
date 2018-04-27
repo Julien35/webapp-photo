@@ -54,7 +54,7 @@ class BrainTreeCheckout
     /**
      * @param float $amount
      * @param string $nonce
-     * @return array
+     * @return \Braintree\Result\Error|\Braintree\Result\
      */
     public function createTransaction(float $amount, string $nonce)
     {
@@ -63,19 +63,21 @@ class BrainTreeCheckout
             'paymentMethodNonce' => $nonce,
             'options' => ['submitForSettlement' => true]
         ]);
+        return $result;
 
-        if ($result->success) {
-            $msg[] =("success!: " . $result->transaction->id);
-        } else if ($result->transaction) {
-            $msg[] =("Error processing transaction:");
-            $msg[] =("\n  code: " . $result->transaction->processorResponseCode);
-            $msg[] =("\n  text: " . $result->transaction->processorResponseText);
-        } else {
-            $msg[] =("Validation errors: \n");
-            $msg[] =($result->errors->deepAll());
-        }
 
-        return $msg;
+//        if ($result->success) {
+//            $msg[] =("success!: " . $result->transaction->id);
+//        } else if ($result->transaction) {
+//            $msg[] =("Error processing transaction:");
+//            $msg[] =("\n  code: " . $result->transaction->processorResponseCode);
+//            $msg[] =("\n  text: " . $result->transaction->processorResponseText);
+//        } else {
+//            $msg[] =("Validation errors: \n");
+//            $msg[] =($result->errors->deepAll());
+//        }
+
+//        return $msg;
     }
 
 }

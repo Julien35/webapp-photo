@@ -102,7 +102,7 @@
             this.$eventBus.$on('change-register-validation', this.updateIsValidForm);
             this.$eventBus.$on('change-register', function (registration) {
                 this.registration = registration;
-            })
+            });
         },
 
         beforeDestroy() {
@@ -133,7 +133,6 @@
 
             onComplete: function () {
                 // Déclencher le paiement
-                console.log('oncomplete submitTransaction ');
                 this.$eventBus.$emit('tokenize');
             },
 
@@ -179,8 +178,6 @@
                     formData.append('photosData[' + i + ']', fileData);
                     formData.append('registration[' + i + ']', JSON.stringify(this.registration));
                 }
-
-                console.log(this.files);
 
                 return HTTP
                     .post('/image/upload',
