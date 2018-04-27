@@ -23,13 +23,13 @@ class CheckoutController extends Controller
      * @Route("api/checkout/client-token", name="client_token")
      * @Method({"GET"})
      *
+     *
      * @param Request $request
      *
      * @return JsonResponse
      */
     public function getToken()
     {
-        $token = '';
         try {
             $token = $this->brainTreeCheckout->getClientToken();
         } catch (Exception $e) {
@@ -49,10 +49,10 @@ class CheckoutController extends Controller
      */
     public function transaction(Request $request)
     {
-        $amount = 12;
-        $nonce = 'fake-valid-nonce';
+        $data = json_decode($request->getContent(), true);
 
-        $result = $this->brainTreeCheckout->createTransaction($amount, $nonce);
-        return $this->json($result);
+        return $this->json([
+            'status' => $this->brainTreeCheckout->createTransaction($data['amount'], $data['nonce'])
+        ]);
     }
 }

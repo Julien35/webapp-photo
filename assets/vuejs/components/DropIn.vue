@@ -87,7 +87,6 @@
             },
 
             dropinRequestPaymentMethod() {
-                console.log("dropinRequestPaymentMethod");
                 this.dropinInstance.requestPaymentMethod((requestErr, payload) => {
 
                     if (requestErr) {
@@ -110,8 +109,8 @@
 
                 HTTP
                     .post('/checkout/transaction', {
-                        amount: 'amount',
-                        nonce: 'nonce'
+                        amount: amount,
+                        nonce: nonce
                     })
                     .then((response) => {
                         console.log(response);
