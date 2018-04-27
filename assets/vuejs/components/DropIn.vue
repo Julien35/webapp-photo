@@ -77,7 +77,6 @@
 
                 dropin.create(dropinOptions, (dropinError, dropinInstance) => {
 
-                    // todo: BUG HERE
                     if (dropinError) {
                         this.errorMessage = 'There was an error setting up the client instance. Message: ' + dropinError.message;
                         this.$emit('bt.error', this.errorMessage);
@@ -91,7 +90,6 @@
             dropinRequestPaymentMethod() {
                 this.dropinInstance.requestPaymentMethod((requestErr, payload) => {
 
-                    // todo: BUG HERE
                     if (requestErr) {
                         this.errorMessage = 'There was an error setting up the client instance. Message: ' + requestErr.message;
                         this.$emit('bt.error', this.errorMessage);

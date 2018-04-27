@@ -4,6 +4,8 @@
         <jumbotron v-bind:jumbotron-tile="title" class="container"/>
         <upload-wizard-form class="container"/>
 
+        <!-- todo: listen ('transaction-status') if true display payment ok & false error message-->
+
     </div>
 </template>
 
