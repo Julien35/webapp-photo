@@ -4,12 +4,11 @@
         <jumbotron v-bind:jumbotron-tile="title" class="container"/>
         <upload-wizard-form v-show="!status.done" class="container"/>
 
-        <!-- todo: listen ('transaction-status') if true display payment ok & false error message-->
         <article v-show="status.done" class="container">
-            <div v-if="!status.error">
+            <div v-if="!status.error" class="text-info">
                 La transaction terminée, paiement Ok.
             </div>
-            <div v-if="status.error">
+            <div v-if="status.error" class="text-danger">
                 La transaction a échoué, veuillez recommencer.
             </div>
         </article>
