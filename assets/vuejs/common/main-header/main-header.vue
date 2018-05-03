@@ -3,7 +3,7 @@
         <section class="navbar-component">
             <nav class="container navbar navbar-expand-lg navbar-light">
                 <!-- Logo -->
-                <router-link :to="{name: 'home'}" class="brand">
+                <router-link class="brand" :to="{name: 'home'}">
                     <img src="../../assets/images/logo-ludo.jpg">
                 </router-link>
 

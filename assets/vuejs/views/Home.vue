@@ -2,9 +2,17 @@
     <div class="home">
 
         <jumbotron v-bind:jumbotron-tile="title" class="container"/>
-        <upload-wizard-form class="container"/>
+        <upload-wizard-form v-show="!status.done" class="container"/>
 
         <!-- todo: listen ('transaction-status') if true display payment ok & false error message-->
+        <article v-show="status.done" class="container">
+            <div v-if="!status.error">
+                La transaction terminée, paiement Ok.
+            </div>
+            <div v-if="status.error">
+                La transaction a échoué, veuillez recommencer.
+            </div>
+        </article>
 
     </div>
 </template>
@@ -19,12 +27,26 @@
         data() {
             return {
                 title: 'Web App Photo',
+                status: {
+                    done: false,
+                    error: false
+                }
             }
         },
 
         components: {
             UploadWizardForm,
             Jumbotron
-        }
+        },
+
+        created() {
+            this.$eventBus.$on('transaction-status', (status) => {
+                this.status = status;
+                setTimeout(() => {
+                    this.$router.go();
+                }, 5000);
+
+            });
+        },
     }
 </script>

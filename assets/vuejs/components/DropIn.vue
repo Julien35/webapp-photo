@@ -98,7 +98,6 @@
 
                     document.querySelector('#nonce').value = payload.nonce;
                     this.paymentPayload = payload;
-                    // do something with the payload/nonce
                     // Send payload.nonce to your server
                     this.transaction(this.totalCart, this.paymentPayload.nonce);
                 });
@@ -114,9 +113,15 @@
                         console.log(response, 'ok');
 
                         if (response.data.success) {
-                            this.$eventBus.$emit('transaction-status', true);
+                            this.$eventBus.$emit('transaction-status', {
+                                done: true,
+                                error: false
+                            });
                         } else {
-                            this.$eventBus.$emit('transaction-status', false);
+                            this.$eventBus.$emit('transaction-status', {
+                                done: true,
+                                error: true
+                            });
                         }
 
                     })
