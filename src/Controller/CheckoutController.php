@@ -97,7 +97,7 @@ class CheckoutController extends Controller
 
         $isSent = false;
         if ($mailer->send($message, $failures)) {
-//            todo: always true on failure
+//            todo: always true on failure ?
 
             $isSent = true;
 //            echo ' SUCCESS SENDING!:';
