@@ -38,7 +38,7 @@
 
             // Add a response interceptor
             HTTP.interceptors.response.use((response) => {
-                    // this.loading = false;
+                    this.loading = false;
                     return response;
                 }
             );
