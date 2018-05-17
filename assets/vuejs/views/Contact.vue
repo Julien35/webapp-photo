@@ -45,6 +45,7 @@
 
 <script>
     import {required, minLength, email} from 'vuelidate/lib/validators';
+    import {HTTP} from '../http-common';
 
     export default {
         name: 'Contact',
@@ -53,13 +54,9 @@
             return {
                 isSubmit: false,
                 contact: {
-                    type: Object,
-                    required: true,
-                    default: {
-                        name: null,
-                        email: null,
-                        message: null
-                    }
+                    name: 'Julien',
+                    email: 'julien@mail.com',
+                    message: 'Test'
                 }
             }
         },
@@ -87,9 +84,25 @@
 
         methods: {
             submitContact() {
+                HTTP
+                    .post('/contact',
+                        this.contact
+                    )
+                    .then((response) => {
 
+                        if (response) {
+                            setTimeout(() => {
+                                // this.isSubmit = true;
+                            }, 2000);
+                        } else {
+                            // this.currentStatus = STATUS_FAILED;
+                        }
 
-                this.isSubmit = true;
+                    })
+                    .catch((response) => {
+                        // this.currentStatus = STATUS_FAILED;
+                        // return false;
+                    });
             },
         }
 
