@@ -12,12 +12,6 @@
                 :enable-drop-in-test-button="false"
         />
 
-        <article>
-
-
-
-        </article>
-
     </section>
 
 </template>

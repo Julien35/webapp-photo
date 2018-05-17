@@ -37,6 +37,11 @@
             return {
                 title: 'Home Page',
             }
+        },
+        watch: {
+            '$route'() {
+                $('.navbar-collapse').collapse('hide');
+            }
         }
     }
 </script>

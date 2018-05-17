@@ -1,37 +1,44 @@
 <template>
     <section class="container">
 
-        <h2>Formulaire de contact</h2>
+        <article v-show="isSubmit" class="container">
+            <div class="text-info">
+                Le message est envoyé.
+            </div>
+        </article>
 
-        <div class="form-group row">
-            <label for="name" class="col-md-4 d-sm-none d-md-block d-none col-form-label">Nom : </label>
-            <div class="col-md-8">
+        <article v-show="!isSubmit">
+            <h2>Formulaire de contact</h2>
+
+            <div class="form-group">
+                <label for="name">Nom : </label>
                 <input type="text" class="form-control" id="name" placeholder="Nom"
                        v-model="contact.name" v-on:input="$v.contact.name.$touch"
                        v-bind:class="{error: $v.contact.name.$error,
                    valid: $v.contact.name.$dirty && !$v.contact.name.$invalid}">
             </div>
-        </div>
 
-        <div class="form-group row">
-            <label for="email" class="col-md-4 d-sm-none d-md-block d-none col-form-label">E-mail : </label>
-            <div class="col-md-8">
+            <div class="form-group">
+                <label for="email">E-mail : </label>
                 <input type="email" class="form-control" id="email" placeholder="E-mail"
                        v-model="contact.email" v-on:input="$v.contact.email.$touch"
                        v-bind:class="{error: $v.contact.email.$error,
                    valid: $v.contact.email.$dirty && !$v.contact.email.$invalid}">
             </div>
-        </div>
 
-        <div class="form-group row">
-            <label for="message" class="col-md-4 d-sm-none d-md-block d-none col-form-label">Message : </label>
-            <div class="col-md-8">
-                <input type="text" class="form-control" id="message" placeholder="Message"
-                       v-model="contact.message" v-on:input="$v.contact.message.$touch"
-                       v-bind:class="{error: $v.contact.message.$error,
+            <div class="form-group">
+                <label for="message">Message : </label>
+                <textarea class="form-control" id="message" placeholder="Message"
+                          v-model="contact.message" v-on:input="$v.contact.message.$touch"
+                          v-bind:class="{error: $v.contact.message.$error,
                    valid: $v.contact.message.$dirty && !$v.contact.message.$invalid}">
+            </textarea>
             </div>
-        </div>
+
+            <button type="submit" class="btn btn-primary"
+                    @click="submitContact" v-bind:disabled="$v.$invalid">Envoyer
+            </button>
+        </article>
 
     </section>
 </template>
@@ -44,6 +51,7 @@
 
         data() {
             return {
+                isSubmit: false,
                 contact: {
                     type: Object,
                     required: true,
@@ -77,18 +85,12 @@
             }
         },
 
-        mounted() {
-            if (!this.$v.$invalid) {
-                this.updateIsFormValid();
-            }
-        },
-
         methods: {
-            updateIsFormValid() {
-                // emit to EventBus
-                // this.$eventBus.$emit('change-register-validation', !this.$v.$invalid);
-                // this.$eventBus.$emit('change-register', this.registration);
-            }
+            submitContact() {
+
+
+                this.isSubmit = true;
+            },
         }
 
     }
