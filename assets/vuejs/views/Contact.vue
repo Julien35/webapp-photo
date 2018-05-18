@@ -85,23 +85,21 @@
         methods: {
             submitContact() {
                 HTTP
-                    .post('/contact',
+                    .post('/contact/new',
                         this.contact
                     )
                     .then((response) => {
+                        if (response.data) {
+                            this.isSubmit = true;
 
-                        if (response) {
                             setTimeout(() => {
-                                // this.isSubmit = true;
-                            }, 2000);
-                        } else {
-                            // this.currentStatus = STATUS_FAILED;
+                                this.$router.push({name: 'home'});
+                            }, 5000);
                         }
 
                     })
                     .catch((response) => {
-                        // this.currentStatus = STATUS_FAILED;
-                        // return false;
+                        this.isSubmit = false;
                     });
             },
         }

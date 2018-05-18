@@ -3,11 +3,14 @@ import App from './App'
 import router from './router'
 import Vuelidate from 'vuelidate'
 
-Vue.use(Vuelidate);
-// Global event bus
-Vue.prototype.$eventBus = new Vue();
+if (document.querySelector('#app')) {
 
-new Vue({
-    router,
-    render: h => h(App)
-}).$mount('#app');
+    Vue.use(Vuelidate);
+    // Global event bus
+    Vue.prototype.$eventBus = new Vue();
+
+    new Vue({
+        router,
+        render: h => h(App)
+    }).$mount('#app');
+}
