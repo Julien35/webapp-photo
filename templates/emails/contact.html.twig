@@ -1,0 +1,12 @@
+{# templates/emails/registration.html.twig #}
+<h3>Contact</h3>
+
+Bonjour {{ name }}!
+
+{# example, assuming you have a route named "login" #}
+{#To login, go to: <a href="{{ url('login') }}">...</a>.#}
+
+Merci!
+
+{# Makes an absolute URL to the /images/logo.png file #}
+<img src="{{ absolute_url(asset('images/logo-ludo.jpg')) }}">

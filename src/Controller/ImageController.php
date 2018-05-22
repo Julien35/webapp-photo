@@ -7,6 +7,7 @@ use App\Entity\Product;
 use App\Entity\Registration;
 use App\Manager\CartManager;
 use App\Manager\RegistrationManager;
+use App\Service\FtpService;
 use App\Service\PhotoUploadService;
 use DateTime;
 use Doctrine\ORM\ORMException;
@@ -35,13 +36,32 @@ class ImageController extends Controller
      */
     private $registrationManager;
 
+    /**
+     * @var FtpService $ftpService
+     */
+    private $ftpService;
 
-    public function __construct(PhotoUploadService $photoUploadService, CartManager $cartManager, RegistrationManager $registrationManager)
-    {
+
+    public function __construct(
+        PhotoUploadService $photoUploadService,
+        CartManager $cartManager,
+        RegistrationManager $registrationManager,
+        FtpService $ftpService
+    ) {
         $this->photoUploadService = $photoUploadService;
         $this->cartManager = $cartManager;
         $this->registrationManager = $registrationManager;
+        $this->ftpService = $ftpService;
+
+//        $this->testFtp();
     }
+
+    public function testFtp()
+    {
+        $test = $this->ftpService->connect();
+        return $test;
+    }
+
 
     /**
      * @Route("api/image/upload", name="image-upload")
@@ -71,7 +91,6 @@ class ImageController extends Controller
                 $products = $this->photoUploadService->uploadPhotos($photosData, $photosFiles);
                 // update Cart with register_id
                 $registration = $this->registrationManager->initRegistration(json_decode($registrationData[0]));
-
                 // Update Cart with all value
                 $updateCart = $this->cartManager->update($cart, $products, $registration);
 

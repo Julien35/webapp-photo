@@ -9,6 +9,11 @@ parameters:
         publicKey: '%env(publicKey)%'
         privateKey: '%env(privateKey)%'
 
+    'ftp_parameters':
+      server_ip: '%env(ftp_server_ip)%'
+      ftp_user_name: '%env(ftp_user_name)%'
+      ftp_user_pass: '%env(ftp_user_pass)%'
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -45,5 +50,10 @@ services:
 
     App\Service\BrainTreeCheckout:
         arguments: ['%braintree_parameters%']
+        autowire: false
+        public: true
+
+    App\Service\FtpService:
+        arguments: ['%ftp_parameters%']
         autowire: false
         public: true
