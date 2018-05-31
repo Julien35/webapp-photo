@@ -88,7 +88,10 @@
             },
 
             dropinRequestPaymentMethod() {
-                this.$eventBus.$emit('loading', true);
+                this.$eventBus.$emit('loading', {
+                    state: true,
+                    message: ''
+                },);
 
                 this.dropinInstance.requestPaymentMethod((requestErr, payload) => {
 

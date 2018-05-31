@@ -157,6 +157,12 @@
                 if (!(this.files.length > 0)) {
                     return false;
                 }
+
+                this.$eventBus.$emit('loading', {
+                    state: true,
+                    message: 'Transfert de vos images'
+                });
+
                 if (this.currentStatus === STATUS_SUCCESS) {
                     return true;
                 }
