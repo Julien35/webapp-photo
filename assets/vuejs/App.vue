@@ -29,6 +29,11 @@
             }
         },
         created() {
+            this.$eventBus.$on('loading', (loading) => {
+                console.log(loading);
+                this.loading = loading;
+            });
+
             // Add a request interceptor
             HTTP.interceptors.request.use((config) => {
                     this.loading = true;

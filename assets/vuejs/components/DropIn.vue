@@ -88,6 +88,8 @@
             },
 
             dropinRequestPaymentMethod() {
+                this.$eventBus.$emit('loading', true);
+
                 this.dropinInstance.requestPaymentMethod((requestErr, payload) => {
 
                     if (requestErr) {
