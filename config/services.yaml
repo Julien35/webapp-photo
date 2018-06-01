@@ -57,3 +57,7 @@ services:
         arguments: ['%ftp_parameters%']
         autowire: false
         public: true
+
+    App\Service\SendMailService:
+        autowire: true
+        public: true

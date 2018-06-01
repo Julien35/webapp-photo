@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\BrainTreeCheckout;
+use App\Service\SendMailService;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Swift_Mailer;
@@ -15,9 +16,12 @@ class CheckoutController extends Controller
 {
     private $brainTreeCheckout;
 
-    public function __construct(BrainTreeCheckout $brainTreeCheckout)
+    private $sendMailService;
+
+    public function __construct(BrainTreeCheckout $brainTreeCheckout, SendMailService $sendMailService)
     {
         $this->brainTreeCheckout = $brainTreeCheckout;
+        $this->sendMailService = $sendMailService;
     }
 
     /**
@@ -45,16 +49,21 @@ class CheckoutController extends Controller
      * @Method({"POST"})
      *
      * @param Request $request
-     * @param Swift_Mailer $mailer
      * @return JsonResponse
      */
-    public function transaction(Request $request, \Swift_Mailer $mailer)
+    public function transaction(Request $request, Swift_Mailer $mailer)
     {
         $data = json_decode($request->getContent(), true);
         $transaction = $this->brainTreeCheckout->createTransaction($data['amount'], $data['nonce']);
 
         if ($transaction->success) {
-            $this->sendMail('test mail', $mailer);
+
+            $this
+                ->sendMailService
+                ->sendMail('Hello Email test',
+                    'webphoto.studioludo@gmail.com',
+                    'webphoto.studioludo@gmail.com',
+                    '', $mailer);
         }
 
         return $this->json(
@@ -71,41 +80,22 @@ class CheckoutController extends Controller
      */
     public function testMail(\Swift_Mailer $mailer)
     {
+        $template = $this->renderView(
+        // templates/emails/registration.html.twig
+            'emails/quotation.html.twig',
+            array('name' => 'Test Mail')
+        );
+
         return $this->json(
-            $this->sendMail('test mail', $mailer)
+            $this->sendMailService
+                ->sendMail(
+                    'Hello Email test',
+                    'webphoto.studioludo@gmail.com',
+                    'webphoto.studioludo@gmail.com',
+                    $template,
+                    $mailer
+                )
         );
     }
 
-    /**
-     * @param $name
-     * @param \Swift_Mailer $mailer
-     * @return int
-     */
-    public function sendMail($name, \Swift_Mailer $mailer)
-    {
-        $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('mail@gmail.com')
-            ->setTo('mail@gmail.com')
-            ->setBody(
-                $this->renderView(
-                // templates/emails/registration.html.twig
-                    'emails/quotation.html.twig',
-                    array('name' => $name)
-                ),
-                'text/html'
-            );
-
-        $isSent = false;
-        if ($mailer->send($message, $failures)) {
-//            todo: always true on failure ?
-
-            $isSent = true;
-//            echo ' SUCCESS SENDING!:';
-        } else {
-//            echo ' SENDING ERROR TO :' . print_R($failures);
-        }
-
-
-        return $isSent;
-    }
 }
