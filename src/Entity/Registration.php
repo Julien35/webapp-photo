@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RegistrationRepository")
@@ -14,61 +15,73 @@ class Registration
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"cart"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"cart"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"cart"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"cart"})
      */
     private $address1;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"cart"})
      */
     private $address2;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"cart"})
      */
     private $postal;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"cart"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"cart"})
      */
     private $state;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"cart"})
      */
     private $country;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"cart"})
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"cart"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"cart"})
      */
     private $datetime;
 

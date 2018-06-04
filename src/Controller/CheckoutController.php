@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
+use App\Manager\CartManager;
 use App\Service\BrainTreeCheckout;
-use App\Service\SendMailService;
+use App\Service\MailService;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Swift_Mailer;
@@ -15,13 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class CheckoutController extends Controller
 {
     private $brainTreeCheckout;
+    private $mailService;
+    private $cartManager;
 
-    private $sendMailService;
-
-    public function __construct(BrainTreeCheckout $brainTreeCheckout, SendMailService $sendMailService)
+    public function __construct(BrainTreeCheckout $brainTreeCheckout, CartManager $cartManager, MailService $mailService)
     {
         $this->brainTreeCheckout = $brainTreeCheckout;
-        $this->sendMailService = $sendMailService;
+        $this->mailService = $mailService;
+        $this->cartManager = $cartManager;
     }
 
     /**
@@ -57,13 +59,13 @@ class CheckoutController extends Controller
         $transaction = $this->brainTreeCheckout->createTransaction($data['amount'], $data['nonce']);
 
         if ($transaction->success) {
+            $cart = $this->cartManager->getCart($data['cartId']);
+            $cart->setCheckout(true);
+            $updateCart = $this->cartManager->update($cart);
 
             $this
-                ->sendMailService
-                ->sendMail('Hello Email test',
-                    'webphoto.studioludo@gmail.com',
-                    'webphoto.studioludo@gmail.com',
-                    '', $mailer);
+                ->mailService
+                ->sendCheckoutMail();
         }
 
         return $this->json(
@@ -87,7 +89,7 @@ class CheckoutController extends Controller
         );
 
         return $this->json(
-            $this->sendMailService
+            $this->mailService
                 ->sendMail(
                     'Hello Email test',
                     'webphoto.studioludo@gmail.com',

@@ -73,7 +73,7 @@ class ImageController extends Controller
      */
     public function upload(Request $request)
     {
-        $status = ['status' => "success", "fileUploaded" => false];
+        $status = ['status' => "success", "fileUploaded" => false, 'clientCart' => null];
         // Array of Uploadedfile
         $photosFiles = $request->files->get('photosFiles');
         $photosData = $request->request->get('photosData');
@@ -95,14 +95,16 @@ class ImageController extends Controller
                 $updateCart = $this->cartManager->update($cart, $products, $registration);
 
                 $conn->commit();
-                $status = ['status' => "success", "fileUploaded" => true];
+
+                $status = ['status' => 'success', 'fileUploaded' => true, 'clientCart' => $updateCart];
+
             } catch (ORMException $e) {
                 $conn->rollback();
             }
 
         }
 
-        return $this->json($status);
+        return $this->json($status, 200, [], ['groups' => ['cart']]);
     }
 
 }

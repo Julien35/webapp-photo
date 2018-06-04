@@ -53,6 +53,7 @@
                     })
                     .catch((response) => {
                         console.log(response);
+                        this.authToken = false;
                     });
             },
 

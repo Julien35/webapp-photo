@@ -23,6 +23,15 @@ class CartManager
     }
 
     /**
+     * @param int $id
+     * @return Cart
+     */
+    public function getCart($id): Cart
+    {
+        return $this->cartRepository->find($id);
+    }
+
+    /**
      * Create a new Cart with no product & registration link
      *
      * @throws \Doctrine\ORM\ORMException
@@ -50,18 +59,24 @@ class CartManager
     public function update(Cart $cart, array $products = null, Registration $registration = null) : Cart
     {
         $totalPrice = 0;
+        // todo: calcul priceItem with support, format, finition of one product
         $priceItem = 1.99;
 
-        $cart->setRegistration($registration);
-
-        /** @var  Product $product */
-        foreach ($products as $product) {
-            $cart->addProduct($product);
-            $totalPrice += $product->getQuantity() * $priceItem;
+        if (isset($registration)) {
+            $cart->setRegistration($registration);
         }
 
-        $cart->setPrixTotalTtc($totalPrice);
-        $cart->setprixTotalHt($totalPrice - $totalPrice * 0.20);
+        if (isset($products)) {
+            /** @var  Product $product */
+            foreach ($products as $product) {
+                $cart->addProduct($product);
+                $totalPrice += $product->getQuantity() * $priceItem;
+            }
+
+            $cart->setPrixTotalTtc($totalPrice);
+            $cart->setprixTotalHt($totalPrice - $totalPrice * 0.20);
+        }
+
         $this->cartRepository->save($cart);
         return $cart;
     }

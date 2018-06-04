@@ -199,9 +199,13 @@
                     )
                     .then((response) => {
                         if (response.data.fileUploaded) {
+
+                            this.$eventBus.$emit('client-cart', response.data.clientCart);
+
                             setTimeout(() => {
                                 this.currentStatus = STATUS_SUCCESS;
                             }, 2000);
+
                             return true;
                         } else {
                             this.currentStatus = STATUS_FAILED;

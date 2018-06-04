@@ -6,6 +6,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CartRepository")
@@ -16,41 +17,49 @@ class Cart
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"cart"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"cart"})
      */
     private $dateCreation;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Registration", cascade={"persist", "remove"})
+     * @Groups({"cart"})
      */
     private $registration;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="cart_id")
+     * @Groups({"cart"})
      */
     private $products;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"cart"})
      */
     private $prixTotalHt;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"cart"})
      */
     private $prixTotalTtc;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"cart"})
      */
     private $checkout;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"cart"})
      */
     private $paid;
 

@@ -6,6 +6,8 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -19,6 +21,7 @@ class Product
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"cart"})
      */
     private $id;
 
@@ -34,6 +37,7 @@ class Product
     /**
      * @ORM\Column(type="string", length=255)
      *
+     * @Groups({"cart"})
      * @var string
      */
     private $imageName;
@@ -42,6 +46,7 @@ class Product
      * @ORM\Column(type="string", length=255)
      *
      * @var string
+     * @Groups({"cart"})
      */
     private $imageNameText;
 
@@ -49,13 +54,15 @@ class Product
      * @ORM\Column(type="integer")
      *
      * @var integer
+     * @Groups({"cart"})
      */
     private $imageSize;
 
     /**
      * @ORM\Column(type="datetime")
      *
-     * @var \DateTime
+     * @var \DateTimeImmutable
+     * @Groups({"cart"})
      */
     private $updatedAt;
 
@@ -63,6 +70,7 @@ class Product
      * @ORM\Column(type="string", length=100, nullable=true)
      *
      * @var string
+     * @Groups({"cart"})
      */
     private $format;
 
@@ -70,6 +78,7 @@ class Product
      * @ORM\Column(type="string", length=100, nullable=true)
      *
      * @var string
+     * @Groups({"cart"})
      */
     private $finition;
 
@@ -77,6 +86,7 @@ class Product
      * @ORM\Column(type="integer", nullable=true)
      *
      * @var integer
+     * @Groups({"cart"})
      */
     private $quantity;
 
@@ -85,8 +95,37 @@ class Product
      */
     private $cart;
 
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
 
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt(): \DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTimeImmutable $updatedAt
+     */
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance

@@ -6,7 +6,7 @@ namespace App\Service;
 use Swift_Mailer;
 use Swift_Message;
 
-class SendMailService
+class MailService
 {
     public function sendContactMail()
     {
@@ -15,7 +15,10 @@ class SendMailService
 
     public function sendCheckoutMail()
     {
+        // mail to client
 
+
+        // mail to studio
     }
 
 
@@ -43,13 +46,8 @@ class SendMailService
         $sent = $mailer->send($message, $failures);
 
         if ($sent && empty($failures)) {
-//            todo: always true on failure ?
             $isSent = true;
-            echo ' SUCCESS SENDING!:';
-        } else {
-            echo ' SENDING ERROR TO :' . print_R($failures);
         }
-
 
         return $isSent;
     }

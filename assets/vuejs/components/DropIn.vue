@@ -49,6 +49,10 @@
             this.$parent.$on('tokenizeChild', () => {
                 this.dropinRequestPaymentMethod();
             });
+
+            this.$eventBus.$on('client-cart', (cart) => {
+                this.clientCart = cart;
+            });
         },
         data() {
             return {
@@ -56,6 +60,7 @@
                 dropinInstance: '',
                 paymentPayload: '',
                 dataCollectorPayload: '',
+                clientCart: Object
             }
         },
         methods: {
@@ -109,14 +114,16 @@
             },
 
             transaction(amount, nonce) {
+
+                console.log('transaction (this.clientCart) : ', this.clientCart);
+
                 HTTP
                     .post('/checkout/transaction', {
                         amount: amount,
-                        nonce: nonce
+                        nonce: nonce,
+                        cartId: this.clientCart.id
                     })
                     .then((response) => {
-                        console.log(response, 'ok');
-
                         if (response.data.success) {
                             this.$eventBus.$emit('transaction-status', {
                                 done: true,
