@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Manager\CartManager;
 use App\Service\BrainTreeCheckout;
 use App\Service\MailService;
+use Doctrine\ORM\ORMException;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Swift_Mailer;
@@ -19,8 +20,11 @@ class CheckoutController extends Controller
     private $mailService;
     private $cartManager;
 
-    public function __construct(BrainTreeCheckout $brainTreeCheckout, CartManager $cartManager, MailService $mailService)
-    {
+    public function __construct(
+        BrainTreeCheckout $brainTreeCheckout,
+        CartManager $cartManager,
+        MailService $mailService
+    ) {
         $this->brainTreeCheckout = $brainTreeCheckout;
         $this->mailService = $mailService;
         $this->cartManager = $cartManager;
@@ -58,14 +62,17 @@ class CheckoutController extends Controller
         $data = json_decode($request->getContent(), true);
         $transaction = $this->brainTreeCheckout->createTransaction($data['amount'], $data['nonce']);
 
-        if ($transaction->success) {
-            $cart = $this->cartManager->getCart($data['cartId']);
-            $cart->setCheckout(true);
-            $updateCart = $this->cartManager->update($cart);
+        try {
+            if ($transaction->success) {
+                $cart = $this->cartManager->getCart($data['cartId']);
+                $cart->setCheckout(true);
+                $updateCart = $this->cartManager->update($cart);
 
-            $this
-                ->mailService
-                ->sendCheckoutMail();
+                $this
+                    ->mailService
+                    ->sendCheckoutMail($updateCart, $mailer);
+            }
+        } catch (ORMException $e) {
         }
 
         return $this->json(
