@@ -62,48 +62,25 @@ class CheckoutController extends Controller
         $data = json_decode($request->getContent(), true);
         $transaction = $this->brainTreeCheckout->createTransaction($data['amount'], $data['nonce']);
 
+
         try {
             if ($transaction->success) {
                 $cart = $this->cartManager->getCart($data['cartId']);
                 $cart->setCheckout(true);
                 $updateCart = $this->cartManager->update($cart);
 
-                $this
+                $isSent = $this
                     ->mailService
                     ->sendCheckoutMail($updateCart, $mailer);
             }
         } catch (ORMException $e) {
+        } catch (\Twig_Error_Loader $e) {
+        } catch (\Twig_Error_Runtime $e) {
+        } catch (\Twig_Error_Syntax $e) {
         }
 
         return $this->json(
             $transaction
-        );
-    }
-
-
-    /**
-     * @Route("api/mail", name="mail")
-     * @Method({"GET"})
-     * @param Swift_Mailer $mailer
-     * @return JsonResponse
-     */
-    public function testMail(\Swift_Mailer $mailer)
-    {
-        $template = $this->renderView(
-        // templates/emails/registration.html.twig
-            'emails/quotation.html.twig',
-            array('name' => 'Test Mail')
-        );
-
-        return $this->json(
-            $this->mailService
-                ->sendMail(
-                    'Hello Email test',
-                    'webphoto.studioludo@gmail.com',
-                    'webphoto.studioludo@gmail.com',
-                    $template,
-                    $mailer
-                )
         );
     }
 

@@ -4,6 +4,7 @@ namespace App\Service;
 
 
 use App\Entity\Cart;
+use App\Entity\Contact;
 use Psr\Container\ContainerInterface;
 use Swift_Mailer;
 use Swift_Message;
@@ -19,11 +20,42 @@ class MailService
     }
 
 
-    public function sendContactMail()
+    /**
+     * @param Contact $contact
+     * @param Swift_Mailer $mailer
+     * @return bool
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    public function sendContactMail(Contact $contact, Swift_Mailer $mailer)
     {
+        $isSent = false;
 
+        $template = $this->container->get('twig')->render(
+            'emails/contact.html.twig',
+            array('name' => $contact->getName())
+        );
+
+        $isSent = $this->sendMail(
+            'Hello Email test',
+            'webphoto.studioludo@gmail.com',
+            ['webphoto.studioludo@gmail.com', $contact->getEmail()],
+            $template,
+            $mailer
+        );
+
+        return $isSent;
     }
 
+    /**
+     * @param Cart $cart
+     * @param Swift_Mailer $mailer
+     * @return bool|int
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
     public function sendCheckoutMail(Cart $cart, Swift_Mailer $mailer)
     {
         $isSent = false;
@@ -37,13 +69,10 @@ class MailService
         $isSent = $this->sendMail(
             'Hello Email test',
             'webphoto.studioludo@gmail.com',
-            'webphoto.studioludo@gmail.com',
+            ['webphoto.studioludo@gmail.com', $cart->getRegistration()->getEmail()],
             $template,
             $mailer
         );
-
-        // mail to studio
-
 
         return $isSent;
     }
@@ -55,9 +84,9 @@ class MailService
      * @param $to
      * @param $mailBody
      * @param Swift_Mailer $mailer
-     * @return int
+     * @return bool
      */
-    public function sendMail($subject, $from, $to, $mailBody, Swift_Mailer $mailer)
+    private function sendMail($subject, $from, $to, $mailBody, Swift_Mailer $mailer)
     {
         $message = new Swift_Message();
         $message
