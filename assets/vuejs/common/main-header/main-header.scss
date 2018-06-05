@@ -61,6 +61,12 @@ $navbar-item-active-border: #673ab7;
       }
     }
 
+    .item.router-link-exact-active{
+      line-height: $navbar-height + $navbar-item-border-width;
+      border-bottom: $navbar-item-border-width solid $navbar-item-border;
+      border-bottom-color: $navbar-item-active-border;
+    }
+
   }
 
 }

@@ -16,10 +16,11 @@
                 <!--items list-->
                 <div class="collapse navbar-collapse" id="navigation">
                     <div class="navbar-nav">
-                        <router-link :to="{name: 'home'}" class="item -link">Accueil <span
-                                class="sr-only">(current)</span></router-link>
-                        <router-link :to="{name: 'about'}" class="item -link" href="#">Qui sommes-nous ?</router-link>
-                        <router-link :to="{name: 'contact'}" class="item -link" href="#">Contact</router-link>
+                        <router-link :to="{name: 'home'}" class="item -link">Accueil
+                            <span class="sr-only">(current)</span>
+                        </router-link>
+                        <router-link :to="{name: 'about'}" class="item -link">Qui sommes-nous ?</router-link>
+                        <router-link :to="{name: 'contact'}" class="item -link">Contact</router-link>
                         <!--<router-link :to="{name: 'cart'}" class="item -link" href="#">Panier</router-link>-->
                     </div>
                 </div>

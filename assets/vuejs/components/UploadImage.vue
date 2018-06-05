@@ -12,7 +12,7 @@
 
                     <p v-if="isInitial">
                         <!--Drag your photo(s) here to begin<br> or click to browse-->
-                        Glisser vos photo(s) ici pour démarrer<br> ou cliquer pour naviguer
+                        Déposer vos images ici pour démarrer<br> ou cliquer pour naviguer
                     </p>
                     <p v-if="isSaving">
                         <!--Uploading {{ fileCount }} photo(s)...-->

@@ -17,7 +17,7 @@
         data() {
             return {
                 loading: {
-                    state : true,
+                    state: false,
                     message: ''
                 },
             }

@@ -5,7 +5,7 @@
                  next-button-text="Etape suivante" back-button-text="Précédent"
                  finish-button-text="Paiement">
 
-        <tab-content title="Photos à télécharger" icon="far fa-images"
+        <tab-content title="Commander vos tirages" icon="far fa-images"
                      :before-change="hasPhotos">
             <upload-image v-bind:current-status="currentStatus"/>
         </tab-content>
