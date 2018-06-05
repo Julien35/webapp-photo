@@ -12,11 +12,11 @@ use Swift_Message;
 class MailService
 {
 
-    private $container;
+    private $twig_engine;
 
     public function __construct(ContainerInterface $container)
     {
-        $this->container = $container;
+        $this->twig_engine = $container->get('twig');
     }
 
 
@@ -30,9 +30,7 @@ class MailService
      */
     public function sendContactMail(Contact $contact, Swift_Mailer $mailer)
     {
-        $isSent = false;
-
-        $template = $this->container->get('twig')->render(
+        $template = $this->twig_engine->render(
             'emails/contact.html.twig',
             array('name' => $contact->getName())
         );
@@ -58,10 +56,7 @@ class MailService
      */
     public function sendCheckoutMail(Cart $cart, Swift_Mailer $mailer)
     {
-        $isSent = false;
-
-        $template = $this->container->get('twig')->render(
-        // templates/emails/registration.html.twig
+        $template = $this->twig_engine->render(
             'emails/quotation.html.twig',
             array('name' => 'Test Mail')
         );

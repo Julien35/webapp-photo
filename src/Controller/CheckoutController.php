@@ -55,6 +55,7 @@ class CheckoutController extends Controller
      * @Method({"POST"})
      *
      * @param Request $request
+     * @param Swift_Mailer $mailer
      * @return JsonResponse
      */
     public function transaction(Request $request, Swift_Mailer $mailer)

@@ -5,7 +5,10 @@ namespace App\Controller;
 use App\Entity\Contact;
 use App\Form\ContactType;
 use App\Manager\ContactManager;
+use App\Service\MailService;
 use Doctrine\ORM\ORMException;
+use Exception;
+use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,22 +19,30 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ContactController extends Controller
 {
-
     /**
      * @var ContactManager $contactManager
      */
     private $contactManager;
 
-    public function __construct(ContactManager $contactManager)
+    /**
+     * @var MailService $mailService
+     */
+    private $mailService;
+
+    public function __construct(ContactManager $contactManager, MailService $mailService)
     {
         $this->contactManager = $contactManager;
+        $this->mailService = $mailService;
     }
 
 
     /**
-     * @Route("/new", name="contact_new", methods="GET|POST")
+     * @Route("/new", name="contact_new", methods="POST")
+     * @param Request $request
+     * @param Swift_Mailer $mailer
+     * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Swift_Mailer $mailer): Response
     {
         $data = json_decode($request->getContent(), true);
 
@@ -41,8 +52,10 @@ class ContactController extends Controller
 
         try {
             $this->contactManager->save($contact);
+            $this->mailService->sendContactMail($contact, $mailer);
+
             return $this->json(true, 201);
-        } catch (ORMException $e) {
+        } catch (Exception $e) {
             return $this->json(false, 503);
         }
     }
