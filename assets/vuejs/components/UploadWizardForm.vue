@@ -25,13 +25,29 @@
             <checkout/>
         </tab-content>
 
+        <template slot="footer" slot-scope="props">
+            <div class="wizard-footer-left">
+                <wizard-button v-if="props.activeTabIndex > 0 && !props.isLastStep" @click.native="props.prevTab()"
+                               :style="props.fillButtonStyle">Précédent
+                </wizard-button>
+            </div>
+            <div class="wizard-footer-right">
+                <wizard-button v-if="!props.isLastStep" @click.native="props.nextTab()" class="wizard-footer-right"
+                               :style="props.fillButtonStyle">Etape suivante
+                </wizard-button>
+
+                <wizard-button v-else @click.native="onComplete" class="wizard-footer-right finish-button"
+                               :style="props.fillButtonStyle"> {{props.isLastStep ? 'Paiement' : 'Etape suivante'}}
+                </wizard-button>
+            </div>
+        </template>
+
     </form-wizard>
 
 </template>
 
 <script>
-
-    import {FormWizard, TabContent} from 'vue-form-wizard'
+    import {FormWizard, TabContent, WizardButton} from 'vue-form-wizard/src/index'
     import 'vue-form-wizard/src/assets/wizard.scss'
 
 
@@ -49,6 +65,7 @@
         components: {
             FormWizard,
             TabContent,
+            WizardButton,
             ProgressBar,
             UploadImage,
             AddressForm,

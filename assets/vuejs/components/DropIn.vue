@@ -114,9 +114,6 @@
             },
 
             transaction(amount, nonce) {
-
-                console.log('transaction (this.clientCart) : ', this.clientCart);
-
                 HTTP
                     .post('/checkout/transaction', {
                         amount: amount,
