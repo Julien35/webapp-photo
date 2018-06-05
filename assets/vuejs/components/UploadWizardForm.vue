@@ -5,6 +5,11 @@
                  next-button-text="Etape suivante" back-button-text="Précédent"
                  finish-button-text="Paiement">
 
+        <tab-content title="Support d'impression" icon="fas fa-print">
+                     <!--:before-change="hasPhotos">-->
+            <printing-support/>
+        </tab-content>
+
         <tab-content title="Commander vos tirages" icon="far fa-images"
                      :before-change="hasPhotos">
             <upload-image v-bind:current-status="currentStatus"/>
@@ -52,6 +57,7 @@
 
 
     import {HTTP} from '../http-common';
+    import PrintingSupport from './PrintingSupport'
     import ProgressBar from './progress-bar'
     import UploadImage from './UploadImage'
     import AddressForm from './AddressForm'
@@ -67,6 +73,7 @@
             TabContent,
             WizardButton,
             ProgressBar,
+            PrintingSupport,
             UploadImage,
             AddressForm,
             ShoppingCart,
