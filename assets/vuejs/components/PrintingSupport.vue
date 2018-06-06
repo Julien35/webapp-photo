@@ -18,7 +18,6 @@
                     Finition 1
                 </label>
             </div>
-
         </fieldset>
 
     </section>
