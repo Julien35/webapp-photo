@@ -51,10 +51,11 @@ class BrainTreeCheckout
         return $this->clientToken;
     }
 
+
     /**
      * @param float $amount
      * @param string $nonce
-     * @return \Braintree\Result\Error|\Braintree\Result\
+     * @return \Braintree\Result\Error|\Braintree\Result\Successful
      */
     public function createTransaction(float $amount, string $nonce)
     {

@@ -16,8 +16,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CheckoutController extends Controller
 {
+    /**
+     * @var BrainTreeCheckout $brainTreeCheckout
+     */
     private $brainTreeCheckout;
+
+    /**
+     * @var MailService $mailService
+     */
     private $mailService;
+
+    /** @var CartManager $cartManager
+     *
+     */
     private $cartManager;
 
     public function __construct(
@@ -61,8 +72,8 @@ class CheckoutController extends Controller
     public function transaction(Request $request, Swift_Mailer $mailer)
     {
         $data = json_decode($request->getContent(), true);
-        $transaction = $this->brainTreeCheckout->createTransaction($data['amount'], $data['nonce']);
 
+        $transaction = $this->brainTreeCheckout->createTransaction($data['amount'], $data['nonce']);
 
         try {
             if ($transaction->success) {
@@ -74,10 +85,8 @@ class CheckoutController extends Controller
                     ->mailService
                     ->sendCheckoutMail($updateCart, $mailer);
             }
-        } catch (ORMException $e) {
-        } catch (\Twig_Error_Loader $e) {
-        } catch (\Twig_Error_Runtime $e) {
-        } catch (\Twig_Error_Syntax $e) {
+        } catch (Exception $e) {
+
         }
 
         return $this->json(
