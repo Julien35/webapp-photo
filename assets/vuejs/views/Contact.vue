@@ -51,13 +51,15 @@
         name: 'Contact',
 
         data() {
-            return {
-                isSubmit: false,
-                contact: {
-                    name: 'Julien',
-                    email: 'julien@mail.com',
-                    message: 'Test'
-                }
+            return {}
+        },
+
+        computed: {
+            contact() {
+                return this.$store.state.contactModule.contact;
+            },
+            isSubmit() {
+                return this.$store.state.contactModule.isSubmit;
             }
         },
 
@@ -90,16 +92,17 @@
                     )
                     .then((response) => {
                         if (response.data) {
-                            this.isSubmit = true;
+                            this.$store.commit('contactModule/submit', true);
 
                             setTimeout(() => {
                                 this.$router.push({name: 'home'});
+                                this.$store.dispatch('contactModule/reset');
                             }, 5000);
                         }
 
                     })
                     .catch((response) => {
-                        this.isSubmit = false;
+                        this.$store.commit('contactModule/submit', false);
                     });
             },
         }

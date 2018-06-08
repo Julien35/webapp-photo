@@ -16,7 +16,3 @@ if (document.querySelector('#app')) {
         render: h => h(App)
     }).$mount('#app');
 }
-
-
-store.commit('increment');
-console.log(store.state.count);
