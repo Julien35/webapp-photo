@@ -158,7 +158,6 @@
         },
         data() {
             return {
-                step: 1,
                 files: [],
                 uploadedFiles: [],
                 uploadError: null,
@@ -215,11 +214,15 @@
             },
 
             filesChange(fileList) {
-                // if empty > return
-                if (!fileList.length) return;
+                let len = fileList.length;
 
-                for (let i = 0; i < fileList.length; i++) {
-                    this.addImage(fileList[i]);
+                // if empty > return
+                if (!len) return;
+
+                for (let i = 0; i < len; i++) {
+                    if (fileList[i].type.startsWith('image/')) {
+                        this.addImage(fileList[i]);
+                    }
                 }
 
                 this.getImagePreviews();
