@@ -31,6 +31,7 @@ class SupportImage
      */
     private $formats;
 
+
     public function getId()
     {
         return $this->id;

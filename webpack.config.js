@@ -32,7 +32,8 @@ Encore
             './assets/scss/index.scss'
         ])
 
-    // this creates a 'vendor.js' file with jquery and the bootstrap JS module
+    // this creates a 'vendors.js' file with JS modules (jquery, bootstrap.js, ...)
+    // this creates a 'vendors.css' file with vendors CSS (bootstrap, fontawsome..)
     .createSharedEntry('vendors', [
         'jquery',
         'popper.js',
