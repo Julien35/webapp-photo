@@ -87,7 +87,7 @@
         "version": "1.23.0"
     },
     "nikic/php-parser": {
-        "version": "v4.0.1"
+        "version": "v4.0.2"
     },
     "ocramius/proxy-manager": {
         "version": "2.1.1"
