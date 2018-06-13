@@ -2,25 +2,23 @@
 
 namespace App\Entity;
 
-use DateTimeImmutable;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity
- * @Vich\Uploadable
- * @Entity(repositoryClass="App\Repository\ProductRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ * @Vich\Uploadable()
  */
 class Product
 {
     /**
-     * @ORM\Id
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      * @Groups({"cart"})
      */
     private $id;
@@ -36,56 +34,42 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
      * @Groups({"cart"})
-     * @var string
      */
     private $imageName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
-     * @var string
      * @Groups({"cart"})
      */
     private $imageNameText;
 
     /**
      * @ORM\Column(type="integer")
-     *
-     * @var integer
      * @Groups({"cart"})
      */
     private $imageSize;
 
     /**
      * @ORM\Column(type="datetime")
-     *
-     * @var \DateTimeImmutable
      * @Groups({"cart"})
      */
     private $updatedAt;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
-     *
-     * @var string
      * @Groups({"cart"})
      */
     private $format;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
-     *
-     * @var string
      * @Groups({"cart"})
      */
     private $finition;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     *
-     * @var integer
      * @Groups({"cart"})
      */
     private $quantity;
@@ -95,36 +79,15 @@ class Product
      */
     private $cart;
 
-    /**
-     * @return mixed
-     */
+
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id): void
+    public function getImageFile(): ?File
     {
-        $this->id = $id;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt(): \DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param \DateTimeImmutable $updatedAt
-     */
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): void
-    {
-        $this->updatedAt = $updatedAt;
+        return $this->imageFile;
     }
 
     /**
@@ -136,25 +99,17 @@ class Product
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
      */
-    public function setImageFile(?File $image = null): void
+    public function setImageFile(File $image = null): self
     {
         $this->imageFile = $image;
 
         if (null !== $image) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new DateTimeImmutable();
+            $this->updatedAt = new DateTime();
         }
-    }
 
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-
-    public function setImageName(?string $imageName): void
-    {
-        $this->imageName = $imageName;
+        return $this;
     }
 
     public function getImageName(): ?string
@@ -162,25 +117,23 @@ class Product
         return $this->imageName;
     }
 
-    public function setImageSize(?int $imageSize): void
+    public function setImageName(string $imageName): self
     {
-        $this->imageSize = $imageSize;
+        $this->imageName = $imageName;
+
+        return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getImageNameText(): ?string
     {
         return $this->imageNameText;
     }
 
-    /**
-     * @param string $imageNameText
-     */
-    public function setImageNameText(?string $imageNameText): void
+    public function setImageNameText(string $imageNameText): self
     {
         $this->imageNameText = $imageNameText;
+
+        return $this;
     }
 
     public function getImageSize(): ?int
@@ -188,52 +141,59 @@ class Product
         return $this->imageSize;
     }
 
-    /**
-     * @return string
-     */
+    public function setImageSize(int $imageSize): self
+    {
+        $this->imageSize = $imageSize;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
     public function getFormat(): ?string
     {
         return $this->format;
     }
 
-    /**
-     * @param string $format
-     */
-    public function setFormat(?string $format): void
+    public function setFormat(string $format): self
     {
         $this->format = $format;
+
+        return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getFinition(): ?string
     {
         return $this->finition;
     }
 
-    /**
-     * @param string $finition
-     */
-    public function setFinition(?string $finition): void
+    public function setFinition(?string $finition): self
     {
         $this->finition = $finition;
+
+        return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getQuantity(): ?int
     {
         return $this->quantity;
     }
 
-    /**
-     * @param int $quantity
-     */
-    public function setQuantity(?int $quantity): void
+    public function setQuantity(?int $quantity): self
     {
         $this->quantity = $quantity;
+
+        return $this;
     }
 
     public function getCart(): ?Cart
@@ -247,6 +207,4 @@ class Product
 
         return $this;
     }
-
-
 }

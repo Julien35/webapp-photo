@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,12 +28,11 @@ class Cart
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Registration", cascade={"persist", "remove"})
-     * @Groups({"cart"})
      */
     private $registration;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="cart_id")
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="cart")
      * @Groups({"cart"})
      */
     private $products;
@@ -74,12 +72,12 @@ class Cart
         return $this->id;
     }
 
-    public function getDateCreation(): ?DateTimeInterface
+    public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->dateCreation;
     }
 
-    public function setDateCreation(DateTimeInterface $dateCreation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
 
@@ -129,12 +127,12 @@ class Cart
         return $this;
     }
 
-    public function getprixTotalHt(): ?float
+    public function getPrixTotalHt(): ?float
     {
         return $this->prixTotalHt;
     }
 
-    public function setprixTotalHt(?float $prixTotalHt): self
+    public function setPrixTotalHt(?float $prixTotalHt): self
     {
         $this->prixTotalHt = $prixTotalHt;
 
