@@ -2,6 +2,9 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <!-- vendors css -->
+    <link rel="stylesheet" href="{{ asset('build/vendors.css') }}"/>
+
     <!-- custom css -->
     <link rel="stylesheet" href="{{ asset('build/index.css') }}">
 {% endblock %}

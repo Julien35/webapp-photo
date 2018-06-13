@@ -17,41 +17,45 @@ class Configuration
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
-    private $imageMaxSize;
+    private $nameValue;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
-    private $imageMaxNumber;
+    private $value;
 
+    /**
+     * @return mixed
+     */
     public function getId()
     {
         return $this->id;
     }
 
-    public function getImageMaxSize(): ?int
+    public function getNameValue(): ?string
     {
-        return $this->imageMaxSize;
+        return $this->nameValue;
     }
 
-    public function setImageMaxSize(int $imageMaxSize): self
+    public function setNameValue(string $nameValue): self
     {
-        $this->imageMaxSize = $imageMaxSize;
+        $this->nameValue = $nameValue;
 
         return $this;
     }
 
-    public function getImageMaxNumber(): ?int
+    public function getValue(): ?string
     {
-        return $this->imageMaxNumber;
+        return $this->value;
     }
 
-    public function setImageMaxNumber(int $imageMaxNumber): self
+    public function setValue(string $value): self
     {
-        $this->imageMaxNumber = $imageMaxNumber;
+        $this->value = $value;
 
         return $this;
     }
+
 }
