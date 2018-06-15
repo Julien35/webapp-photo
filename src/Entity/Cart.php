@@ -53,13 +53,13 @@ class Cart
      * @ORM\Column(type="boolean")
      * @Groups({"cart"})
      */
-    private $checkout;
+    private $paid;
 
     /**
      * @ORM\Column(type="boolean")
      * @Groups({"cart"})
      */
-    private $paid;
+    private $printed;
 
 
     public function __construct()
@@ -151,18 +151,6 @@ class Cart
         return $this;
     }
 
-    public function getCheckout(): ?bool
-    {
-        return $this->checkout;
-    }
-
-    public function setCheckout(bool $checkout): self
-    {
-        $this->checkout = $checkout;
-
-        return $this;
-    }
-
     public function getPaid(): ?bool
     {
         return $this->paid;
@@ -171,6 +159,18 @@ class Cart
     public function setPaid(bool $paid): self
     {
         $this->paid = $paid;
+
+        return $this;
+    }
+
+    public function getPrinted(): ?bool
+    {
+        return $this->printed;
+    }
+
+    public function setPrinted(bool $printed): self
+    {
+        $this->printed = $printed;
 
         return $this;
     }

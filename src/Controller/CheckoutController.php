@@ -78,7 +78,7 @@ class CheckoutController extends Controller
         try {
             if ($transaction->success) {
                 $cart = $this->cartManager->getCart($data['cartId']);
-                $cart->setCheckout(true);
+                $cart->setPaid(true);
                 $updateCart = $this->cartManager->update($cart);
 
                 $isSent = $this

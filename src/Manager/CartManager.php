@@ -42,8 +42,8 @@ class CartManager
         $cart->setDateCreation(new DateTime());
         $cart->setprixTotalHt(0);
         $cart->setPrixTotalTtc(0);
-        $cart->setCheckout(false);
         $cart->setPaid(false);
+        $cart->setPrinted(false);
 
         $this->cartRepository->save($cart);
         return $cart;
