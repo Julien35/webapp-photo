@@ -19,6 +19,13 @@ class SupportImageRepository extends ServiceEntityRepository
         parent::__construct($registry, SupportImage::class);
     }
 
+    public function getConf()
+    {
+        return $this->createQueryBuilder('supportImage')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return SupportImage[] Returns an array of SupportImage objects
 //     */

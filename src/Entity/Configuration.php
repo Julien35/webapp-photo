@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ConfigurationRepository")
@@ -18,11 +19,13 @@ class Configuration
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("imageInit")
      */
     private $nameValue;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("imageInit")
      */
     private $value;
 

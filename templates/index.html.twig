@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    {{ parent() }}
+    {#{{ parent() }}#}
     <!-- vendors css -->
-    <link rel="stylesheet" href="{{ asset('build/vendors.css') }}"/>
+    {{ encore_entry_link_tags('vendors') }}
 
     <!-- custom css -->
-    <link rel="stylesheet" href="{{ asset('build/index.css') }}">
+    {{ encore_entry_link_tags('index') }}
 {% endblock %}
 
 {% block body %}
@@ -15,12 +15,11 @@
 
 {% block javascripts %}
     {#{{ parent() }}#}
-
     <!--vendors js-->
     <script src="{{ asset('build/manifest.js') }}"></script>
-    <script src="{{ asset('build/vendors.js') }}"></script>
+    {{ encore_entry_script_tags('vendors') }}
 
     <!-- here you link to the specific JS files needed by the current page -->
-    <script src="{{ asset('build/index.js') }}"></script>
+    {{ encore_entry_script_tags('index') }}
 
 {% endblock %}

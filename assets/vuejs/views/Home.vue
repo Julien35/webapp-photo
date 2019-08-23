@@ -6,7 +6,7 @@
 
         <article v-show="status.done" class="container">
             <div v-if="!status.error" class="text-info">
-                La transaction terminée, paiement Ok.
+                La transaction est terminée, paiement Ok.
             </div>
             <div v-if="status.error" class="text-danger">
                 La transaction a échoué, veuillez recommencer.

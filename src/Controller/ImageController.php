@@ -7,19 +7,24 @@ use App\Entity\Product;
 use App\Entity\Registration;
 use App\Manager\CartManager;
 use App\Manager\RegistrationManager;
+use App\Repository\ConfigurationRepository;
+use App\Repository\DimensionFormatImageRepository;
+use App\Repository\SupportImageRepository;
 use App\Service\FtpService;
 use App\Service\PhotoUploadService;
 use DateTime;
 use Doctrine\ORM\ORMException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class ImageController extends Controller
+/**
+ * @Route("api/image")
+ */
+class ImageController extends AbstractController
 {
     /**
      * @var PhotoUploadService $photosUploadService
@@ -62,11 +67,40 @@ class ImageController extends Controller
         return $test;
     }
 
+    /**
+     * @Route("/test", name="test_image_controller")
+     * @return JsonResponse
+     */
+    public function testImageController() {
+        return $this->json("testImageController is Ok");
+    }
 
     /**
-     * @Route("api/image/upload", name="image-upload")
-     * @Method({"GET", "POST"})
-     *
+     * @Route("/env", name="env", methods="GET")
+     * @return JsonResponse
+     */
+    public function env(
+        ConfigurationRepository $configurationRepository,
+        SupportImageRepository $supportImageRepository
+    ) {
+
+//        $supportImage = $supportImageRepository->getConf();
+        $conf = $configurationRepository->getConf();
+
+
+        return $this->json(
+            [
+//                'supportImage' => $supportImageRepository->getConf(),
+//                'conf' => $configurationRepository->getConf(),
+                'conf' => $conf,
+            ],
+            200, [],
+            ['groups' => ['imageInit']]
+        );
+    }
+
+    /**
+     * @Route("/upload", name="image-upload", methods={"GET", "POST"})
      * @param Request $request
      *
      * @return Response
@@ -85,7 +119,7 @@ class ImageController extends Controller
             $conn->beginTransaction();
 
             try {
-                /** Cart $cart */
+                /** @var Cart $cart */
                 $cart = $this->cartManager->initCart();
                 // Create Product with cart_id
                 $products = $this->photoUploadService->uploadPhotos($photosData, $photosFiles);

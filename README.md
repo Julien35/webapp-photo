@@ -10,6 +10,8 @@
 ### Installation
 * ```$ yarn``` for js dependency
 * ```$ composer install``` for php dependency
+* ```$ or php -d memory_limit=-1 composer.phar install, if memory problem```
+
 
 ### Development
 Launch javascript server, symfony server

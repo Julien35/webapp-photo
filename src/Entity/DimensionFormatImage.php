@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DimensionFormatImageRepository")
@@ -15,33 +16,38 @@ class DimensionFormatImage
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"imageInit"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"imageInit"})
      */
     private $width;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"imageInit"})
      */
     private $height;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"imageInit"})
      */
     private $square;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"imageInit"})
      */
     private $rectangle;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SupportImage", mappedBy="formats")
+     * @ORM\ManyToOne(targetEntity="App\Entity\SupportImage", inversedBy="formats")
      */
-    private $supportImages;
+    private $supportImage;
 
 
     public function __construct()
@@ -102,33 +108,14 @@ class DimensionFormatImage
         return $this;
     }
 
-    /**
-     * @return Collection|SupportImage[]
-     */
-    public function getSupportImages(): Collection
+    public function getSupportImage(): ?SupportImage
     {
-        return $this->supportImages;
+        return $this->supportImage;
     }
 
-    public function addSupportImage(SupportImage $supportImage): self
+    public function setSupportImage(?SupportImage $supportImage): self
     {
-        if (!$this->supportImages->contains($supportImage)) {
-            $this->supportImages[] = $supportImage;
-            $supportImage->setFormats($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSupportImage(SupportImage $supportImage): self
-    {
-        if ($this->supportImages->contains($supportImage)) {
-            $this->supportImages->removeElement($supportImage);
-            // set the owning side to null (unless already changed)
-            if ($supportImage->getFormats() === $this) {
-                $supportImage->setFormats(null);
-            }
-        }
+        $this->supportImage = $supportImage;
 
         return $this;
     }

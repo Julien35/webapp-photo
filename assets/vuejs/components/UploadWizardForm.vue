@@ -6,7 +6,7 @@
                  finish-button-text="Paiement">
 
         <tab-content title="Support d'impression" icon="fas fa-print">
-                     <!--:before-change="hasPhotos">-->
+            <!--:before-change="hasPhotos">-->
             <printing-support/>
         </tab-content>
 
@@ -78,7 +78,6 @@
             AddressForm,
             ShoppingCart,
             Checkout
-
         },
 
         data: function () {
@@ -122,6 +121,9 @@
         },
 
         created() {
+            // init image limit
+            this.$store.dispatch('imageModule/fetchInitParams');
+
             this.$eventBus.$on('change-files', this.changefile);
             this.$eventBus.$on('change-register-validation', this.updateIsValidForm);
             this.$eventBus.$on('change-register', function (registration) {

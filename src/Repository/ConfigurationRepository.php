@@ -19,6 +19,17 @@ class ConfigurationRepository extends ServiceEntityRepository
         parent::__construct($registry, Configuration::class);
     }
 
+
+    public function getConf()
+    {
+        $result = $this->createQueryBuilder('configuration')
+            ->getQuery()
+            ->getArrayResult();
+//            ->getResult();
+
+        return $result;
+    }
+
 //    /**
 //     * @return Configuration[] Returns an array of Configuration objects
 //     */
