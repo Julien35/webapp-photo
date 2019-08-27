@@ -45,21 +45,13 @@ Encore
         'jquery',
         'popper.js',
         'bootstrap',
-
         'braintree-web',
         'braintree-web-drop-in',
-        '@fortawesome/fontawesome',
-        '@fortawesome/fontawesome-svg-core',
-        '@fortawesome/vue-fontawesome',
-        '@fortawesome/fontawesome-free-brands',
-        '@fortawesome/fontawesome-free-solid',
-        '@fortawesome/fontawesome-free-webfonts',
-
         'bootstrap/scss/bootstrap.scss',
-        '@fortawesome/fontawesome-free-webfonts/scss/fa-solid.scss',
-        '@fortawesome/fontawesome-free-webfonts/scss/fa-regular.scss',
-        '@fortawesome/fontawesome-free-webfonts/scss/fa-brands.scss',
         '@fortawesome/fontawesome-free-webfonts/scss/fontawesome.scss',
+        '@fortawesome/fontawesome-free-webfonts/scss/fa-solid.scss',
+        '@fortawesome/fontawesome-free-webfonts/scss/fa-brands.scss',
+        '@fortawesome/fontawesome-free-webfonts/scss/fa-regular.scss',
     ])
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
