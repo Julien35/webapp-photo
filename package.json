@@ -31,6 +31,7 @@
     "scripts": {
         "dev-server": "encore dev-server",
         "dev-server-hot": "encore dev-server --hot",
+        "dev-server-hot-https": "encore dev-server --https --hot",
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production"
