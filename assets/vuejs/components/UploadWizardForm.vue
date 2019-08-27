@@ -26,7 +26,7 @@
         </tab-content>
 
 
-        <tab-content title="Paiement" icon="fa fa-check">
+        <tab-content title="Paiement" icon="fas fa-check">
             <checkout/>
         </tab-content>
 

@@ -56,10 +56,10 @@ Encore
         '@fortawesome/fontawesome-free-webfonts',
 
         'bootstrap/scss/bootstrap.scss',
-        '@fortawesome/fontawesome-free-webfonts/css/fa-solid.css',
-        '@fortawesome/fontawesome-free-webfonts/css/fa-regular.css',
-        '@fortawesome/fontawesome-free-webfonts/css/fa-brands.css',
-        '@fortawesome/fontawesome-free-webfonts/css/fontawesome.css',
+        '@fortawesome/fontawesome-free-webfonts/scss/fa-solid.scss',
+        '@fortawesome/fontawesome-free-webfonts/scss/fa-regular.scss',
+        '@fortawesome/fontawesome-free-webfonts/scss/fa-brands.scss',
+        '@fortawesome/fontawesome-free-webfonts/scss/fontawesome.scss',
     ])
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
