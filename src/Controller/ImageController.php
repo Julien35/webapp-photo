@@ -52,7 +52,8 @@ class ImageController extends AbstractController
         CartManager $cartManager,
         RegistrationManager $registrationManager,
         FtpService $ftpService
-    ) {
+    )
+    {
         $this->photoUploadService = $photoUploadService;
         $this->cartManager = $cartManager;
         $this->registrationManager = $registrationManager;
@@ -68,31 +69,15 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @Route("/test", name="test_image_controller")
-     * @return JsonResponse
-     */
-    public function testImageController() {
-        return $this->json("testImageController is Ok");
-    }
-
-    /**
      * @Route("/env", name="env", methods="GET")
      * @return JsonResponse
      */
-    public function env(
-        ConfigurationRepository $configurationRepository,
-        SupportImageRepository $supportImageRepository
-    ) {
-
-//        $supportImage = $supportImageRepository->getConf();
-        $conf = $configurationRepository->getConf();
-
-
+    public function env(ConfigurationRepository $configurationRepository, SupportImageRepository $supportImageRepository)
+    {
         return $this->json(
             [
-//                'supportImage' => $supportImageRepository->getConf(),
-//                'conf' => $configurationRepository->getConf(),
-                'conf' => $conf,
+                'supportImage' => $supportImageRepository->findConf(),
+                'conf' => $configurationRepository->findConf(),
             ],
             200, [],
             ['groups' => ['imageInit']]

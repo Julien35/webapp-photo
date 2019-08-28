@@ -20,14 +20,16 @@ class ConfigurationRepository extends ServiceEntityRepository
     }
 
 
-    public function getConf()
+    public function findConf()
     {
         $result = $this->createQueryBuilder('configuration')
             ->getQuery()
             ->getArrayResult();
-//            ->getResult();
 
-        return $result;
+        return array_reduce($result, function ($result, $item) {
+            $result[$item['nameValue']] = $item['value'];
+            return $result;
+        }, array());
     }
 
 //    /**

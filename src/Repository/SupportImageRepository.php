@@ -19,11 +19,16 @@ class SupportImageRepository extends ServiceEntityRepository
         parent::__construct($registry, SupportImage::class);
     }
 
-    public function getConf()
+    public function findConf()
     {
-        return $this->createQueryBuilder('supportImage')
+        $result = $this->createQueryBuilder('supportImage')
             ->getQuery()
-            ->getResult();
+            ->getArrayResult();
+
+        return array_reduce($result, function ($result, $item) {
+            $result[$item['type']] = $item['priceStart'];
+            return $result;
+        }, array());
     }
 
 //    /**
