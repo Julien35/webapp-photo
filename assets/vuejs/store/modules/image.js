@@ -48,7 +48,7 @@ export default {
         },
 
         fetchInitParams ({ commit }) {
-            ImageService.getImageLimit().then(response => {
+            return ImageService.getImageLimit().then(response => {
 
                 let initParams = {
                     limit: [],

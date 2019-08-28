@@ -31,17 +31,31 @@
         data() {
             return {
                 supportChoice: '',
-                finitionChoice:'',
+                finitionChoice: '',
                 selected: 'A',
                 options: [
-                    { text: 'Un', value: 'A' },
-                    { text: 'Deux', value: 'B' },
-                    { text: 'Trois', value: 'C' }
+                    {text: 'Un', value: 'A'},
+                    {text: 'Deux', value: 'B'},
+                    {text: 'Trois', value: 'C'}
                 ]
             }
         },
 
-        methods: {}
+        methods: {
+            loadSupportData() {
+                // init image limit
+                this.$store.dispatch('imageModule/fetchInitParams').then(() => {
+                    let supportData = this.$store.state.imageModule.initParams.support;
+                    console.log(supportData);
+
+                    // supportData.forEach()
+
+                });
+            }
+        },
+        created() {
+            this.loadSupportData();
+        }
     }
 </script>
 

@@ -121,9 +121,7 @@
         },
 
         created() {
-            // init image limit
-            this.$store.dispatch('imageModule/fetchInitParams');
-
+            // init old $eventBus
             this.$eventBus.$on('change-files', this.changefile);
             this.$eventBus.$on('change-register-validation', this.updateIsValidForm);
             this.$eventBus.$on('change-register', function (registration) {
