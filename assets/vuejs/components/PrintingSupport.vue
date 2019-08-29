@@ -10,15 +10,15 @@
 
 
         <!--finition field-->
-        <fieldset class="col-lg-4 col-md-4 col-sm-5 col-6">
-            <h4>Finition</h4>
-            <div class="form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" type="radio">
-                    Finition 1
-                </label>
-            </div>
-        </fieldset>
+<!--        <fieldset class="col-lg-4 col-md-4 col-sm-5 col-6">-->
+<!--            <h4>Finition</h4>-->
+<!--            <div class="form-check">-->
+<!--                <label class="form-check-label">-->
+<!--                    <input class="form-check-input" type="radio">-->
+<!--                    Finition 1-->
+<!--                </label>-->
+<!--            </div>-->
+<!--        </fieldset>-->
 
     </section>
 
@@ -45,12 +45,20 @@
             loadSupportData() {
                 // init image limit
                 this.$store.dispatch('imageModule/fetchInitParams').then(() => {
-                    let supportData = this.$store.state.imageModule.initParams.support;
-                    console.log(supportData);
+                    let supportData = this.$store.getters["imageModule/getSupport"];
 
-                    // supportData.forEach()
+                    // clear default value & add new support data
+                    this.options = [];
+                    for (let i = 0; i < supportData.length; i++) {
+                        this.options.push(
+                            {text: supportData[i].type, value: supportData[i].price + ' €'}
+                            );
+                    }
+                    this.selected = this.options[0].value;
 
                 });
+
+
             }
         },
         created() {

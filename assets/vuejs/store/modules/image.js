@@ -21,6 +21,10 @@ export default {
     getters: {
         initParams: state => {
             return state.initParams;
+        },
+
+        getSupport: state => {
+            return state.initParams.support;
         }
     },
 

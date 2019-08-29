@@ -24,7 +24,7 @@
 
         <progress-bar v-bind:percentage="uploadPercentage" class="mt-3 mb-3"/>
 
-        <section class="row" v-for="(file, key) in files" @change="updateChange">
+        <section class="row  d-flex justify-content-around" v-for="(file, key) in files" @change="updateChange">
 
             <article class="col-lg-4 col-sm-5 col-12 input-group">
                 <div class="thumbnail">
@@ -46,9 +46,10 @@
 
             <article class="col-lg-8 col-sm-7 col-12">
 
-                <div class="row">
+<!--                <div class="row">-->
                     <!--format field-->
-                    <fieldset class="col-lg-8 col-md-8 col-sm-7 col-6">
+<!--                    <fieldset class="col-lg-8 col-md-8 col-sm-7 col-6">-->
+                    <fieldset class="">
                         <h4>Format</h4>
                         <div class="form-check">
                             <label class="form-check-label" v-bind:for="file.format + parseInt(key)">
@@ -85,51 +86,51 @@
                     </fieldset>
 
                     <!--finition field-->
-                    <fieldset class="col-lg-4 col-md-4 col-sm-5 col-6">
-                        <h4>Finition</h4>
-                        <div class="form-check">
-                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
-                                <input class="form-check-input" type="radio"
-                                       v-bind:name="file.finition + '_' + parseInt(key)"
-                                       value="finition1" v-model="files[key].finition">
-                                Finition 1
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
-                                <input class="form-check-input" type="radio"
-                                       v-bind:name="file.finition + '_' + parseInt(key)"
-                                       value="finition2" v-model="files[key].finition">
-                                Finition 2
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
-                                <input class="form-check-input" type="radio"
-                                       v-bind:name="file.finition + '_' + parseInt(key)"
-                                       value="finition4" v-model="files[key].finition">
-                                Finition 3
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
-                                <input class="form-check-input" type="radio"
-                                       v-bind:name="file.finition + '_' + parseInt(key)"
-                                       value="finition4" v-model="files[key].finition">
-                                Finition 4
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">
-                                <input class="form-check-input" type="radio"
-                                       v-bind:name="file.finition + '_' + parseInt(key)"
-                                       value="finition5" v-model="files[key].finition">
-                                Finition 5
-                            </label>
-                        </div>
-                    </fieldset>
+<!--                    <fieldset class="col-lg-4 col-md-4 col-sm-5 col-6">-->
+<!--                        <h4>Finition</h4>-->
+<!--                        <div class="form-check">-->
+<!--                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">-->
+<!--                                <input class="form-check-input" type="radio"-->
+<!--                                       v-bind:name="file.finition + '_' + parseInt(key)"-->
+<!--                                       value="finition1" v-model="files[key].finition">-->
+<!--                                Finition 1-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <div class="form-check">-->
+<!--                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">-->
+<!--                                <input class="form-check-input" type="radio"-->
+<!--                                       v-bind:name="file.finition + '_' + parseInt(key)"-->
+<!--                                       value="finition2" v-model="files[key].finition">-->
+<!--                                Finition 2-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <div class="form-check">-->
+<!--                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">-->
+<!--                                <input class="form-check-input" type="radio"-->
+<!--                                       v-bind:name="file.finition + '_' + parseInt(key)"-->
+<!--                                       value="finition4" v-model="files[key].finition">-->
+<!--                                Finition 3-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <div class="form-check">-->
+<!--                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">-->
+<!--                                <input class="form-check-input" type="radio"-->
+<!--                                       v-bind:name="file.finition + '_' + parseInt(key)"-->
+<!--                                       value="finition4" v-model="files[key].finition">-->
+<!--                                Finition 4-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                        <div class="form-check">-->
+<!--                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">-->
+<!--                                <input class="form-check-input" type="radio"-->
+<!--                                       v-bind:name="file.finition + '_' + parseInt(key)"-->
+<!--                                       value="finition5" v-model="files[key].finition">-->
+<!--                                Finition 5-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                    </fieldset>-->
 
-                </div>
+<!--                </div>-->
 
             </article>
 
