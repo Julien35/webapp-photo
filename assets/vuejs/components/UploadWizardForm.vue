@@ -58,7 +58,7 @@
 
     import {HTTP} from '../http-common';
     import PrintingSupport from './PrintingSupport'
-    import ProgressBar from './progress-bar'
+    import ProgressBar from '../common/progress-bar'
     import UploadImage from './UploadImage'
     import AddressForm from './AddressForm'
     import ShoppingCart from './ShoppingCart'
