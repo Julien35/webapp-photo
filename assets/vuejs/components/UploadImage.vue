@@ -108,7 +108,7 @@
         },
 
         created() {
-            this.$eventBus.$on('change-files', function (files) {
+            this.$eventBus.$on('change-files', (files) => {
                 this.files = files;
             });
         },
@@ -150,15 +150,14 @@
 
                 // emit data files to EventBus
                 this.$eventBus.$emit('change-files', this.files);
-                console.log(this.files);
             },
 
             updateUploadPercentageBar(fileListLength, iteration) {
                 this.uploadPercentage = (100 / fileListLength) * (iteration + 1);
+                this.$forceUpdate();
             },
 
             addImage(imageFile) {
-                // console.log(imageFile);
                 imageFile.nameText = this.removeExtension(imageFile.name);
                 // default values;
                 imageFile.format = 'format40';
@@ -169,6 +168,7 @@
             },
 
             filesChange(fileList) {
+
                 let len = fileList.length;
 
                 // if empty > return

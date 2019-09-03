@@ -24,13 +24,12 @@
                             </div>
                             <div class="col-8">
                                 <div>{{file.nameText}}</div>
-                                <div>{{file.format}}</div>
-                                <div>{{file.finition}}</div>
+                                <div>{{convertFormat(file.format)}}</div>
                             </div>
                         </div>
                     </td>
 
-                    <td>1.99€</td>
+                    <td>{{price}}€</td>
 
                     <td>
                         <label>
@@ -39,7 +38,7 @@
                         </label>
                     </td>
 
-                    <td class="text-center">{{ file.quantity * 1.99}}</td>
+                    <td class="text-center">{{Number.parseFloat(file.quantity * price).toFixed(2)}}</td>
 
                     <td>
                         <a class="btn btn-danger" v-on:click="removeFile( key )">Supprimer</a>
@@ -49,8 +48,8 @@
 
                 <tfoot>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td>Support d'impression : {{files.supportType}}</td>
+                    <td> {{files.supportTypePrice}} €</td>
                     <td></td>
                     <td class="text-center"><strong>Total {{Number.parseFloat(total).toFixed(2)}}</strong></td>
                     <td></td>
@@ -63,7 +62,7 @@
             <h3>Adresse de livraison</h3>
 
             <address>
-                <div>{{registration.firstname}}  {{registration.name}}</div>
+                <div>{{registration.firstname}} {{registration.name}}</div>
                 <div>{{registration.address1}}</div>
                 <div>{{registration.address2}}</div>
                 <div>{{registration.postal}}</div>
@@ -89,7 +88,13 @@
             return {
                 files: [],
                 total: 0,
-                price: 1.99
+                // migrate format and price to bdd
+                price: 3.99,
+                format: {
+                    format40: '40 x 40 cm / 15.8 x 15.8 inch',
+                    format60: '60 x 60 cm / 23.8 x 23.8 inch',
+                    format100: '100 x 100 cm / 39.7 x 39.7 inch',
+                }
             }
         },
 
@@ -115,6 +120,15 @@
         },
 
         methods: {
+            convertFormat(rawFormat) {
+                switch (rawFormat) {
+                    case'format40': return this.format.format40;
+                    case'format60': return this.format.format60;
+                    case'format100': return this.format.format100;
+                }
+                return rawFormat;
+            },
+
             updateCart() {
                 // emit to EventBus
                 this.$eventBus.$emit('change-files', this.files);
@@ -132,6 +146,8 @@
                 this.files.forEach((file) => {
                     this.total = (this.total + file.subtotal);
                 });
+
+                this.total += this.files.supportTypePrice;
                 this.$eventBus.$emit('change-total-cart', this.total);
             },
 
