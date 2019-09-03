@@ -85,8 +85,8 @@
                 step: 1,
                 files: [],
                 registration: {
-                    name: 'Vincent',
-                    firstname: 'Robert',
+                    name: 'B',
+                    firstname: 'Julien',
                     address1: 'rue de Paris',
                     address2: null,
                     postal: 75000,
@@ -94,7 +94,7 @@
                     state: null,
                     country: 'France',
                     phone: null,
-                    email: 'robert@yopmail.com'
+                    email: 'julienb@yopmail.com'
                 },
                 isFormValid: false,
                 uploadedFiles: [],

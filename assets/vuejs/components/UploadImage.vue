@@ -108,9 +108,9 @@
         },
 
         created() {
-            // this.$eventBus.$on('change-name', this.changeName);
-            // this.$eventBus.$on('change-files', this.changefile);
-            // this.uploadPercentage = 0;
+            this.$eventBus.$on('change-files', function (files) {
+                this.files = files;
+            });
         },
 
         beforeDestroy() {
@@ -144,8 +144,13 @@
             },
 
             updateChange() {
+                let supportType = this.$store.getters["imageModule/getSupportType"];
+                this.files['supportTypePrice'] = supportType.price;
+                this.files['supportType'] = supportType.type;
+
                 // emit data files to EventBus
                 this.$eventBus.$emit('change-files', this.files);
+                console.log(this.files);
             },
 
             updateUploadPercentageBar(fileListLength, iteration) {
@@ -155,23 +160,15 @@
             addImage(imageFile) {
                 // console.log(imageFile);
                 imageFile.nameText = this.removeExtension(imageFile.name);
-                // debugger;
-                // imageFile.format = 'format40';
-                // imageFile.finition = 'finition1';
+                // default values;
+                imageFile.format = 'format40';
+                imageFile.finition = 'finition1';
                 imageFile.quantity = 1;
                 imageFile.subtotal = 0;
                 this.files.push(imageFile);
             },
 
             filesChange(fileList) {
-                // this.$eventBus.$emit('loading', {
-                //     state: true,
-                //     message: ''
-                // });
-                // this.$eventBus.$forceUpdate();
-
-                // console.log(fileList);
-
                 let len = fileList.length;
 
                 // if empty > return
@@ -193,25 +190,16 @@
             },
 
             getImagePreviews() {
-                /*
-                  Iterate over all of the files and generate an image preview for each one.
-                */
+                // Iterate over all of the files and generate an image preview for each one.
                 for (let i = 0; i < this.files.length; i++) {
-                    /*
-                      Ensure the file is an image file
-                    */
+                    // Ensure the file is an image file
                     if (/\.(jpe?g|png|gif)$/i.test(this.files[i].name)) {
-                        /*
-                          Create a new FileReader object
-                        */
+                        // Create a new FileReader object
                         let reader = new FileReader();
 
-                        /*
-                          Add an event listener for when the file has been loaded
-                          to update the src on the file preview.
-                        */
+                        /* Add an event listener for when the file has been loaded
+                          to update the src on the file preview. */
                         reader.addEventListener("load", function () {
-
                             this.$refs['preview' + parseInt(i)][0].src = reader.result;
                         }.bind(this), false);
 
@@ -222,9 +210,7 @@
                         */
                         reader.readAsDataURL(this.files[i]);
                     } else {
-                        /*
-                          We do the next tick so the reference is bound and we can access it.
-                        */
+                        // We do the next tick so the reference is bound and we can access it.
                         this.$nextTick(function () {
                             this.$refs['preview' + parseInt(i)][0].src = '/images/file.png';
                         });

@@ -28,6 +28,10 @@ export default {
 
         getSupport: state => {
             return state.initParams.support;
+        },
+
+        getSupportType: state => {
+            return state.files.supportType;
         }
     },
 
