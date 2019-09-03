@@ -150,9 +150,6 @@
         components: {
             ProgressBar
         },
-        /*        component: {
-                    ProgressBar
-                },*/
         props: {
             currentStatus: {
                 type: Number,
@@ -167,11 +164,6 @@
                 uploadError: null,
                 uploadPercentage: 0,
                 loadingWizard: false,
-            }
-        },
-        watch: {
-            uploadPercentage() {
-                console.log('uploadPercentage has changed !');
             }
         },
 
@@ -198,9 +190,6 @@
             isFailed() {
                 return this.currentStatus === STATUS_FAILED;
             },
-            // percentage() {
-            //     return this.uploadPercentage;
-            // }
         },
         methods: {
             reset() {
@@ -217,7 +206,6 @@
             updateChange() {
                 // emit data files to EventBus
                 this.$eventBus.$emit('change-files', this.files);
-                console.log('call of updateChange()');
             },
 
             updateUploadPercentageBar(fileListLength, iteration) {
@@ -225,9 +213,11 @@
             },
 
             addImage(imageFile) {
+                // console.log(imageFile);
                 imageFile.nameText = this.removeExtension(imageFile.name);
-                imageFile.format = 'format40';
-                imageFile.finition = 'finition1';
+                // debugger;
+                // imageFile.format = 'format40';
+                // imageFile.finition = 'finition1';
                 imageFile.quantity = 1;
                 imageFile.subtotal = 0;
                 this.files.push(imageFile);
@@ -239,6 +229,8 @@
                 //     message: ''
                 // });
                 // this.$eventBus.$forceUpdate();
+
+                // console.log(fileList);
 
                 let len = fileList.length;
 

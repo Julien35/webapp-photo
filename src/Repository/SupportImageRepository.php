@@ -26,7 +26,10 @@ class SupportImageRepository extends ServiceEntityRepository
             ->getArrayResult();
 
         return array_reduce($result, function ($result, $item) {
-            $result[$item['type']] = $item['priceStart'];
+            $result[] = [
+                'type' => $item['type'],
+                'price' => $item['priceStart']
+            ];
             return $result;
         }, array());
     }
