@@ -7,7 +7,6 @@ use App\Service\BrainTreeCheckout;
 use App\Service\MailService;
 use Doctrine\ORM\ORMException;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,12 +41,9 @@ class CheckoutController extends AbstractController
     }
 
     /**
-     * @Route("api/checkout/client-token", name="client_token")
-     * @Method({"GET"})
-     *
+     * @Route("api/checkout/client-token", name="client_token", methods="GET")
      *
      * @param Request $request
-     *
      * @return JsonResponse
      */
     public function getToken()
@@ -62,8 +58,7 @@ class CheckoutController extends AbstractController
     }
 
     /**
-     * @Route("api/checkout/transaction", name="transaction")
-     * @Method({"POST"})
+     * @Route("api/checkout/transaction", name="transaction", methods="POST")
      *
      * @param Request $request
      * @param Swift_Mailer $mailer
@@ -77,7 +72,11 @@ class CheckoutController extends AbstractController
 
         try {
             if ($transaction->success) {
+                $totalPrice = $data['amount'];
+
                 $cart = $this->cartManager->getCart($data['cartId']);
+                $cart->setPrixTotalTtc($totalPrice);
+                $cart->setprixTotalHt($totalPrice - $totalPrice * 0.20);
                 $cart->setPaid(true);
                 $updateCart = $this->cartManager->update($cart);
 

@@ -58,10 +58,6 @@ class CartManager
      */
     public function update(Cart $cart, array $products = null, Registration $registration = null) : Cart
     {
-        $totalPrice = 0;
-        // todo: calcul priceItem with support, format, finition of one product
-        $priceItem = 1.99;
-
         if (isset($registration)) {
             $cart->setRegistration($registration);
         }
@@ -70,11 +66,7 @@ class CartManager
             /** @var  Product $product */
             foreach ($products as $product) {
                 $cart->addProduct($product);
-                $totalPrice += $product->getQuantity() * $priceItem;
             }
-
-            $cart->setPrixTotalTtc($totalPrice);
-            $cart->setprixTotalHt($totalPrice - $totalPrice * 0.20);
         }
 
         $this->cartRepository->save($cart);

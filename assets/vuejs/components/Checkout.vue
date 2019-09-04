@@ -1,7 +1,8 @@
 <template>
     <section>
 
-        <article>Total : {{totalCart}} €</article>
+        <article>Total : {{Number.parseFloat(totalCart).toFixed(2)}} €</article>
+
 
         <DropIn v-if="authToken !== null"
                 :authToken="authToken"
@@ -64,6 +65,4 @@
     }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
