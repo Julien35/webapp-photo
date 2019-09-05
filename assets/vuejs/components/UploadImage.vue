@@ -4,18 +4,15 @@
         <div class="row">
             <section class="col">
                 <h2>Photos à télécharger</h2>
-                <article class="dropbox">
-                    <input name="photosDropZone[]" type="file" multiple :disabled="isSaving"
-                           @change="filesChange($event.target.files)
-                           fileCount = $event.target.files.length"
+                <article class="dropbox" @change="filesChange">
+                    <input ref="inputfiles" name="photosDropZone[]" type="file" multiple :disabled="isSaving"
+                           @change="fileCount = $event.target.files.length"
                            accept="image/*" class="input-file">
 
                     <p v-if="isInitial">
-                        <!--Drag your photo(s) here to begin<br> or click to browse-->
                         Déposer vos images ici pour démarrer<br> ou cliquer pour naviguer
                     </p>
                     <p v-if="isSaving">
-                        <!--Uploading {{ fileCount }} photo(s)...-->
                         Envoi de {{ fileCount }} photo(s)...
                     </p>
                 </article>
@@ -81,7 +78,7 @@
 </template>
 
 <script>
-    import ProgressBar from '../common/progress-bar'
+    import ProgressBar from '../common/progress-bar';
 
     const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 
@@ -90,20 +87,12 @@
         components: {
             ProgressBar
         },
-        props: {
-            currentStatus: {
-                type: Number,
-                required: true
-            }
-        },
 
         data() {
             return {
+                currentStatus: STATUS_INITIAL,
                 files: [],
-                uploadedFiles: [],
-                uploadError: null,
                 uploadPercentage: 0,
-                loadingWizard: false,
             }
         },
 
@@ -113,8 +102,8 @@
             });
         },
 
-        beforeDestroy() {
-            // this.$eventBus.$off('change-name');
+        mounted() {
+            this.reset();
         },
 
         computed: {
@@ -131,16 +120,14 @@
                 return this.currentStatus === STATUS_FAILED;
             },
         },
+
         methods: {
             reset() {
                 // reset form to initial state
-                // this.currentStatus = STATUS_INITIAL;
-                this.uploadedFiles = [];
-                this.uploadError = null;
+                this.currentStatus = STATUS_INITIAL;
                 this.files = [];
-                this.images = [];
-                // this.uploadPercentage = 0;
-                this.loadingWizard = false;
+                this.uploadPercentage = 0;
+                this.updateChange();
             },
 
             updateChange() {
@@ -167,7 +154,10 @@
                 this.files.push(imageFile);
             },
 
-            filesChange(fileList) {
+            filesChange() {
+
+                console.log(this.$refs.inputfiles.files);
+                let fileList = this.$refs.inputfiles.files;
 
                 let len = fileList.length;
 
@@ -224,10 +214,6 @@
                 this.getImagePreviews();
             }
 
-        },
-
-        mounted() {
-            this.reset();
         },
 
     }
