@@ -120,7 +120,7 @@
                     document.querySelector('#nonce').value = payload.nonce;
                     this.paymentPayload = payload;
                     // Send payload.nonce to your server
-                    // this.transaction(this.totalCart, this.paymentPayload.nonce);
+                    this.transaction(this.totalCart, this.paymentPayload.nonce);
                 });
             },
 
