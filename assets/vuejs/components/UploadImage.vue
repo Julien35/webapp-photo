@@ -4,22 +4,23 @@
         <div class="row">
             <section class="col">
                 <h2>Photos à télécharger</h2>
-                <article class="dropbox" @change="filesChange">
-                    <input ref="inputfiles" name="photosDropZone[]" type="file" multiple :disabled="isSaving"
-                           @change="fileCount = $event.target.files.length"
+                <form class="dropbox" id="dropform">
+                    <input ref="inputfiles" name="photosDropZone[]" type="file" multiple
+                           :disabled="isSaving"
                            accept="image/*" class="input-file">
 
                     <p v-if="isInitial">
                         Déposer vos images ici pour démarrer<br> ou cliquer pour naviguer
                     </p>
                     <p v-if="isSaving">
-                        Envoi de {{ fileCount }} photo(s)...
+                        Envoi de {{ files.length }} photo(s)...
                     </p>
-                </article>
+                </form>
             </section>
         </div> <!-- row 1-->
 
-        <progress-bar v-bind:percentage="uploadPercentage" class="mt-3 mb-3"/>
+<!--        <progress-bar v-bind:percentage="uploadPercentage" class="mt-3 mb-3"/>-->
+        <spinner v-bind:loading="loading"/>
 
         <section class="row d-flex justify-content-between" v-for="(file, key) in files" @change="updateChange">
 
@@ -79,12 +80,14 @@
 
 <script>
     import ProgressBar from '../common/progress-bar';
+    import Spinner from '../common/spinner';
 
     const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 
     export default {
         name: 'UploadImage',
         components: {
+            Spinner,
             ProgressBar
         },
 
@@ -93,6 +96,10 @@
                 currentStatus: STATUS_INITIAL,
                 files: [],
                 uploadPercentage: 0,
+                loading: {
+                    state: false,
+                    message: ''
+                }
             }
         },
 
@@ -104,6 +111,11 @@
 
         mounted() {
             this.reset();
+
+            //dropform
+            document.querySelector('#dropform').addEventListener('input', (event) => {
+                this.filesChange();
+            }, false);
         },
 
         computed: {
@@ -154,25 +166,53 @@
                 this.files.push(imageFile);
             },
 
+
+             addImages() {
+                 return new Promise((resolve, reject) => {
+                     setTimeout((resolve) => {
+                         console.log("page OK")
+                     }, 3000)
+                 })
+             },
+
+
             filesChange() {
+                // 1) display spinner
+                this.loading.state = true;
 
-                console.log(this.$refs.inputfiles.files);
-                let fileList = this.$refs.inputfiles.files;
+                // 2) addImages to this.files
 
-                let len = fileList.length;
+                    // 3) prepare previews
 
-                // if empty > return
-                if (!len) return;
+                    // 4) display previews
 
-                for (let i = 0; i < len; i++) {
-                    if (fileList[i].type.startsWith('image/')) {
-                        this.addImage(fileList[i]);
-                    }
-                    this.updateUploadPercentageBar(len, i);
-                }
+                    // 5) emit files to event bus
 
-                this.getImagePreviews();
-                this.updateChange();
+                return this.$nextTick(() => {
+                    this.currentStatus = STATUS_SAVING;
+
+                    let fileList = this.$refs.inputfiles.files;
+                    let len = fileList.length;
+                    // if empty > return
+                    if (!len) return;
+
+                    console.log(fileList);
+
+                    return this.$nextTick().then(() => {
+                        for (let i = 0; i < len; i++) {
+                            if (fileList[i].type.startsWith('image/')) {
+                                this.addImage(fileList[i]);
+                            }
+                            // this.updateUploadPercentageBar(len, i);
+                        }
+                        this.getImagePreviews();
+                        this.updateChange();
+
+                        this.loading.state = false;
+                        this.currentStatus = STATUS_INITIAL;
+                    });
+
+                });
             },
 
             removeExtension(filenameFull) {

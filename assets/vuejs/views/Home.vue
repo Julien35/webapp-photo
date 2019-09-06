@@ -2,8 +2,7 @@
     <div class="home">
 
         <jumbotron v-bind:jumbotron-tile="title" class="container"/>
-<!--        <upload-wizard-form v-show="!status.done" class="container"/>-->
-        <UploadImage/>
+        <upload-wizard-form v-show="!status.done" class="container"/>
 
         <article v-show="status.done" class="container">
             <div v-if="!status.error" class="text-info">
@@ -20,7 +19,6 @@
 <script>
     import UploadWizardForm from '../components/UploadWizardForm'
     import Jumbotron from '../components/Jumbotron'
-    import UploadImage from "../components/UploadImage";
 
     export default {
         name: 'home',
@@ -36,7 +34,6 @@
         },
 
         components: {
-            UploadImage,
             UploadWizardForm,
             Jumbotron
         },
