@@ -19,7 +19,7 @@
             </section>
         </div> <!-- row 1-->
 
-<!--        <progress-bar v-bind:percentage="uploadPercentage" class="mt-3 mb-3"/>-->
+        <!--        <progress-bar v-bind:percentage="uploadPercentage" class="mt-3 mb-3"/>-->
         <spinner v-bind:loading="loading"/>
 
         <section class="row d-flex justify-content-between" v-for="(file, key) in files" @change="updateChange">
@@ -166,27 +166,8 @@
                 this.files.push(imageFile);
             },
 
-
-             addImages() {
-                 return new Promise((resolve, reject) => {
-                     setTimeout((resolve) => {
-                         console.log("page OK")
-                     }, 3000)
-                 })
-             },
-
-
             filesChange() {
-                // 1) display spinner
                 this.loading.state = true;
-
-                // 2) addImages to this.files
-
-                    // 3) prepare previews
-
-                    // 4) display previews
-
-                    // 5) emit files to event bus
 
                 return this.$nextTick(() => {
                     this.currentStatus = STATUS_SAVING;
@@ -203,7 +184,6 @@
                             if (fileList[i].type.startsWith('image/')) {
                                 this.addImage(fileList[i]);
                             }
-                            // this.updateUploadPercentageBar(len, i);
                         }
                         this.getImagePreviews();
                         this.updateChange();
