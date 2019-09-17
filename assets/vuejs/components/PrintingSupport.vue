@@ -65,8 +65,10 @@
                 });
             }
         },
-        created() {
-            this.loadSupportData();
+        mounted() {
+            setTimeout(()=> {
+                this.loadSupportData();
+            }, 3000);
         }
     }
 </script>

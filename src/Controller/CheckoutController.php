@@ -5,9 +5,7 @@ namespace App\Controller;
 use App\Manager\CartManager;
 use App\Service\BrainTreeCheckout;
 use App\Service\MailService;
-use Doctrine\ORM\ORMException;
 use Exception;
-use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +32,8 @@ class CheckoutController extends AbstractController
         BrainTreeCheckout $brainTreeCheckout,
         CartManager $cartManager,
         MailService $mailService
-    ) {
+    )
+    {
         $this->brainTreeCheckout = $brainTreeCheckout;
         $this->mailService = $mailService;
         $this->cartManager = $cartManager;
@@ -43,7 +42,6 @@ class CheckoutController extends AbstractController
     /**
      * @Route("api/checkout/client-token", name="client_token", methods="GET")
      *
-     * @param Request $request
      * @return JsonResponse
      */
     public function getToken()
@@ -61,10 +59,9 @@ class CheckoutController extends AbstractController
      * @Route("api/checkout/transaction", name="transaction", methods="POST")
      *
      * @param Request $request
-     * @param Swift_Mailer $mailer
      * @return JsonResponse
      */
-    public function transaction(Request $request, Swift_Mailer $mailer)
+    public function transaction(Request $request)
     {
         $data = json_decode($request->getContent(), true);
 
@@ -82,7 +79,7 @@ class CheckoutController extends AbstractController
 
                 $isSent = $this
                     ->mailService
-                    ->sendCheckoutMail($updateCart, $mailer);
+                    ->sendCheckoutMail($updateCart);
             }
         } catch (Exception $e) {
 
