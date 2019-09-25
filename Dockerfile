@@ -1,13 +1,17 @@
-FROM php:alpine
+FROM silarhi/php-apache:7.3-symfony
 
-RUN apk update
-RUN apk add composer nodejs-lts yarn
 
-COPY . /usr/src/app
-WORKDIR /usr/src/app
+RUN apt-get update -qq && \
+    curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+    apt-get install -y nodejs && \
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    npm install -g yarn && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+#TODO: fix sqlite db access bug
+ADD . /app/
 
 RUN composer install
 RUN yarn
-
-CMD php -S 0.0.0.0:8000 public/index.php
-EXPOSE 8000
+RUN yarn build

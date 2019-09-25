@@ -3,7 +3,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: docker/Dockerfile
     image: webapp-sf-vuejs
     ports:
-      - 8001:8000
+      - 8000:80
