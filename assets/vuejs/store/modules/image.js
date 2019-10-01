@@ -41,6 +41,8 @@ export default {
         },
 
         updateFilesSupport(state, support) {
+
+            // TODO: copy object to avoid object reference trap
             let supportData = {
                 'type': support.text,
                 'price': support.value

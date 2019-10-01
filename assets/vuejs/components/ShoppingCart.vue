@@ -105,7 +105,7 @@
             },
         },
 
-        created() {
+        mounted() {
             this.$eventBus.$on('change-files', files => {
                 this.files = files;
                 this.subTotal();
@@ -147,7 +147,19 @@
                     this.total = (this.total + file.subtotal);
                 });
 
-                this.total += this.files.supportTypePrice;
+                if (this.files.supportTypePrice !== 0){
+                    this.total += this.files.supportTypePrice;
+                } else {
+                    // recalcul
+                    let supportType = this.$store.getters["imageModule/getSupportType"];
+
+                    this.files['supportTypePrice'] = supportType.price;
+                    this.files['supportType'] = supportType.type;
+
+                    this.total += this.files.supportTypePrice;
+                }
+
+
                 this.$eventBus.$emit('change-total-cart', this.total);
             },
 
