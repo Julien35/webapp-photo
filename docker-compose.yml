@@ -12,4 +12,4 @@ services:
         max_attempts: 3
         window: 120s
     ports:
-      - 8001:80
+      - 8000:80

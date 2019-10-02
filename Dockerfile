@@ -8,7 +8,7 @@ RUN apt-get update -qq && \
     npm install -g yarn && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-
+#TODO: créer utilisateur associé au groupe www-data avant de faire la copie et l'installation des dépendances.
 ADD . /app/
 # fix sqlite db access right (db test)
 RUN chmod -R 777 src/bdd
@@ -16,4 +16,5 @@ RUN chmod -R 777 src/bdd
 RUN composer install
 RUN yarn
 RUN yarn build
+RUN chown -R www-data:www-data /app
 

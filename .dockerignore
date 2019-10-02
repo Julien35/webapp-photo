@@ -1,7 +1,9 @@
-#/config/packages/dev/
-#/config/packages/test/
+/config/packages/dev/
+/config/packages/test/
 var/
-#vendor/
+public/build
+vendor/
+node_modules/
 .dockerignore
 .gitignore
 *.md
