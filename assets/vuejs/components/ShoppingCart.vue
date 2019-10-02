@@ -105,7 +105,7 @@
             },
         },
 
-        created() {
+        mounted() {
             this.$eventBus.$on('change-files', files => {
                 this.files = files;
                 this.subTotal();
@@ -113,6 +113,10 @@
                 this.$forceUpdate();
                 this.getImagePreviews();
             });
+
+            // setInterval(() => {
+            //    this.totalCart();
+            // }, 2000);
         },
 
         beforeDestroy() {
@@ -147,7 +151,15 @@
                     this.total = (this.total + file.subtotal);
                 });
 
-                this.total += this.files.supportTypePrice;
+                    let supportType = this.$store.getters["imageModule/getSupportType"];
+
+                    this.files['supportTypePrice'] = Number.parseFloat(supportType.price);
+                    this.files['supportType'] = supportType.type;
+
+                    this.total += this.files.supportTypePrice;
+                // }
+
+
                 this.$eventBus.$emit('change-total-cart', this.total);
             },
 

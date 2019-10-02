@@ -177,8 +177,6 @@
                     // if empty > return
                     if (!len) return;
 
-                    console.log(fileList);
-
                     return this.$nextTick().then(() => {
                         for (let i = 0; i < len; i++) {
                             if (fileList[i].type.startsWith('image/')) {
