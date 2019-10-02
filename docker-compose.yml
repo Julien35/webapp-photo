@@ -5,5 +5,11 @@ services:
       context: .
       dockerfile: Dockerfile
     image: webapp-sf-vuejs
+    deploy:
+      restart_policy:
+        condition: always
+        delay: 5s
+        max_attempts: 3
+        window: 120s
     ports:
-      - 8000:80
+      - 8001:80

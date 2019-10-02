@@ -9,7 +9,10 @@ const getDefaultState = () => {
         },
 
         files: {
-            supportType: {},
+            supportType: {
+                "type": "",
+                "price": ""
+            },
             photos: [],
         },
         isSubmit: false
@@ -42,13 +45,12 @@ export default {
 
         updateFilesSupport(state, support) {
 
-            // TODO: copy object to avoid object reference trap
             let supportData = {
                 'type': support.text,
                 'price': support.value
             };
-            state.files.supportType.type = support.text;
-            state.files.supportType.price = support.value;
+
+            Object.assign(state.files.supportType, supportData);
         },
 
         updateFiles(state, files) {
@@ -85,7 +87,10 @@ export default {
                 initParams.support = response.data.supportImage;
 
                 let files = {
-                    supportType: {},
+                    supportType: {
+                        "type": "",
+                        "price": ""
+                    },
                     photos: [],
                 };
                 files.supportType = initParams.support[0];

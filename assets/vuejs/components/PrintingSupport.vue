@@ -30,6 +30,7 @@
 
         data() {
             return {
+                files: [],
                 supportChoice: '',
                 finitionChoice: '',
                 selected: '0',
@@ -39,13 +40,27 @@
             }
         },
 
+        mounted() {
+            this.$eventBus.$on('change-files', files => {
+                this.files = files;
+            });
+        },
+
         methods: {
 
             updateChange(e) {
+
                 if (e.target.options.selectedIndex > -1) {
                     this.$store.commit('imageModule/updateFilesSupport',
                         e.target.options[e.target.options.selectedIndex]);
+
+                    let supportType = this.$store.getters["imageModule/getSupportType"];
+
+                    this.files['supportTypePrice'] = Number.parseFloat(supportType.price);
+                    this.files['supportType'] = supportType.type;
+                    this.$eventBus.$emit('change-files', this.files);
                 }
+
             },
 
             loadSupportData() {
