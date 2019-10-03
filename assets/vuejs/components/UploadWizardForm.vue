@@ -12,7 +12,7 @@
 
         <tab-content title="Commander vos tirages" icon="far fa-images"
                      :before-change="hasPhotos">
-            <upload-image v-bind:current-status="currentStatus"/>
+            <upload-image/>
         </tab-content>
 
         <tab-content title="Adresse" icon="far fa-address-card"
@@ -85,8 +85,8 @@
                 step: 1,
                 files: [],
                 registration: {
-                    name: 'Vincent',
-                    firstname: 'Robert',
+                    name: 'B',
+                    firstname: 'Julien',
                     address1: 'rue de Paris',
                     address2: null,
                     postal: 75000,
@@ -94,10 +94,9 @@
                     state: null,
                     country: 'France',
                     phone: null,
-                    email: 'robert@yopmail.com'
+                    email: 'julienb@yopmail.com'
                 },
                 isFormValid: false,
-                uploadedFiles: [],
                 uploadError: null,
                 currentStatus: STATUS_INITIAL,
                 uploadPercentage: 0,
@@ -167,7 +166,6 @@
             reset() {
                 // reset form to initial state
                 this.currentStatus = STATUS_INITIAL;
-                this.uploadedFiles = [];
                 this.uploadError = null;
                 this.files = [];
                 this.images = [];

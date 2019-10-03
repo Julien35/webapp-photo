@@ -1,7 +1,8 @@
 <template>
     <section>
 
-        <article>Total : {{totalCart}} €</article>
+        <article>Total : {{Number.parseFloat(totalCart).toFixed(2)}} €</article>
+
 
         <DropIn v-if="authToken !== null"
                 :authToken="authToken"
@@ -32,16 +33,21 @@
             }
         },
 
-        created() {
-            this.getToken();
+        mounted() {
+            setTimeout(() => {
 
-            this.$eventBus.$on('tokenize', () => {
-                this.submitTransaction();
-            });
+                this.getToken();
 
-            this.$eventBus.$on('change-total-cart', totalCart => {
-                this.totalCart = totalCart;
-            });
+                this.$eventBus.$on('tokenize', () => {
+                    this.submitTransaction();
+                });
+
+                this.$eventBus.$on('change-total-cart', totalCart => {
+                    this.totalCart = totalCart;
+                });
+
+            }, 2000);
+
         },
 
         methods: {
@@ -64,6 +70,4 @@
     }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

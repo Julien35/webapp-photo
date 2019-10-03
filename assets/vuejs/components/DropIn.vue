@@ -53,6 +53,10 @@
             this.$eventBus.$on('client-cart', (cart) => {
                 this.clientCart = cart;
             });
+
+            this.$eventBus.$on('bt.error', (btError) => {
+                this.btError = btError;
+            });
         },
         data() {
             return {
@@ -60,7 +64,8 @@
                 dropinInstance: '',
                 paymentPayload: '',
                 dataCollectorPayload: '',
-                clientCart: Object
+                clientCart: Object,
+                btError: '',
             }
         },
         methods: {
@@ -96,13 +101,19 @@
                 this.$eventBus.$emit('loading', {
                     state: true,
                     message: ''
-                },);
+                });
 
                 this.dropinInstance.requestPaymentMethod((requestErr, payload) => {
 
                     if (requestErr) {
                         this.errorMessage = 'There was an error setting up the client instance. Message: ' + requestErr.message;
                         this.$emit('bt.error', this.errorMessage);
+
+                        this.$eventBus.$emit('loading', {
+                            state: false,
+                            message: ''
+                        });
+
                         return;
                     }
 

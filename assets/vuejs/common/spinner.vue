@@ -16,11 +16,26 @@
 
         data() {
             return {
-                loading: {
-                    state: false,
-                    message: ''
-                },
+                // loading: {
+                //     state: false,
+                //     message: ''
+                // },
             }
+        },
+
+        props: {
+            loading: {
+                type: Object,
+                required: false,
+                // Les objets et tableaux par défaut doivent être retournés depuis
+                // une fonction de fabrique
+                default: function () {
+                    return {
+                        state: false,
+                        message: ''
+                    }
+                }
+            },
         },
 
         created() {

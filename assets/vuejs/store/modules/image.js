@@ -8,7 +8,13 @@ const getDefaultState = () => {
             support: []
         },
 
-        files: [],
+        files: {
+            supportType: {
+                "type": "",
+                "price": ""
+            },
+            photos: [],
+        },
         isSubmit: false
     }
 };
@@ -25,12 +31,30 @@ export default {
 
         getSupport: state => {
             return state.initParams.support;
+        },
+
+        getSupportType: state => {
+            return state.files.supportType;
         }
     },
 
     mutations: {
-        update(state) {
-            state.initParams = {};
+        addPhoto(state, photo) {
+            state.files.photos.push(photo);
+        },
+
+        updateFilesSupport(state, support) {
+
+            let supportData = {
+                'type': support.text,
+                'price': support.value
+            };
+
+            Object.assign(state.files.supportType, supportData);
+        },
+
+        updateFiles(state, files) {
+            state.files = files;
         },
 
         submit(state, status) {
@@ -51,7 +75,7 @@ export default {
             commit('resetState');
         },
 
-        fetchInitParams ({ commit }) {
+        fetchInitParams({commit}) {
             return ImageService.getImageLimit().then(response => {
 
                 let initParams = {
@@ -59,11 +83,20 @@ export default {
                     dimensionFormat: [],
                     support: []
                 };
-
                 initParams.limit = response.data.conf;
                 initParams.support = response.data.supportImage;
 
+                let files = {
+                    supportType: {
+                        "type": "",
+                        "price": ""
+                    },
+                    photos: [],
+                };
+                files.supportType = initParams.support[0];
+
                 commit('setInitParams', initParams);
+                commit('updateFiles', files);
             });
         }
     }

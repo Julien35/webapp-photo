@@ -8,27 +8,38 @@ use App\Entity\Contact;
 use Psr\Container\ContainerInterface;
 use Swift_Mailer;
 use Swift_Message;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class MailService
 {
 
     private $twig_engine;
 
-    public function __construct(ContainerInterface $container)
+    private $mailer;
+
+    private $mailerFrom;
+
+    private $mailerTo;
+
+    public function __construct(ContainerInterface $container, Swift_Mailer $mailer)
     {
         $this->twig_engine = $container->get('twig');
+        $this->mailer = $mailer;
+        $this->mailerFrom = $_ENV['MAILER_FROM'];
+        $this->mailerTo = $_ENV['MAILER_TO'];
     }
 
 
     /**
      * @param Contact $contact
-     * @param Swift_Mailer $mailer
      * @return bool
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function sendContactMail(Contact $contact, Swift_Mailer $mailer)
+    public function sendContactMail(Contact $contact)
     {
         $template = $this->twig_engine->render(
             'emails/contact.html.twig',
@@ -37,10 +48,9 @@ class MailService
 
         $isSent = $this->sendMail(
             'Hello Email test',
-            'webphoto.studioludo@gmail.com',
-            ['webphoto.studioludo@gmail.com', $contact->getEmail()],
-            $template,
-            $mailer
+            $this->mailerFrom,
+            [$this->mailerTo, $contact->getEmail()],
+            $template
         );
 
         return $isSent;
@@ -48,13 +58,12 @@ class MailService
 
     /**
      * @param Cart $cart
-     * @param Swift_Mailer $mailer
-     * @return bool|int
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @return bool
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function sendCheckoutMail(Cart $cart, Swift_Mailer $mailer)
+    public function sendCheckoutMail(Cart $cart)
     {
         $template = $this->twig_engine->render(
             'emails/quotation.html.twig',
@@ -63,10 +72,9 @@ class MailService
 
         $isSent = $this->sendMail(
             'Hello Email test',
-            'webphoto.studioludo@gmail.com',
-            ['webphoto.studioludo@gmail.com', $cart->getRegistration()->getEmail()],
-            $template,
-            $mailer
+            $this->mailerFrom,
+            [$this->mailerTo, $cart->getRegistration()->getEmail()],
+            $template
         );
 
         return $isSent;
@@ -78,10 +86,9 @@ class MailService
      * @param $from
      * @param $to
      * @param $mailBody
-     * @param Swift_Mailer $mailer
      * @return bool
      */
-    private function sendMail($subject, $from, $to, $mailBody, Swift_Mailer $mailer)
+    private function sendMail($subject, $from, $to, $mailBody)
     {
         $message = new Swift_Message();
         $message
@@ -92,7 +99,7 @@ class MailService
 
         $isSent = false;
 
-        $sent = $mailer->send($message, $failures);
+        $sent = $this->mailer->send($message, $failures);
         if ($sent && empty($failures)) {
             $isSent = true;
         }

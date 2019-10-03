@@ -1,0 +1,13 @@
+/config/packages/dev/
+/config/packages/test/
+var/
+public/build
+vendor/
+node_modules/
+.dockerignore
+.gitignore
+*.md
+
+.git/
+.idea/
+.DS_Store/

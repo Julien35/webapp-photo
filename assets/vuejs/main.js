@@ -9,6 +9,8 @@ if (document.querySelector('#app')) {
     Vue.use(Vuelidate);
     // Global event bus
     Vue.prototype.$eventBus = new Vue();
+    // Debug log
+    Vue.prototype.$log = console.log;
 
     new Vue({
         router,

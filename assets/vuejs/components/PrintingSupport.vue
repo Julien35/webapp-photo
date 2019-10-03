@@ -1,24 +1,24 @@
 <template>
     <section>
 
-        <select v-model="selected">
+        <select v-model="selected" @change="updateChange">
             <option v-for="option in options" v-bind:value="option.value">
                 {{ option.text }}
             </option>
         </select>
-        <span>Sélectionné : {{ selected }}</span>
+        <span>Sélectionné : {{ selected }}  €</span>
 
 
         <!--finition field-->
-<!--        <fieldset class="col-lg-4 col-md-4 col-sm-5 col-6">-->
-<!--            <h4>Finition</h4>-->
-<!--            <div class="form-check">-->
-<!--                <label class="form-check-label">-->
-<!--                    <input class="form-check-input" type="radio">-->
-<!--                    Finition 1-->
-<!--                </label>-->
-<!--            </div>-->
-<!--        </fieldset>-->
+        <!--        <fieldset class="col-lg-4 col-md-4 col-sm-5 col-6">-->
+        <!--            <h4>Finition</h4>-->
+        <!--            <div class="form-check">-->
+        <!--                <label class="form-check-label">-->
+        <!--                    <input class="form-check-input" type="radio">-->
+        <!--                    Finition 1-->
+        <!--                </label>-->
+        <!--            </div>-->
+        <!--        </fieldset>-->
 
     </section>
 
@@ -30,18 +30,39 @@
 
         data() {
             return {
+                files: [],
                 supportChoice: '',
                 finitionChoice: '',
-                selected: 'A',
+                selected: '0',
                 options: [
-                    {text: 'Un', value: 'A'},
-                    {text: 'Deux', value: 'B'},
-                    {text: 'Trois', value: 'C'}
+                    {text: 'default', value: '0'}
                 ]
             }
         },
 
+        mounted() {
+            this.$eventBus.$on('change-files', files => {
+                this.files = files;
+            });
+        },
+
         methods: {
+
+            updateChange(e) {
+
+                if (e.target.options.selectedIndex > -1) {
+                    this.$store.commit('imageModule/updateFilesSupport',
+                        e.target.options[e.target.options.selectedIndex]);
+
+                    let supportType = this.$store.getters["imageModule/getSupportType"];
+
+                    this.files['supportTypePrice'] = Number.parseFloat(supportType.price);
+                    this.files['supportType'] = supportType.type;
+                    this.$eventBus.$emit('change-files', this.files);
+                }
+
+            },
+
             loadSupportData() {
                 // init image limit
                 this.$store.dispatch('imageModule/fetchInitParams').then(() => {
@@ -51,18 +72,18 @@
                     this.options = [];
                     for (let i = 0; i < supportData.length; i++) {
                         this.options.push(
-                            {text: supportData[i].type, value: supportData[i].price + ' €'}
-                            );
+                            {text: supportData[i].type, value: supportData[i].price}
+                        );
                     }
                     this.selected = this.options[0].value;
 
                 });
-
-
             }
         },
-        created() {
-            this.loadSupportData();
+        mounted() {
+            setTimeout(()=> {
+                this.loadSupportData();
+            }, 3000);
         }
     }
 </script>

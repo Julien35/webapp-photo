@@ -4,25 +4,23 @@
         <div class="row">
             <section class="col">
                 <h2>Photos à télécharger</h2>
-                <article class="dropbox">
-                    <input name="photosDropZone[]" type="file" multiple :disabled="isSaving"
-                           @change="filesChange($event.target.files)
-                           fileCount = $event.target.files.length"
+                <form class="dropbox" id="dropform">
+                    <input ref="inputfiles" name="photosDropZone[]" type="file" multiple
+                           :disabled="isSaving"
                            accept="image/*" class="input-file">
 
                     <p v-if="isInitial">
-                        <!--Drag your photo(s) here to begin<br> or click to browse-->
                         Déposer vos images ici pour démarrer<br> ou cliquer pour naviguer
                     </p>
                     <p v-if="isSaving">
-                        <!--Uploading {{ fileCount }} photo(s)...-->
-                        Envoi de {{ fileCount }} photo(s)...
+                        Envoi de {{ files.length }} photo(s)...
                     </p>
-                </article>
+                </form>
             </section>
         </div> <!-- row 1-->
 
-        <progress-bar v-bind:percentage="uploadPercentage" class="mt-3 mb-3"/>
+        <!--        <progress-bar v-bind:percentage="uploadPercentage" class="mt-3 mb-3"/>-->
+        <spinner v-bind:loading="loading"/>
 
         <section class="row d-flex justify-content-between" v-for="(file, key) in files" @change="updateChange">
 
@@ -45,10 +43,6 @@
             </article>
 
             <article class="col-lg-4 col-sm-4 col-12">
-
-                <!--                <div class="row">-->
-                <!--format field-->
-                <!--                    <fieldset class="col-lg-8 col-md-8 col-sm-7 col-6">-->
                 <fieldset class="">
                     <h4>Format</h4>
                     <div class="form-check">
@@ -75,63 +69,7 @@
                             100 x 100 cm / 39.7 x 39.7 inch
                         </label>
                     </div>
-                    <!--                        <div class="form-check">-->
-                    <!--                            <label class="form-check-label" v-bind:for="file.format + parseInt(key)">-->
-                    <!--                                <input class="form-check-input" type="radio"-->
-                    <!--                                       v-bind:name="file.format + '_' + parseInt(key)"-->
-                    <!--                                       value="surmesure" v-model="files[key].format">-->
-                    <!--                                Sur Mesure-->
-                    <!--                            </label>-->
-                    <!--                        </div>-->
                 </fieldset>
-
-                <!--finition field-->
-                <!--                    <fieldset class="col-lg-4 col-md-4 col-sm-5 col-6">-->
-                <!--                        <h4>Finition</h4>-->
-                <!--                        <div class="form-check">-->
-                <!--                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">-->
-                <!--                                <input class="form-check-input" type="radio"-->
-                <!--                                       v-bind:name="file.finition + '_' + parseInt(key)"-->
-                <!--                                       value="finition1" v-model="files[key].finition">-->
-                <!--                                Finition 1-->
-                <!--                            </label>-->
-                <!--                        </div>-->
-                <!--                        <div class="form-check">-->
-                <!--                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">-->
-                <!--                                <input class="form-check-input" type="radio"-->
-                <!--                                       v-bind:name="file.finition + '_' + parseInt(key)"-->
-                <!--                                       value="finition2" v-model="files[key].finition">-->
-                <!--                                Finition 2-->
-                <!--                            </label>-->
-                <!--                        </div>-->
-                <!--                        <div class="form-check">-->
-                <!--                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">-->
-                <!--                                <input class="form-check-input" type="radio"-->
-                <!--                                       v-bind:name="file.finition + '_' + parseInt(key)"-->
-                <!--                                       value="finition4" v-model="files[key].finition">-->
-                <!--                                Finition 3-->
-                <!--                            </label>-->
-                <!--                        </div>-->
-                <!--                        <div class="form-check">-->
-                <!--                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">-->
-                <!--                                <input class="form-check-input" type="radio"-->
-                <!--                                       v-bind:name="file.finition + '_' + parseInt(key)"-->
-                <!--                                       value="finition4" v-model="files[key].finition">-->
-                <!--                                Finition 4-->
-                <!--                            </label>-->
-                <!--                        </div>-->
-                <!--                        <div class="form-check">-->
-                <!--                            <label class="form-check-label" v-bind:for="file.finition + parseInt(key)">-->
-                <!--                                <input class="form-check-input" type="radio"-->
-                <!--                                       v-bind:name="file.finition + '_' + parseInt(key)"-->
-                <!--                                       value="finition5" v-model="files[key].finition">-->
-                <!--                                Finition 5-->
-                <!--                            </label>-->
-                <!--                        </div>-->
-                <!--                    </fieldset>-->
-
-                <!--                </div>-->
-
             </article>
 
         </section>
@@ -141,40 +79,43 @@
 </template>
 
 <script>
-    import ProgressBar from '../common/progress-bar'
+    import ProgressBar from '../common/progress-bar';
+    import Spinner from '../common/spinner';
 
     const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 
     export default {
         name: 'UploadImage',
         components: {
+            Spinner,
             ProgressBar
-        },
-        props: {
-            currentStatus: {
-                type: Number,
-                required: true
-            }
         },
 
         data() {
             return {
+                currentStatus: STATUS_INITIAL,
                 files: [],
-                uploadedFiles: [],
-                uploadError: null,
                 uploadPercentage: 0,
-                loadingWizard: false,
+                loading: {
+                    state: false,
+                    message: ''
+                }
             }
         },
 
         created() {
-            // this.$eventBus.$on('change-name', this.changeName);
-            // this.$eventBus.$on('change-files', this.changefile);
-            // this.uploadPercentage = 0;
+            this.$eventBus.$on('change-files', (files) => {
+                this.files = files;
+            });
         },
 
-        beforeDestroy() {
-            // this.$eventBus.$off('change-name');
+        mounted() {
+            this.reset();
+
+            //dropform
+            document.querySelector('#dropform').addEventListener('input', (event) => {
+                this.filesChange();
+            }, false);
         },
 
         computed: {
@@ -191,61 +132,65 @@
                 return this.currentStatus === STATUS_FAILED;
             },
         },
+
         methods: {
             reset() {
                 // reset form to initial state
-                // this.currentStatus = STATUS_INITIAL;
-                this.uploadedFiles = [];
-                this.uploadError = null;
+                this.currentStatus = STATUS_INITIAL;
                 this.files = [];
-                this.images = [];
-                // this.uploadPercentage = 0;
-                this.loadingWizard = false;
+                this.uploadPercentage = 0;
+                this.updateChange();
             },
 
             updateChange() {
+                let supportType = this.$store.getters["imageModule/getSupportType"];
+                this.files['supportTypePrice'] = supportType.price;
+                this.files['supportType'] = supportType.type;
+
                 // emit data files to EventBus
                 this.$eventBus.$emit('change-files', this.files);
             },
 
             updateUploadPercentageBar(fileListLength, iteration) {
                 this.uploadPercentage = (100 / fileListLength) * (iteration + 1);
+                this.$forceUpdate();
             },
 
             addImage(imageFile) {
-                // console.log(imageFile);
                 imageFile.nameText = this.removeExtension(imageFile.name);
-                // debugger;
-                // imageFile.format = 'format40';
-                // imageFile.finition = 'finition1';
+                // default values;
+                imageFile.format = 'format40';
+                imageFile.finition = 'finition1';
                 imageFile.quantity = 1;
                 imageFile.subtotal = 0;
                 this.files.push(imageFile);
             },
 
-            filesChange(fileList) {
-                // this.$eventBus.$emit('loading', {
-                //     state: true,
-                //     message: ''
-                // });
-                // this.$eventBus.$forceUpdate();
+            filesChange() {
+                this.loading.state = true;
 
-                // console.log(fileList);
+                return this.$nextTick(() => {
+                    this.currentStatus = STATUS_SAVING;
 
-                let len = fileList.length;
+                    let fileList = this.$refs.inputfiles.files;
+                    let len = fileList.length;
+                    // if empty > return
+                    if (!len) return;
 
-                // if empty > return
-                if (!len) return;
+                    return this.$nextTick().then(() => {
+                        for (let i = 0; i < len; i++) {
+                            if (fileList[i].type.startsWith('image/')) {
+                                this.addImage(fileList[i]);
+                            }
+                        }
+                        this.getImagePreviews();
+                        this.updateChange();
 
-                for (let i = 0; i < len; i++) {
-                    if (fileList[i].type.startsWith('image/')) {
-                        this.addImage(fileList[i]);
-                    }
-                    this.updateUploadPercentageBar(len, i);
-                }
+                        this.loading.state = false;
+                        this.currentStatus = STATUS_INITIAL;
+                    });
 
-                this.getImagePreviews();
-                this.updateChange();
+                });
             },
 
             removeExtension(filenameFull) {
@@ -253,25 +198,16 @@
             },
 
             getImagePreviews() {
-                /*
-                  Iterate over all of the files and generate an image preview for each one.
-                */
+                // Iterate over all of the files and generate an image preview for each one.
                 for (let i = 0; i < this.files.length; i++) {
-                    /*
-                      Ensure the file is an image file
-                    */
+                    // Ensure the file is an image file
                     if (/\.(jpe?g|png|gif)$/i.test(this.files[i].name)) {
-                        /*
-                          Create a new FileReader object
-                        */
+                        // Create a new FileReader object
                         let reader = new FileReader();
 
-                        /*
-                          Add an event listener for when the file has been loaded
-                          to update the src on the file preview.
-                        */
+                        /* Add an event listener for when the file has been loaded
+                          to update the src on the file preview. */
                         reader.addEventListener("load", function () {
-
                             this.$refs['preview' + parseInt(i)][0].src = reader.result;
                         }.bind(this), false);
 
@@ -282,9 +218,7 @@
                         */
                         reader.readAsDataURL(this.files[i]);
                     } else {
-                        /*
-                          We do the next tick so the reference is bound and we can access it.
-                        */
+                        // We do the next tick so the reference is bound and we can access it.
                         this.$nextTick(function () {
                             this.$refs['preview' + parseInt(i)][0].src = '/images/file.png';
                         });
@@ -298,10 +232,6 @@
                 this.getImagePreviews();
             }
 
-        },
-
-        mounted() {
-            this.reset();
         },
 
     }
