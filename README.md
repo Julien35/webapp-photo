@@ -27,4 +27,7 @@ Launch javascript server, symfony server
 * ``` Add to .env : DATABASE_URL=sqlite:///%kernel.project_dir%/var/webphoto.db```
 
 ### Docker
-* ```docker-composer up -d --build``` 
+* ```docker-composer up -d --build```
+
+### url ###
+* base_url/webapp-photo 
