@@ -29,5 +29,3 @@ Launch javascript server, symfony server
 ### Docker
 * ```docker-composer up -d --build```
 
-### url ###
-* base_url/webapp-photo 

@@ -1,5 +1,5 @@
 controllers:
     resource: ../../src/Controller/
     type: annotation
-    prefix: /webapp-photo
+#    prefix: /webapp-photo
 
