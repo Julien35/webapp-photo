@@ -1,10 +1,28 @@
-version: '3'
+version: "3.7"
+
+networks:
+  traefik:
+    external: true
+  other:
+    name: ${APP}
+    internal: true
+
 services:
-  app:
+  webapp-photo:
     build:
       context: .
       dockerfile: Dockerfile
     image: webapp-sf-vuejs
     restart: always
-    ports:
-      - 8000:80
+    container_name: "${APP}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${APP}.rule=Host(`${DOMAIN}`)"
+#      - "traefik.http.routers.${APP}.rule=Host(`${DOMAIN}`) && PathPrefix(`/${APP}`)"
+#      - "traefik.http.routers.${APP}.entrypoints=websecure"
+      - "traefik.http.routers.${APP}.entrypoints=web"
+    networks:
+      - traefik
+      - other
+#    ports:
+#      - 8000:80
