@@ -5,7 +5,7 @@
         "@fortawesome/fontawesome-free-solid": "^5.0.13",
         "@fortawesome/fontawesome-free-webfonts": "^1.0.9",
         "@symfony/webpack-encore": "^0.28.0",
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "bootstrap": "^4.4.1",
         "braintree-web": "^3.60.0",
         "braintree-web-drop-in": "^1.22.1",
